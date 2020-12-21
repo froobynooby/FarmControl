@@ -1,0 +1,54 @@
+profiles:
+  # Remove random movements and disable collisions of mobs in animal farms
+  soft-nerf-animal-farms:
+    group:
+      types:
+        - "category:animal"
+      count: 15
+      distance: 5
+    actions:
+      - remove-random-movement
+      - disable-collisions
+
+  # Remove the awareness of mobs in animal farms
+  hard-nerf-animal-farms:
+    group:
+      types:
+        - "category:animal"
+      count: 15
+      distance: 5
+    actions:
+      - remove-awareness
+
+  # Remove the AI of mobs in animal farms
+  freeze-animal-farms:
+    group:
+      types:
+        - "category:animal"
+      count: 15
+      distance: 5
+    actions:
+      - remove-ai
+      - disable-collisions
+
+  # No more than 20 animals (all of the same type) within close proximity
+  trim-animal-farms:
+    group:
+      types:
+        - "category:animal"
+      count: 21
+      distance: 5
+      pure: true
+    actions:
+      - kill
+
+  # No more than 50 animals (all of the same type) sparsely placed (within 160 blocks of each other)
+  trim-sparse-animal-farms:
+    group:
+      types:
+        - "category:animal"
+      count: 51
+      distance: 160
+      pure: true
+    actions:
+      - kill

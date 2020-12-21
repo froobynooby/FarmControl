@@ -1,0 +1,82 @@
+# Configuration for FarmControl.
+# Plugin page:
+# GitHub: https://github.com/froobynooby/FarmControl
+
+# Please don't change this!
+version: 1
+
+# Every how many ticks should we run the profile check / action cycle?
+cycle-period: 600
+
+# These settings can be specified per world.
+#  * Note: If a world is not specified or if a setting is missing, it will use the settings listed under the default
+#    section.
+world-settings:
+  default:
+    # Which profiles (as given in profiles.yml) should we run?
+    profiles:
+      - soft-nerf-animal-farms
+    #  - trim-animal-farms
+    #  - trim-sparse-animal-farms
+
+    # These settings concern when we should exclude a mob from having actions applied to them.
+    exclusion-settings:
+      # Should we not perform actions on tamed mobs?
+      tamed: true
+
+      # Should we not perform actions on named mobs?
+      named: true
+
+      # Should we not perform actions on mobs in love-mode (breeding animals)?
+      love-mode: true
+
+      # Should we not perform actions on mobs that are leashed?
+      leashed: true
+
+      # Should we not perform actions on mobs that are younger than this value (in ticks)?
+      younger-than: 0
+
+      # Which types of mobs should we not perform actions ?
+      type:
+      #  - villager
+
+      # For which metadata should we not perform actions on a mob?
+      #  * Some plugins will add metadata to mobs that they spawn or use. This setting allows you to exclude those mobs
+      #    from having actions performed on them by this plugin.
+      metadata:
+        - Elitemob # Elite mobs from the plugin EliteMobs.
+        - Elitemobs_NPC # NPCs from the plugin EliteMobs.
+        - Supermob # Super mobs from the plugin EliteMobs.
+        - infernalMetadata # Infernal mobs from the plugin InfernalMobs.
+        - NPC # NPCs from the plugin Citizens.
+        - shopkeeper # Shopkeepers from the plugin Shopkeepers.
+
+    # These settings concern properties of actions.
+    action-settings:
+      # These settings concern when an action should be undone, and can be specified per action.
+      #  * Note: If an action is not specified, or if an option is blank, the settings listed under default will be
+      #    used.
+      undo-on:
+        default:
+          # Should we undo this action when the mob is interacted with?
+          interact: false
+
+          # Should we undo this action when the mob is damaged?
+          damage: false
+
+          # Should we undo this action when the mob is targeted by another entity (e.g. a zombie targeting a villager)?
+          target: false
+
+        remove-ai:
+          interact: true
+
+          damage: true
+
+          target: true
+
+        remove-awareness:
+          interact: true
+
+          damage: true
+
+          target: true

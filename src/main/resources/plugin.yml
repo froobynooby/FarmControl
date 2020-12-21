@@ -1,0 +1,32 @@
+name: FarmControl
+version: ${version}
+main: com.froobworld.farmcontrol.FarmControl
+api-version: 1.14
+authors: [froobynooby]
+description: A plugin for controlling the size and functions of farms.
+
+commands:
+  farmcontrol:
+    description: Base command for FarmControl.
+    aliases: [fc]
+
+permissions:
+  farmcontrol.command.*:
+    default: op
+    description: Access to all FarmControl commands.
+    children:
+      - farmcontrol.command.farmcontrol
+      - farmcontrol.command.reload
+      - farmcontrol.command.status
+
+  farmcontrol.command.reload:
+    default: op
+    description: Access to the FarmControl reload command.
+    children:
+      - farmcontrol.command.farmcontrol
+
+  farmcontrol.command.status:
+    default: op
+    description: Access to the FarmControl status command.
+    children:
+      - farmcontrol.command.farmcontrol

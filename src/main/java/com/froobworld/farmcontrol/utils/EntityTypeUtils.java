@@ -1,0 +1,28 @@
+package com.froobworld.farmcontrol.utils;
+
+import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
+import org.bukkit.entity.Ambient;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.Monster;
+
+import java.util.function.Predicate;
+
+public final class EntityTypeUtils {
+
+    private EntityTypeUtils(){}
+
+    public static Predicate<SnapshotEntity> fromString(String string) {
+        if (string.toLowerCase().startsWith("category:")) {
+            String category = string.split(":")[1];
+            if (category.equalsIgnoreCase("animal")) {
+                return entity -> Animals.class.isAssignableFrom(entity.getEntityClass());
+            } else if (category.equalsIgnoreCase("monster")) {
+                return entity -> Monster.class.isAssignableFrom(entity.getEntityClass());
+            } else if (category.equalsIgnoreCase("ambient")) {
+                return entity -> Ambient.class.isAssignableFrom(entity.getEntityClass());
+            }
+        }
+        return entity -> entity.getEntityType().toString().equalsIgnoreCase(string);
+    }
+
+}
