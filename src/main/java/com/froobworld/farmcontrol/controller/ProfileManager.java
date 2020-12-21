@@ -10,11 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class ProfileManager {
     private final FarmControl farmControl;
@@ -25,7 +21,11 @@ public class ProfileManager {
     }
 
     public ActionProfile getActionProfile(Trigger trigger, String profileName) {
-        return unpairedActionProfileMap.get(profileName).pair(trigger);
+        UnpairedActionProfile unpairedActionProfile = unpairedActionProfileMap.get(profileName);
+        if (unpairedActionProfile == null) {
+            return null;
+        }
+        return unpairedActionProfile.pair(trigger);
     }
 
     public void load() throws IOException {
@@ -39,9 +39,15 @@ public class ProfileManager {
             try {
                 ConfigurationSection profileSection = Objects.requireNonNull(profilesSection.getConfigurationSection(name));
                 GroupDefinition groupDefinition = GroupDefinition.fromConfigurationSection(Objects.requireNonNull(profileSection.getConfigurationSection("group")));
-                Set<Action> actions = profileSection.getStringList("actions").stream()
-                        .map(farmControl.getActionManager()::getAction)
-                        .collect(Collectors.toSet());
+                Set<Action> actions = new HashSet<>();
+                for (String actionName : profileSection.getStringList("actions")) {
+                    Action action = farmControl.getActionManager().getAction(actionName.toLowerCase());
+                    if (action == null) {
+                        farmControl.getLogger().warning("Unknown action for profile '" + name + "': '" + actionName.toLowerCase() + "'");
+                        continue;
+                    }
+                    actions.add(action);
+                }
                 unpairedActionProfileMap.put(name, new UnpairedActionProfile(groupDefinition, actions));
             } catch (Exception ex) {
                 farmControl.getLogger().warning("Unable to load the profile '" + name + "'. Incorrect syntax?");
