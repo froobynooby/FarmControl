@@ -1,3 +1,5 @@
+# Please visit https://github.com/froobynooby/FarmControl/wiki/Profiles for help with making profiles.
+
 profiles:
   # Remove random movements and disable collisions of mobs in animal farms
   soft-nerf-animal-farms:
