@@ -55,6 +55,7 @@ public class FarmControlCommand implements CommandExecutor {
 
     private void sendHelp(CommandSender sender, String cl) {
         sender.sendMessage(ChatColor.YELLOW + "FarmControl v" + farmControl.getDescription().getVersion());
+        sender.sendMessage(ChatColor.YELLOW + "Plugin page: " + ChatColor.WHITE + "https://www.spigotmc.org/resources/86923/");
         sender.sendMessage("");
         if (sender.hasPermission("farmcontrol.command.reload")) {
             sender.sendMessage("/" + cl + " reload");
