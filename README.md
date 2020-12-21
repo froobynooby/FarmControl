@@ -16,7 +16,7 @@ cd nab-configuration
 2. Clone FarmControl and build
 ```bash
 git clone https://github.com/froobynooby/FarmControl
-cd ViewDistanceTweaks
+cd FarmControl
 ./gradlew clean build
 ```
 
