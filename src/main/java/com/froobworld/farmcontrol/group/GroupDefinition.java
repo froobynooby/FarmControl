@@ -11,13 +11,15 @@ public class GroupDefinition {
     private final int size;
     private final double distance;
     private final double distanceSquared;
+    private final boolean ignoreVerticalDistance;
     private final boolean pure;
 
-    public GroupDefinition(Predicate<SnapshotEntity> typePredicate, int size, double distance, boolean pure) {
+    public GroupDefinition(Predicate<SnapshotEntity> typePredicate, int size, double distance, boolean ignoreVerticalDistance, boolean pure) {
         this.typePredicate = typePredicate;
         this.size = size;
         this.distance = distance;
         this.distanceSquared = distance * distance;
+        this.ignoreVerticalDistance = ignoreVerticalDistance;
         this.pure = pure;
     }
 
@@ -37,6 +39,10 @@ public class GroupDefinition {
         return distanceSquared;
     }
 
+    public boolean ignoreVerticalDistance() {
+        return ignoreVerticalDistance;
+    }
+
     public boolean isPure() {
         return pure;
     }
@@ -48,9 +54,10 @@ public class GroupDefinition {
                 .orElse(snapshotEntity -> true);
         int size = section.getInt("count");
         double distance = section.getDouble("distance");
+        boolean ignoreVerticalDistance = section.getBoolean("ignore-vertical-distance");
         boolean pure = section.getBoolean("pure");
 
-        return new GroupDefinition(typePredicate, size, distance, pure);
+        return new GroupDefinition(typePredicate, size, distance, ignoreVerticalDistance, pure);
     }
 
 }

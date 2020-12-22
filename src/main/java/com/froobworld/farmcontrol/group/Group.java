@@ -26,7 +26,7 @@ public class Group {
             int distance = Math.max(
                     Math.abs(member.getLocation().getBlockX() - entity.getLocation().getBlockX()),
                     Math.max(
-                            Math.abs(member.getLocation().getBlockY() - entity.getLocation().getBlockY()),
+                            definition.ignoreVerticalDistance() ? 0 : (Math.abs(member.getLocation().getBlockY() - entity.getLocation().getBlockY())),
                             Math.abs(member.getLocation().getBlockZ() - entity.getLocation().getBlockZ())
                     )
             );
