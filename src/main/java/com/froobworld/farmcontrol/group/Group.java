@@ -32,7 +32,7 @@ public class Group {
             );
             if (distance <= definition.getDistance()) {
                 return true;
-            } else if (distance > remainingMembers * definition.getDistance()) {
+            } else if (distance > (remainingMembers + 1) * definition.getDistance()) {
                 return false;
             }
             remainingMembers--;
