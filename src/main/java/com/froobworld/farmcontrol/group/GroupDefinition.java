@@ -11,14 +11,16 @@ public class GroupDefinition {
     private final int size;
     private final double distance;
     private final double distanceSquared;
+    private final boolean sameChunk;
     private final boolean ignoreVerticalDistance;
     private final boolean pure;
 
-    public GroupDefinition(Predicate<SnapshotEntity> typePredicate, int size, double distance, boolean ignoreVerticalDistance, boolean pure) {
+    public GroupDefinition(Predicate<SnapshotEntity> typePredicate, int size, double distance, boolean sameChunk, boolean ignoreVerticalDistance, boolean pure) {
         this.typePredicate = typePredicate;
         this.size = size;
         this.distance = distance;
         this.distanceSquared = distance * distance;
+        this.sameChunk = sameChunk;
         this.ignoreVerticalDistance = ignoreVerticalDistance;
         this.pure = pure;
     }
@@ -29,6 +31,10 @@ public class GroupDefinition {
 
     public int getSize() {
         return size;
+    }
+
+    public boolean isSameChunk() {
+        return sameChunk;
     }
 
     public double getDistance() {
@@ -53,11 +59,12 @@ public class GroupDefinition {
                 .reduce(Predicate::or)
                 .orElse(snapshotEntity -> true);
         int size = section.getInt("count");
-        double distance = section.getDouble("distance");
+        boolean sameChunk = section.isString("distance") && "same-chunk".equalsIgnoreCase(section.getString("distance"));
+        double distance = sameChunk ? 0 : section.getDouble("distance");
         boolean ignoreVerticalDistance = section.getBoolean("ignore-vertical-distance");
         boolean pure = section.getBoolean("pure");
 
-        return new GroupDefinition(typePredicate, size, distance, ignoreVerticalDistance, pure);
+        return new GroupDefinition(typePredicate, size, distance, sameChunk, ignoreVerticalDistance, pure);
     }
 
 }

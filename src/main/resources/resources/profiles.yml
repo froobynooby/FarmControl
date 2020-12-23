@@ -54,3 +54,13 @@ profiles:
       pure: true
     actions:
       - kill
+
+  # No more than 10 villagers per chunk
+  trim-villager-chunks:
+    group:
+      types:
+        - "villager"
+      count: 11
+      distance: same-chunk
+    actions:
+      - kill

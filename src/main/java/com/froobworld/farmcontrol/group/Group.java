@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class Group {
     private final EntityType initialType;
+    private final int initialChunkX, initialChunkZ;
     private final GroupDefinition definition;
     private final Set<SnapshotEntity> members = new HashSet<>();
 
@@ -15,11 +16,16 @@ public class Group {
         this.definition = definition;
         members.add(initialMember);
         initialType = initialMember.getEntityType();
+        initialChunkX = initialMember.getLocation().getBlockX() >> 4;
+        initialChunkZ = initialMember.getLocation().getBlockZ() >> 4;
     }
 
     public boolean shouldBeMember(SnapshotEntity entity) {
         if (definition.isPure() && entity.getEntityType() != initialType) {
             return false;
+        }
+        if (definition.isSameChunk()) {
+            return entity.getLocation().getBlockX() >> 4 == initialChunkX && entity.getLocation().getBlockZ() >> 4 == initialChunkZ;
         }
         int remainingMembers = members.size();
         for (SnapshotEntity member : members) {
