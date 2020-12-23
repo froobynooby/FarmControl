@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,7 +42,7 @@ public class FarmControlCommand implements CommandExecutor {
                 return true;
             }
         }
-        if (args.length > 1 && (args[0].equalsIgnoreCase("status") || args[0].equalsIgnoreCase("stats"))) {
+        if ((args[0].equalsIgnoreCase("status") || args[0].equalsIgnoreCase("stats"))) {
             if (sender.hasPermission("farmcontrol.command.status")) {
                 return statusCommand.onCommand(sender, command, s, args);
             } else {
@@ -61,7 +62,7 @@ public class FarmControlCommand implements CommandExecutor {
             sender.sendMessage("/" + cl + " reload");
         }
         if (sender.hasPermission("farmcontrol.command.status")) {
-            sender.sendMessage("/" + cl + " status <world>");
+            sender.sendMessage("/" + cl + " status " + (sender instanceof Player ? "[world]" :"<world>"));
         }
     }
 

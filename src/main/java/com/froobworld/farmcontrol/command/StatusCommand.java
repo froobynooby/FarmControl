@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -25,8 +26,18 @@ public class StatusCommand implements CommandExecutor {
 
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
-        World world = Bukkit.getWorld(args[1]);
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String cl, @NotNull String[] args) {
+        World world;
+        if (args.length == 1) {
+            if (sender instanceof Player) {
+                world = ((Player) sender).getWorld();
+            } else {
+                sender.sendMessage(ChatColor.RED + "You must specify a world.");
+                return false;
+            }
+        } else {
+            world = Bukkit.getWorld(args[1]);
+        }
         if (world == null) {
             sender.sendMessage(ChatColor.RED + "Unknown world.");
             return true;
