@@ -4,7 +4,7 @@ import com.froobworld.farmcontrol.command.FarmControlCommand;
 import com.froobworld.farmcontrol.config.FcConfig;
 import com.froobworld.farmcontrol.controller.*;
 import com.froobworld.farmcontrol.listener.CompatibilityListener;
-import org.bstats.bukkit.Metrics;
+import com.froobworld.farmcontrol.metrics.FcMetrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -46,7 +46,7 @@ public class FarmControl extends JavaPlugin {
 
         registerCommands();
 
-        new Metrics(this, 9692);
+        new FcMetrics(this, 9692);
     }
 
     public void reload() {
