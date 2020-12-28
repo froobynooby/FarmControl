@@ -36,7 +36,7 @@ world-settings:
       # Should we not perform actions on mobs that are younger than this value (in ticks)?
       younger-than: 0
 
-      # Which types of mobs should we not perform actions ?
+      # Which types of mobs should we not perform actions on?
       type:
       #  - villager
 

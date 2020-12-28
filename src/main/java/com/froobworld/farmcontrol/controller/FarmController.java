@@ -9,7 +9,6 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FarmController {
     private final FarmControl farmControl;

@@ -6,8 +6,6 @@ import com.froobworld.farmcontrol.data.FcData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
-import java.util.Collection;
-
 public final class Actioner {
 
     private Actioner() {}
