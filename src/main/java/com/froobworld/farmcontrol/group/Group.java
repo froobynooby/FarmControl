@@ -1,16 +1,14 @@
 package com.froobworld.farmcontrol.group;
 
 import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
+import com.froobworld.farmcontrol.utils.MixedEntitySet;
 import org.bukkit.entity.EntityType;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class Group {
     private final EntityType initialType;
     private final int initialChunkX, initialChunkZ;
     private final GroupDefinition definition;
-    private final Set<SnapshotEntity> members = new HashSet<>();
+    private final MixedEntitySet members = new MixedEntitySet();
 
     public Group(GroupDefinition definition, SnapshotEntity initialMember) {
         this.definition = definition;
@@ -50,7 +48,7 @@ public class Group {
         members.addAll(otherGroup.members);
     }
 
-    public Set<SnapshotEntity> getMembers() {
+    public MixedEntitySet getMembers() {
         return members;
     }
 

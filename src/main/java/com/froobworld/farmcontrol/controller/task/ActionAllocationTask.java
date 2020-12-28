@@ -10,6 +10,7 @@ import com.froobworld.farmcontrol.group.EntityGrouperResult;
 import com.froobworld.farmcontrol.group.Group;
 import com.froobworld.farmcontrol.controller.action.Action;
 import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
+import com.froobworld.farmcontrol.utils.MixedEntitySet;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -41,10 +42,11 @@ public class ActionAllocationTask implements Runnable {
             boolean removes = actionProfile.removes();
             EntityGrouperResult result = EntityGrouper.groupEntities(snapshotEntities, actionProfile.getGroupDefinition());
             for (Group group : result.getGroups()) {
-                Iterator<SnapshotEntity> iterator = group.getMembers().iterator();
+                MixedEntitySet.MixedEntityIterator iterator = group.getMembers().iterator();
                 while (group.meetsCondition() && iterator.hasNext()) {
                     SnapshotEntity next = iterator.next();
                     if (shouldExcludePredicate.test(next)) {
+                        iterator.skipLast();
                         continue;
                     }
                     if (removes) {
