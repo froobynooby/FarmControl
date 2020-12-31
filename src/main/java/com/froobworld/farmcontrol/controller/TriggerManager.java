@@ -2,6 +2,7 @@ package com.froobworld.farmcontrol.controller;
 
 import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.controller.trigger.ProactiveTrigger;
+import com.froobworld.farmcontrol.controller.trigger.ReactiveTrigger;
 import com.froobworld.farmcontrol.controller.trigger.Trigger;
 
 import java.util.HashMap;
@@ -12,6 +13,7 @@ public class TriggerManager {
 
     public void addDefaults(FarmControl farmControl) {
         addTrigger(new ProactiveTrigger());
+        addTrigger(new ReactiveTrigger(farmControl));
     }
 
     public void addTrigger(Trigger trigger) {

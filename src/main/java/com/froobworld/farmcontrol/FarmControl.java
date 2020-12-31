@@ -12,6 +12,7 @@ import java.io.IOException;
 
 public class FarmControl extends JavaPlugin {
     private FcConfig fcConfig;
+    private HookManager hookManager;
     private ActionManager actionManager;
     private TriggerManager triggerManager;
     private ProfileManager profileManager;
@@ -25,7 +26,8 @@ public class FarmControl extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        hookManager = new HookManager(this);
+        hookManager.load();
         actionManager = new ActionManager();
         actionManager.addDefaults(this);
         triggerManager = new TriggerManager();
@@ -55,6 +57,7 @@ public class FarmControl extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        hookManager.reload();
         farmController.unRegister();
         try {
             profileManager.reload();
@@ -88,6 +91,10 @@ public class FarmControl extends JavaPlugin {
 
     public ExclusionManager getExclusionManager() {
         return exclusionManager;
+    }
+
+    public HookManager getHookManager() {
+        return hookManager;
     }
 
     public void registerCommands() {

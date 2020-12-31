@@ -24,7 +24,21 @@ public class FcMetrics {
         metrics.addCustomChart(new Metrics.AdvancedPie("actions_in_use", () -> {
             Map<String, Integer> actionCountMap = new HashMap<>();
             for (World world : Bukkit.getWorlds()) {
-                for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.get()) {
+                for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.proactive.get()) {
+                    ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(null, profileName);
+                    if (actionProfile != null) {
+                        for (Action action : actionProfile.getActions()) {
+                            actionCountMap.put(action.getName(), 1);
+                        }
+                    }
+                }
+            }
+            return actionCountMap;
+        }));
+        metrics.addCustomChart(new Metrics.AdvancedPie("reactive_actions_in_use", () -> {
+            Map<String, Integer> actionCountMap = new HashMap<>();
+            for (World world : Bukkit.getWorlds()) {
+                for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.reactive.get()) {
                     ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(null, profileName);
                     if (actionProfile != null) {
                         for (Action action : actionProfile.getActions()) {

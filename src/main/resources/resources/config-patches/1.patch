@@ -1,0 +1,127 @@
+[header]
+header=# Configuration for FarmControl.\n# Plugin page: https://www.spigotmc.org/resources/86923/\n# GitHub: https://github.com/froobynooby/FarmControl
+
+[comment]
+key=world-settings.default.exclusion-settings.type
+comment=# Which types of mobs should we not perform actions on?
+
+[move]
+from=world-settings.*.profiles
+to=world-settings.{0}.temporary
+
+[add-section]
+before=exclusion-settings
+key=world-settings.default.profiles
+comment=# Which profiles (as given in profiles.yml) should we run?
+
+[move]
+from=world-settings.*.temporary
+to=world-settings.{0}.profiles.proactive
+
+[comment]
+key=world-settings.default.profiles.proactive
+comment=# These profiles are constantly run.
+
+[add-field]
+key=world-settings.default.profiles.reactive
+body=#  - hard-nerf-animal-farms\n#  - freeze-animal-farms
+comment=# These profiles only run when the server is performing poorly and are progressively undone as performance\n# improves (as defined under the reactive-mode-settings).\n#  * Note: It is generally preferable to ensure your server's performance doesn't degrade in the first place,\n#    rather than try to mitigate it. That said, there are some reasonable use cases for this mode, such as\n#    allowing your players to keep larger farms at the cost of nerfing them when performance begins to degrade.
+
+[add-section]
+key=world-settings.default.reactive-mode-settings
+before=exclusion-settings
+comment=# These settings concern the reactive mode for triggering profile check / action cycles.
+
+[add-field]
+key=world-settings.default.reactive-mode-settings.trigger-tps-threshold
+value=18.0
+comment=# Below what TPS should the reactive mode be triggered?
+
+[add-field]
+key=world-settings.default.reactive-mode-settings.untrigger-tps-threshold
+value=19.9
+comment=# Above what TPS should the reactive mode be untriggered, and actions undone.
+
+[add-section]
+key=world-settings.default.reactive-mode-settings.untrigger-settings
+comment=# These settings concern how the plugin should handle undoing actions performed on mobs once the reactive mode has\n# been untriggered.
+
+[add-field]
+key=world-settings.default.reactive-mode-settings.untrigger-settings.minimum-cycles-before-undo
+value=10
+comment=# How many cycles of the reactive mode being untriggered should have to pass before any actions are undone?
+
+[add-field]
+key=world-settings.default.reactive-mode-settings.untrigger-settings.maximum-undos-per-cycle
+value=40
+comment=# At most how many mobs should have their actions undone per cycle?
+
+[add-section]
+key=world-settings.default.reactive-mode-settings.untrigger-settings.entity-undo-weight
+comment=# How much should an entity contribute to the maximum-undos-per-cycle limit?\n#  * For example, if maximum-undos-per-cycle was 40 and the entity-undo-weight for villagers was 5, at most 8\n#    villagers could have their actions undone (since 5 * 8 = 40).\n#  * If an entity type is not specified, the value under default will be used.
+
+[add-field]
+key=world-settings.default.reactive-mode-settings.untrigger-settings.entity-undo-weight.default
+value=1
+
+[add-field]
+key=world-settings.default.reactive-mode-settings.untrigger-settings.entity-undo-weight.villager
+value=5
+
+[add-section]
+key=tps-tracker-settings
+comment=# These settings concern how we determine the TPS.\n#  * Only touch these settings if you know what you're doing.
+
+[add-field]
+key=tps-tracker-settings.collection-period
+value=1200
+comment=# Over how many ticks should we collect tick durations for calculating the TPS?\n#  * Setting this too high will make the TPS very slow to react to changes.\n#  * Setting this too low will make the TPS volatile.
+
+[add-field]
+key=tps-tracker-settings.trim-outliers-to-within
+value=100.0
+comment=# By how much (in percent) should we allow the tick durations we use to calculate the TPS vary from the average\n# tick duration.\n#  * This is used for smoothing the TPS; making sure it's not heavily affected by sudden large lag spikes, such as\n#    those caused by garbage collections or world-saves.\n#  * Setting this to 0 will mean your TPS will never change - don't do that.
+
+[add-section]
+key=paper-settings
+comment=# These are additional settings that apply if you are using Paper as your server software.
+
+[add-section]
+key=paper-settings.mspt-tracker-settings
+comment=# These settings concern how we determine the server's MSPT.\n#  * Only touch these settings if you know what you're doing.
+
+[add-field]
+key=paper-settings.mspt-tracker-settings.collection-period
+value=1200
+comment=# Over how many ticks should we collect tick durations for calculating the MSPT?\n#  * Setting this too high will make the MSPT very slow to react to changes.\n#  * Setting this too low will make the MSPT volatile.
+
+[add-field]
+key=paper-settings.mspt-tracker-settings.trim-outliers-to-within
+value=100.0
+comment=# By how much (in percent) should we allow the tick durations we use to calculate the MSPT vary from the average\n# tick duration.\n#  * This is used for smoothing the MSPT; making sure it's not heavily affected by sudden large lag spikes, such\n#    as those caused by garbage collections or world-saves.\n#  * Setting this to 0 will mean your MSPT will never change - don't do that.
+
+[add-section]
+key=paper-settings.world-settings
+comment=# These settings can be specified per world.\n#  * Note: If a world is not specified or if a setting is missing, it will use the settings listed under the default\n#    section.
+
+[add-section]
+key=paper-settings.world-settings.default
+
+[add-section]
+key=paper-settings.world-settings.default.alternative-reactive-mode-settings
+comment=# These are alternative settings for reactive-mode if you are using Paper, allowing the use of MSPT over TPS.
+
+[add-field]
+key=paper-settings.world-settings.default.alternative-reactive-mode-settings.use-alternative-settings
+value=false
+comment=# Should these alternative settings be used?
+
+[add-field]
+key=paper-settings.world-settings.default.alternative-reactive-mode-settings.trigger-mspt-threshold
+value=47.0
+comment=# Above what MSPT should the reactive-mode be triggered?
+
+[add-field]
+key=paper-settings.world-settings.default.alternative-reactive-mode-settings.untrigger-mspt-threshold
+value=40.0
+comment=# Below what MSPT should the reactive-mode be untriggered?

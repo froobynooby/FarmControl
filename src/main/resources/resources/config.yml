@@ -15,9 +15,45 @@ world-settings:
   default:
     # Which profiles (as given in profiles.yml) should we run?
     profiles:
-      - soft-nerf-animal-farms
-    #  - trim-animal-farms
-    #  - trim-sparse-animal-farms
+      # These profiles are constantly run.
+      proactive:
+        - soft-nerf-animal-farms
+      #  - trim-animal-farms
+      #  - trim-sparse-animal-farms
+
+      # These profiles only run when the server is performing poorly and are progressively undone as performance
+      # improves (as defined under the reactive-mode-settings).
+      #  * Note: It is generally preferable to ensure your server's performance doesn't degrade in the first place,
+      #    rather than try to mitigate it. That said, there are some reasonable use cases for this mode, such as
+      #    allowing your players to keep larger farms at the cost of nerfing them when performance begins to degrade.
+      reactive:
+      #  - hard-nerf-animal-farms
+      #  - freeze-animal-farms
+
+    # These settings concern the reactive mode for triggering profile check / action cycles.
+    reactive-mode-settings:
+      # Below what TPS should the reactive mode be triggered?
+      trigger-tps-threshold: 18.0
+
+      # Above what TPS should the reactive mode be untriggered, and actions undone.
+      untrigger-tps-threshold: 19.9
+
+      # These settings concern how the plugin should handle undoing actions performed on mobs once the reactive mode has
+      # been untriggered.
+      untrigger-settings:
+        # How many cycles of the reactive mode being untriggered should have to pass before any actions are undone?
+        minimum-cycles-before-undo: 10
+
+        # At most how many mobs should have their actions undone per cycle?
+        maximum-undos-per-cycle: 40
+
+        # How much should an entity contribute to the maximum-undos-per-cycle limit?
+        #  * For example, if maximum-undos-per-cycle was 40 and the entity-undo-weight for villagers was 5, at most 8
+        #    villagers could have their actions undone (since 5 * 8 = 40).
+        #  * If an entity type is not specified, the value under default will be used.
+        entity-undo-weight:
+          default: 1
+          villager: 5
 
     # These settings concern when we should exclude a mob from having actions applied to them.
     exclusion-settings:
@@ -80,3 +116,51 @@ world-settings:
           damage: true
 
           target: true
+
+# These settings concern how we determine the TPS.
+#  * Only touch these settings if you know what you're doing.
+tps-tracker-settings:
+  # Over how many ticks should we collect tick durations for calculating the TPS?
+  #  * Setting this too high will make the TPS very slow to react to changes.
+  #  * Setting this too low will make the TPS volatile.
+  collection-period: 1200
+
+  # By how much (in percent) should we allow the tick durations we use to calculate the TPS vary from the average
+  # tick duration.
+  #  * This is used for smoothing the TPS; making sure it's not heavily affected by sudden large lag spikes, such as
+  #    those caused by garbage collections or world-saves.
+  #  * Setting this to 0 will mean your TPS will never change - don't do that.
+  trim-outliers-to-within: 100.0
+
+# These are additional settings that apply if you are using Paper as your server software.
+paper-settings:
+  # These settings concern how we determine the server's MSPT.
+  #  * Only touch these settings if you know what you're doing.
+  mspt-tracker-settings:
+    # Over how many ticks should we collect tick durations for calculating the MSPT?
+    #  * Setting this too high will make the MSPT very slow to react to changes.
+    #  * Setting this too low will make the MSPT volatile.
+    collection-period: 1200
+
+    # By how much (in percent) should we allow the tick durations we use to calculate the MSPT vary from the average
+    # tick duration.
+    #  * This is used for smoothing the MSPT; making sure it's not heavily affected by sudden large lag spikes, such
+    #    as those caused by garbage collections or world-saves.
+    #  * Setting this to 0 will mean your MSPT will never change - don't do that.
+    trim-outliers-to-within: 100.0
+
+  # These settings can be specified per world.
+  #  * Note: If a world is not specified or if a setting is missing, it will use the settings listed under the default
+  #    section.
+  world-settings:
+    default:
+      # These are alternative settings for reactive-mode if you are using Paper, allowing the use of MSPT over TPS.
+      alternative-reactive-mode-settings:
+        # Should these alternative settings be used?
+        use-alternative-settings: false
+
+        # Above what MSPT should the reactive-mode be triggered?
+        trigger-mspt-threshold: 47.0
+
+        # Below what MSPT should the reactive-mode be untriggered?
+        untrigger-mspt-threshold: 40.0
