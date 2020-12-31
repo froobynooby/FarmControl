@@ -49,6 +49,27 @@ public class FcMetrics {
             }
             return actionCountMap;
         }));
+        metrics.addCustomChart(new Metrics.AdvancedPie("modes_in_use", () -> {
+            Map<String, Integer> modeCountMap = new HashMap<>();
+            for (World world : Bukkit.getWorlds()) {
+                for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.proactive.get()) {
+                    ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(null, profileName);
+                    if (actionProfile != null) {
+                        modeCountMap.put("proactive", 1);
+                        break;
+                    }
+                }
+                for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.reactive.get()) {
+                    ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(null, profileName);
+                    if (actionProfile != null) {
+                        modeCountMap.put("reactive", 1);
+                        break;
+                    }
+                }
+            }
+            return modeCountMap;
+        }));
+        metrics.addCustomChart(new Metrics.SimplePie("number_of_worlds", () -> Bukkit.getWorlds().size() + ""));
     }
 
 }
