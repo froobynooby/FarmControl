@@ -3,7 +3,7 @@
 # GitHub: https://github.com/froobynooby/FarmControl
 
 # Please don't change this!
-version: 1
+version: 2
 
 # Every how many ticks should we run the profile check / action cycle?
 cycle-period: 600
