@@ -25,7 +25,7 @@ public class FcMetrics {
             Map<String, Integer> actionCountMap = new HashMap<>();
             for (World world : Bukkit.getWorlds()) {
                 for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.proactive.get()) {
-                    ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(null, profileName);
+                    ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(profileName);
                     if (actionProfile != null) {
                         for (Action action : actionProfile.getActions()) {
                             actionCountMap.put(action.getName(), 1);
@@ -39,7 +39,7 @@ public class FcMetrics {
             Map<String, Integer> actionCountMap = new HashMap<>();
             for (World world : Bukkit.getWorlds()) {
                 for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.reactive.get()) {
-                    ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(null, profileName);
+                    ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(profileName);
                     if (actionProfile != null) {
                         for (Action action : actionProfile.getActions()) {
                             actionCountMap.put(action.getName(), 1);
@@ -53,14 +53,14 @@ public class FcMetrics {
             Map<String, Integer> modeCountMap = new HashMap<>();
             for (World world : Bukkit.getWorlds()) {
                 for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.proactive.get()) {
-                    ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(null, profileName);
+                    ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(profileName);
                     if (actionProfile != null) {
                         modeCountMap.put("proactive", 1);
                         break;
                     }
                 }
                 for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.reactive.get()) {
-                    ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(null, profileName);
+                    ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(profileName);
                     if (actionProfile != null) {
                         modeCountMap.put("reactive", 1);
                         break;

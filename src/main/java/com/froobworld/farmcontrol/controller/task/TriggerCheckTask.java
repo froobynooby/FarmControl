@@ -38,7 +38,7 @@ public class TriggerCheckTask implements Runnable {
         for (World world : worldTriggerProfilesMap.keySet()) {
             worldLastTriggerCount.putIfAbsent(world, new HashMap<>());
             Map<Trigger, Set<ActionProfile>> triggerProfilesMap = worldTriggerProfilesMap.get(world);
-            List<ActionProfile> profilesToRun = new ArrayList<>();
+            Map<Trigger, Set<ActionProfile>> profilesToRun = new HashMap<>();
             Map<Trigger, UntriggerStrategy> untriggerStrategyMap = new HashMap<>();
             Set<Trigger> triggeredTriggers = new HashSet<>();
 
@@ -46,7 +46,7 @@ public class TriggerCheckTask implements Runnable {
                 Trigger.TriggerStatus triggerStatus = trigger.getTriggerStatus(world);
                 if (triggerStatus == Trigger.TriggerStatus.TRIGGERED) {
                     triggeredTriggers.add(trigger);
-                    profilesToRun.addAll(triggerProfilesMap.get(trigger));
+                    profilesToRun.computeIfAbsent(trigger, t -> new HashSet<>()).addAll(triggerProfilesMap.get(trigger));
                     worldLastTriggerCount.get(world).put(trigger, 0);
                 } else if (triggerStatus == Trigger.TriggerStatus.UNTRIGGERED) {
                     untriggerStrategyMap.put(trigger, trigger.getUntriggerStrategy(world));

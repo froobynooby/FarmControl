@@ -26,7 +26,7 @@ public class FarmController {
             Map<Trigger, Set<ActionProfile>> triggerProfileMap = worldTriggerProfilesMap.computeIfAbsent(world, w -> new HashMap<>());
             Trigger proactiveTrigger = farmControl.getTriggerManager().getTrigger("proactive");
             for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.proactive.get()) {
-                ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(proactiveTrigger, profileName.toLowerCase());
+                ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(profileName.toLowerCase());
                 if (actionProfile == null) {
                     farmControl.getLogger().warning("Unknown profile for world '" + world.getName() + "': '" + profileName.toLowerCase() + "'");
                     continue;
@@ -35,7 +35,7 @@ public class FarmController {
             }
             Trigger reactiveTrigger = farmControl.getTriggerManager().getTrigger("reactive");
             for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.reactive.get()) {
-                ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(reactiveTrigger, profileName.toLowerCase());
+                ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(profileName.toLowerCase());
                 if (actionProfile == null) {
                     farmControl.getLogger().warning("Unknown profile for world '" + world.getName() + "': '" + profileName.toLowerCase() + "'");
                     continue;

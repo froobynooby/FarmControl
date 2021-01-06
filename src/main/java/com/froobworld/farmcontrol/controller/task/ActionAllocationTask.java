@@ -19,11 +19,11 @@ public class ActionAllocationTask implements Runnable {
     private final FarmController farmController;
     private final Set<Trigger> triggers;
     private final List<SnapshotEntity> snapshotEntities;
-    private final List<ActionProfile> actionProfiles;
+    private final Map<Trigger, Set<ActionProfile>> actionProfiles;
     private final Predicate<SnapshotEntity> shouldExcludePredicate;
     private final Set<Action> allActions;
 
-    public ActionAllocationTask(FarmController farmController, Set<Trigger> triggers, List<SnapshotEntity> snapshotEntities, List<ActionProfile> actionProfiles, Predicate<SnapshotEntity> shouldExcludePredicate, Set<Action> allActions) {
+    public ActionAllocationTask(FarmController farmController, Set<Trigger> triggers, List<SnapshotEntity> snapshotEntities, Map<Trigger, Set<ActionProfile>> actionProfiles, Predicate<SnapshotEntity> shouldExcludePredicate, Set<Action> allActions) {
         this.farmController = farmController;
         this.triggers = triggers;
         this.snapshotEntities = snapshotEntities;
@@ -37,10 +37,13 @@ public class ActionAllocationTask implements Runnable {
         Map<SnapshotEntity, Set<TriggerActionPair>> triggerActionMap = new HashMap<>();
         Map<SnapshotEntity, Set<TriggerActionPair>> unTriggerActionMap = new HashMap<>();
 
-        actionProfiles.sort(Comparator.comparingInt(profile -> profile.removes() ? -1 : 1));
-        for (ActionProfile actionProfile : actionProfiles) {
-            boolean removes = actionProfile.removes();
-            EntityGrouperResult result = EntityGrouper.groupEntities(snapshotEntities, actionProfile.getGroupDefinition());
+        List<TriggerActionProfilePair> triggerActionProfilePairs = new ArrayList<>();
+        actionProfiles.forEach((trigger, actionProfileSet) -> actionProfileSet.forEach(profile -> triggerActionProfilePairs.add(new TriggerActionProfilePair(trigger, profile))));
+
+        triggerActionProfilePairs.sort(Comparator.comparingInt(pair -> pair.actionProfile.removes() ? -1 : 1));
+        for (TriggerActionProfilePair triggerProfilePair : triggerActionProfilePairs) {
+            boolean removes = triggerProfilePair.actionProfile.removes();
+            EntityGrouperResult result = EntityGrouper.groupEntities(snapshotEntities, triggerProfilePair.actionProfile.getGroupDefinition());
             for (Group group : result.getGroups()) {
                 MixedEntitySet.MixedEntityIterator iterator = group.getMembers().iterator();
                 while (group.meetsCondition() && iterator.hasNext()) {
@@ -55,8 +58,8 @@ public class ActionAllocationTask implements Runnable {
                     }
                     Set<TriggerActionPair> triggerActionPairs = triggerActionMap.computeIfAbsent(next, e -> new HashSet<>());
                     Set<TriggerActionPair> unTriggerActionPairs = unTriggerActionMap.getOrDefault(next, Collections.emptySet());
-                    for (Action action : actionProfile.getActions()) {
-                        TriggerActionPair triggerActionPair = new TriggerActionPair(actionProfile.getTrigger(), action);
+                    for (Action action : triggerProfilePair.actionProfile.getActions()) {
+                        TriggerActionPair triggerActionPair = new TriggerActionPair(triggerProfilePair.trigger, action);
                         triggerActionPairs.add(triggerActionPair);
                         unTriggerActionPairs.remove(triggerActionPair);
                     }
@@ -79,6 +82,16 @@ public class ActionAllocationTask implements Runnable {
         }
 
         farmController.submitActionPerformTask(new ActionPerformTask(triggerActionMap, unTriggerActionMap));
+    }
+
+    private static class TriggerActionProfilePair {
+        private final Trigger trigger;
+        private final ActionProfile actionProfile;
+
+        private TriggerActionProfilePair(Trigger trigger, ActionProfile actionProfile) {
+            this.trigger = trigger;
+            this.actionProfile = actionProfile;
+        }
     }
 
 }

@@ -2,7 +2,6 @@ package com.froobworld.farmcontrol.controller;
 
 import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.controller.action.Action;
-import com.froobworld.farmcontrol.controller.trigger.Trigger;
 import com.froobworld.farmcontrol.group.GroupDefinition;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,18 +13,14 @@ import java.util.*;
 
 public class ProfileManager {
     private final FarmControl farmControl;
-    private final Map<String, UnpairedActionProfile> unpairedActionProfileMap = new HashMap<>();
+    private final Map<String, ActionProfile> actionProfileMap = new HashMap<>();
 
     public ProfileManager(FarmControl farmControl) {
         this.farmControl = farmControl;
     }
 
-    public ActionProfile getActionProfile(Trigger trigger, String profileName) {
-        UnpairedActionProfile unpairedActionProfile = unpairedActionProfileMap.get(profileName);
-        if (unpairedActionProfile == null) {
-            return null;
-        }
-        return unpairedActionProfile.pair(trigger);
+    public ActionProfile getActionProfile(String profileName) {
+        return actionProfileMap.get(profileName);
     }
 
     public void load() throws IOException {
@@ -48,7 +43,7 @@ public class ProfileManager {
                     }
                     actions.add(action);
                 }
-                unpairedActionProfileMap.put(name, new UnpairedActionProfile(groupDefinition, actions));
+                actionProfileMap.put(name, new ActionProfile(groupDefinition, actions));
             } catch (Exception ex) {
                 farmControl.getLogger().warning("Unable to load the profile '" + name + "'. Incorrect syntax?");
             }
@@ -56,23 +51,8 @@ public class ProfileManager {
     }
 
     public void reload() throws IOException {
-        unpairedActionProfileMap.clear();
+        actionProfileMap.clear();
         load();
-    }
-
-    private static class UnpairedActionProfile {
-        private final GroupDefinition groupDefinition;
-        private final Set<Action> actions;
-
-        private UnpairedActionProfile(GroupDefinition groupDefinition, Set<Action> actions) {
-            this.groupDefinition = groupDefinition;
-            this.actions = actions;
-        }
-
-        public ActionProfile pair(Trigger trigger) {
-            return new ActionProfile(trigger, groupDefinition, actions);
-        }
-
     }
 
 }
