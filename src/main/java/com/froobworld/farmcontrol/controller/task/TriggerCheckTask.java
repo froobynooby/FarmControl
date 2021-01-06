@@ -13,7 +13,6 @@ import org.bukkit.entity.Mob;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 public class TriggerCheckTask implements Runnable {
     private final FarmControl farmControl;
@@ -56,12 +55,11 @@ public class TriggerCheckTask implements Runnable {
             }
 
             untriggerStrategyMap.entrySet().removeIf(entry -> worldLastTriggerCount.get(world).getOrDefault(entry.getKey(), 0) <= entry.getValue().getMinimumCyclesBeforeUndo());
-            Set<SnapshotEntity> snapshotEntities = null;
+            List<SnapshotEntity> snapshotEntities = new ArrayList<>();
             if (!profilesToRun.isEmpty() || !untriggerStrategyMap.isEmpty()) {
-                snapshotEntities = world.getLivingEntities().stream()
-                        .filter(entity -> entity instanceof Mob)
-                        .map(entity -> new SnapshotEntity((Mob) entity))
-                        .collect(Collectors.toSet());
+                for (Mob entity : world.getEntitiesByClass(Mob.class)) {
+                    snapshotEntities.add(new SnapshotEntity(entity));
+                }
             }
             if (!profilesToRun.isEmpty()) {
                 executorService.submit(new ActionAllocationTask(farmController, triggeredTriggers, snapshotEntities, profilesToRun, farmControl.getExclusionManager().getExclusionPredicate(world), farmControl.getActionManager().getActions()));

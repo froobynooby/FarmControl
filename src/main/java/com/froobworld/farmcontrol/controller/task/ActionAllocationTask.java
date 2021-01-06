@@ -18,12 +18,12 @@ import java.util.function.Predicate;
 public class ActionAllocationTask implements Runnable {
     private final FarmController farmController;
     private final Set<Trigger> triggers;
-    private final Set<SnapshotEntity> snapshotEntities;
+    private final List<SnapshotEntity> snapshotEntities;
     private final List<ActionProfile> actionProfiles;
     private final Predicate<SnapshotEntity> shouldExcludePredicate;
     private final Set<Action> allActions;
 
-    public ActionAllocationTask(FarmController farmController, Set<Trigger> triggers, Set<SnapshotEntity> snapshotEntities, List<ActionProfile> actionProfiles, Predicate<SnapshotEntity> shouldExcludePredicate, Set<Action> allActions) {
+    public ActionAllocationTask(FarmController farmController, Set<Trigger> triggers, List<SnapshotEntity> snapshotEntities, List<ActionProfile> actionProfiles, Predicate<SnapshotEntity> shouldExcludePredicate, Set<Action> allActions) {
         this.farmController = farmController;
         this.triggers = triggers;
         this.snapshotEntities = snapshotEntities;

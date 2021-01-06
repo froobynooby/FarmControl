@@ -9,18 +9,15 @@ import com.froobworld.farmcontrol.controller.trigger.Trigger;
 import com.froobworld.farmcontrol.controller.trigger.UntriggerStrategy;
 import com.froobworld.farmcontrol.data.FcData;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class UntriggerAllocationTask implements Runnable {
     private final FarmControl farmControl;
     private final FarmController farmController;
-    private final Set<SnapshotEntity> snapshotEntities;
+    private final List<SnapshotEntity> snapshotEntities;
     private final Map<Trigger, UntriggerStrategy> untriggerStrategyMap;
 
-    public UntriggerAllocationTask(FarmControl farmControl, FarmController farmController, Set<SnapshotEntity> snapshotEntities, Map<Trigger, UntriggerStrategy> untriggerStrategyMap) {
+    public UntriggerAllocationTask(FarmControl farmControl, FarmController farmController, List<SnapshotEntity> snapshotEntities, Map<Trigger, UntriggerStrategy> untriggerStrategyMap) {
         this.farmControl = farmControl;
         this.farmController = farmController;
         this.snapshotEntities = snapshotEntities;
