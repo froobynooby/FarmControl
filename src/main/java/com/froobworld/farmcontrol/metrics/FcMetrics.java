@@ -69,6 +69,34 @@ public class FcMetrics {
             }
             return modeCountMap;
         }));
+        metrics.addCustomChart(new Metrics.SimplePie("reactive_mode_indicator", () -> {
+            boolean usingReactiveMode = false;
+            for (World world : Bukkit.getWorlds()) {
+                for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.reactive.get()) {
+                    ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(profileName);
+                    if (actionProfile != null) {
+                        usingReactiveMode = true;
+                        break;
+                    }
+                }
+            }
+            if (usingReactiveMode) {
+                boolean usingMspt = false;
+                for (World world : Bukkit.getWorlds()) {
+                    usingMspt = farmControl.getFcConfig().paperSettings.worldSettings.of(world).alternativeReactiveModeSettings.useAlternativeSettings.get();
+                    usingMspt &= farmControl.getHookManager().getMsptTracker() != null;
+                    if (usingMspt) {
+                        break;
+                    }
+                }
+                if (usingMspt) {
+                    return "mspt";
+                } else {
+                    return "tps";
+                }
+            }
+            return null;
+        }));
         metrics.addCustomChart(new Metrics.SimplePie("number_of_worlds", () -> Bukkit.getWorlds().size() + ""));
     }
 
