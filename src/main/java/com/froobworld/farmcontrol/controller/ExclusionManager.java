@@ -31,7 +31,7 @@ public class ExclusionManager {
             if (excludeLoveMode && snapshotEntity.isLoveMode()) {
                 return true;
             }
-            if (excludeNamed && snapshotEntity.getCustomName() != null) {
+            if (excludeNamed && snapshotEntity.hasCustomName()) {
                 return true;
             }
             if (excludeTamed && snapshotEntity.isTamed()) {

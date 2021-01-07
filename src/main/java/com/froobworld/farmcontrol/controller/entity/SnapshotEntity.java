@@ -10,26 +10,22 @@ import java.util.List;
 
 public class SnapshotEntity {
     private final Mob entity;
-    private final Class<? extends Mob> entityClass;
-    private final EntityType entityType;
     private final Vector location;
     private final FcData fcData;
     private final boolean leashed;
     private final boolean loveMode;
-    private final String customName;
+    private final boolean customName;
     private final boolean tamed;
     private final int ticksLived;
     private final List<Object> classifications = new ArrayList<>();
 
     public SnapshotEntity(Mob entity) {
         this.entity = entity;
-        this.entityClass = entity.getClass();
-        this.entityType = entity.getType();
         this.location = entity.getLocation().toVector();
         this.fcData = FcData.get(entity);
         this.leashed = entity.isLeashed();
         this.loveMode = entity instanceof Animals && ((Animals) entity).isLoveMode();
-        this.customName = entity.getCustomName();
+        this.customName = entity.getCustomName() != null;
         this.tamed = entity instanceof Tameable && ((Tameable) entity).isTamed();
         this.ticksLived = entity.getTicksLived();
         classifications.add(entity.getType());
@@ -42,11 +38,11 @@ public class SnapshotEntity {
     }
 
     public Class<? extends Mob> getEntityClass() {
-        return entityClass;
+        return entity.getClass();
     }
 
     public EntityType getEntityType() {
-        return entityType;
+        return entity.getType();
     }
 
     public Vector getLocation() {
@@ -73,7 +69,7 @@ public class SnapshotEntity {
         return loveMode;
     }
 
-    public String getCustomName() {
+    public boolean hasCustomName() {
         return customName;
     }
 
