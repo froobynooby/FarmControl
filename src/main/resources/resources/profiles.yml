@@ -21,6 +21,7 @@ profiles:
       distance: 5
     actions:
       - remove-awareness
+      - disable-collisions
 
   # Remove the AI of mobs in animal farms
   freeze-animal-farms:
