@@ -13,7 +13,7 @@ public class EntityGrouperResult {
     }
 
     void addEntity(SnapshotEntity entity) {
-        if (!groupDefinition.getTypePredicate().test(entity)) {
+        if (!groupDefinition.getTypePredicate().test(entity) || groupDefinition.getExcludeTypePredicate().test(entity)) {
             return;
         }
         ListIterator<Group> iterator = groups.listIterator();
