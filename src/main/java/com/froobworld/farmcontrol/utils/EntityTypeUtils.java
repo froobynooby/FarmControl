@@ -1,10 +1,7 @@
 package com.froobworld.farmcontrol.utils;
 
 import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
-import org.bukkit.entity.Ambient;
-import org.bukkit.entity.Animals;
-import org.bukkit.entity.Fish;
-import org.bukkit.entity.Monster;
+import org.bukkit.entity.*;
 
 import java.util.function.Predicate;
 
@@ -22,8 +19,10 @@ public final class EntityTypeUtils {
             } else if (category.equalsIgnoreCase("ambient")) {
                 return entity -> Ambient.class.isAssignableFrom(entity.getEntityClass());
             } else if (category.equalsIgnoreCase("fish")) {
-                return  entity -> Fish.class.isAssignableFrom(entity.getEntityClass());
-            } 
+                return entity -> Fish.class.isAssignableFrom(entity.getEntityClass());
+            } else if (category.equalsIgnoreCase("tameable")) {
+                return entity -> Tameable.class.isAssignableFrom(entity.getEntityClass());
+            }
         }
         return entity -> entity.getEntityType().toString().equalsIgnoreCase(string);
     }
