@@ -80,20 +80,13 @@ public class FcMetrics {
                     }
                 }
             }
-            if (usingReactiveMode) {
-                boolean usingMspt = false;
+            if (usingReactiveMode && farmControl.getHookManager().getMsptTracker() != null) {
                 for (World world : Bukkit.getWorlds()) {
-                    usingMspt = farmControl.getFcConfig().paperSettings.worldSettings.of(world).alternativeReactiveModeSettings.useAlternativeSettings.get();
-                    usingMspt &= farmControl.getHookManager().getMsptTracker() != null;
-                    if (usingMspt) {
-                        break;
+                    if (farmControl.getFcConfig().paperSettings.worldSettings.of(world).alternativeReactiveModeSettings.useAlternativeSettings.get()) {
+                        return "mspt";
                     }
                 }
-                if (usingMspt) {
-                    return "mspt";
-                } else {
-                    return "tps";
-                }
+                return "tps";
             }
             return null;
         }));
