@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class FcConfig extends NabConfiguration {
-    private static final int CURRENT_VERSION = 2;
+    private static final int CURRENT_VERSION = 3;
 
     public FcConfig(FarmControl farmControl) {
         super(
@@ -122,6 +122,9 @@ public class FcConfig extends NabConfiguration {
 
                 @Entry(key = "target")
                 public final ConfigEntry<Boolean> target = new ConfigEntry<>();
+
+                @Entry(key = "tempt")
+                public final ConfigEntry<Boolean> tempt = new ConfigEntry<>();
 
             }
 

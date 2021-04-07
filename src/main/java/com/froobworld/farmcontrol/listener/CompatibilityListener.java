@@ -8,6 +8,7 @@ import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
@@ -73,6 +74,27 @@ public class CompatibilityListener implements Listener {
         }
         for (Action action : farmControl.getActionManager().getActions()) {
             if (farmControl.getFcConfig().worldSettings.of(entity.getWorld()).actionSettings.undoOn.of(action).target.get()) {
+                if (fcData.removeAction(action)) {
+                    action.undoAction((Mob) entity);
+                }
+            }
+        }
+        fcData.save(entity);
+        FcData.removeIfEmpty(entity);
+    }
+
+    @EventHandler
+    public void onEntityTempt(EntityTargetLivingEntityEvent event) {
+        if (event.getReason() != EntityTargetEvent.TargetReason.TEMPT) {
+            return;
+        }
+        Entity entity = event.getEntity();
+        FcData fcData = FcData.get(entity);
+        if (fcData == null) {
+            return;
+        }
+        for (Action action : farmControl.getActionManager().getActions()) {
+            if (farmControl.getFcConfig().worldSettings.of(entity.getWorld()).actionSettings.undoOn.of(action).tempt.get()) {
                 if (fcData.removeAction(action)) {
                     action.undoAction((Mob) entity);
                 }

@@ -3,7 +3,7 @@
 # GitHub: https://github.com/froobynooby/FarmControl
 
 # Please don't change this!
-version: 2
+version: 3
 
 # Every how many ticks should we run the profile check / action cycle?
 cycle-period: 600
@@ -103,6 +103,9 @@ world-settings:
           # Should we undo this action when the mob is targeted by another entity (e.g. a zombie targeting a villager)?
           target: false
 
+          # Should we undo this action when the mob is tempted by a player (e.g. a cow tempted a player holding wheat)?
+          tempt: false
+
         remove-ai:
           interact: true
 
@@ -116,6 +119,9 @@ world-settings:
           damage: true
 
           target: true
+
+        disable-collisions:
+          tempt: true
 
 # These settings concern how we determine the TPS.
 #  * Only touch these settings if you know what you're doing.

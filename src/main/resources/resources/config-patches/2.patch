@@ -1,0 +1,4 @@
+[add-field]
+key=world-settings.default.action-settings.undo-on.default.tempt
+value=false
+comment=# Should we undo this action when the mob is tempted by a player (e.g. a cow tempted a player holding wheat)?
