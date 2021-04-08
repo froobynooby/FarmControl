@@ -4,6 +4,8 @@ import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.controller.ActionProfile;
 import com.froobworld.farmcontrol.controller.action.Action;
 import org.bstats.bukkit.Metrics;
+import org.bstats.charts.AdvancedPie;
+import org.bstats.charts.SimplePie;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -21,7 +23,7 @@ public class FcMetrics {
     }
 
     private void addCustomMetrics() {
-        metrics.addCustomChart(new Metrics.AdvancedPie("actions_in_use", () -> {
+        metrics.addCustomChart(new AdvancedPie("actions_in_use", () -> {
             Map<String, Integer> actionCountMap = new HashMap<>();
             for (World world : Bukkit.getWorlds()) {
                 for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.proactive.get()) {
@@ -35,7 +37,7 @@ public class FcMetrics {
             }
             return actionCountMap;
         }));
-        metrics.addCustomChart(new Metrics.AdvancedPie("reactive_actions_in_use", () -> {
+        metrics.addCustomChart(new AdvancedPie("reactive_actions_in_use", () -> {
             Map<String, Integer> actionCountMap = new HashMap<>();
             for (World world : Bukkit.getWorlds()) {
                 for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.reactive.get()) {
@@ -49,7 +51,7 @@ public class FcMetrics {
             }
             return actionCountMap;
         }));
-        metrics.addCustomChart(new Metrics.AdvancedPie("modes_in_use", () -> {
+        metrics.addCustomChart(new AdvancedPie("modes_in_use", () -> {
             Map<String, Integer> modeCountMap = new HashMap<>();
             for (World world : Bukkit.getWorlds()) {
                 for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.proactive.get()) {
@@ -69,7 +71,7 @@ public class FcMetrics {
             }
             return modeCountMap;
         }));
-        metrics.addCustomChart(new Metrics.SimplePie("reactive_mode_indicator", () -> {
+        metrics.addCustomChart(new SimplePie("reactive_mode_indicator", () -> {
             boolean usingReactiveMode = false;
             for (World world : Bukkit.getWorlds()) {
                 for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.reactive.get()) {
@@ -90,7 +92,7 @@ public class FcMetrics {
             }
             return null;
         }));
-        metrics.addCustomChart(new Metrics.SimplePie("number_of_worlds", () -> Bukkit.getWorlds().size() + ""));
+        metrics.addCustomChart(new SimplePie("number_of_worlds", () -> Bukkit.getWorlds().size() + ""));
     }
 
 }

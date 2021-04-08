@@ -35,7 +35,7 @@ dependencies {
     compileOnly 'me.clip:placeholderapi:2.10.9'
     compile 'org.jooq:joor-java-8:0.9.13'
     compile 'com.froobworld:nab-configuration:1.0.2'
-    compile 'org.bstats:bstats-bukkit:1.7'
+    compile 'org.bstats:bstats-bukkit:2.2.1'
 }
 
 processResources {
@@ -47,7 +47,7 @@ shadowJar {
 
     relocate 'com.froobworld.nabconfiguration', 'com.froobworld.farmcontrol.lib.nabconfiguration'
     relocate 'org.joor', 'com.froobworld.farmcontrol.lib.joor'
-    relocate 'org.bstats.bukkit','com.froobworld.farmcontrol.metrics'
+    relocate 'org.bstats','com.froobworld.farmcontrol.lib.bstats'
 }
 
 artifacts {
