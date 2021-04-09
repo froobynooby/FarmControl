@@ -3,7 +3,6 @@ package com.froobworld.farmcontrol.listener;
 import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.controller.action.Action;
 import com.froobworld.farmcontrol.data.FcData;
-import com.froobworld.farmcontrol.utils.Actioner;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
@@ -135,9 +134,6 @@ public class CompatibilityListener implements Listener {
     @EventHandler
     public void onWorldUnload(WorldUnloadEvent event) {
         farmControl.getFarmController().removeWorld(event.getWorld());
-        for (Entity entity : event.getWorld().getLivingEntities()) {
-            Actioner.undoAllActions(entity, farmControl);
-        }
     }
 
 }

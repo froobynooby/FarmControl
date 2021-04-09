@@ -71,6 +71,7 @@ public class FarmControl extends JavaPlugin {
 
     public void onDisable() {
         farmController.unRegister();
+        farmController.unload();
     }
 
     public FcConfig getFcConfig() {

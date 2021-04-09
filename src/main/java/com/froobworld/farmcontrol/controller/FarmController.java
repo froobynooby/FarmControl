@@ -27,8 +27,16 @@ public class FarmController {
         }
     }
 
-    public void reload() {
+    public void unload() {
+        Set<World> worlds = new HashSet<>(worldTriggerProfilesMap.keySet());
+        for (World world : worlds) {
+            removeWorld(world);
+        }
         worldTriggerProfilesMap.clear();
+    }
+
+    public void reload() {
+        unload();
         load();
     }
 
@@ -56,6 +64,9 @@ public class FarmController {
 
     public void removeWorld(World world) {
         worldTriggerProfilesMap.remove(world);
+        for (Entity entity : world.getLivingEntities()) {
+            Actioner.undoAllActions(entity, farmControl);
+        }
     }
 
     public void register() {
@@ -72,11 +83,6 @@ public class FarmController {
         registered = false;
         Bukkit.getScheduler().cancelTask(triggerTaskId);
         triggerTaskId = null;
-        for (World world : Bukkit.getWorlds()) {
-            for (Entity entity : world.getLivingEntities()) {
-                Actioner.undoAllActions(entity, farmControl);
-            }
-        }
         triggerCheckTask.stop();
         triggerCheckTask = null;
     }
