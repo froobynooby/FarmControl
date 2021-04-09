@@ -89,6 +89,10 @@ public class FarmControl extends JavaPlugin {
         return profileManager;
     }
 
+    public FarmController getFarmController() {
+        return farmController;
+    }
+
     public ExclusionManager getExclusionManager() {
         return exclusionManager;
     }

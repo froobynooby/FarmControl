@@ -23,31 +23,39 @@ public class FarmController {
 
     public void load() {
         for (World world : Bukkit.getWorlds()) {
-            Map<Trigger, Set<ActionProfile>> triggerProfileMap = worldTriggerProfilesMap.computeIfAbsent(world, w -> new HashMap<>());
-            Trigger proactiveTrigger = farmControl.getTriggerManager().getTrigger("proactive");
-            for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.proactive.get()) {
-                ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(profileName.toLowerCase());
-                if (actionProfile == null) {
-                    farmControl.getLogger().warning("Unknown profile for world '" + world.getName() + "': '" + profileName.toLowerCase() + "'");
-                    continue;
-                }
-                triggerProfileMap.computeIfAbsent(proactiveTrigger, trigger -> new HashSet<>()).add(actionProfile);
-            }
-            Trigger reactiveTrigger = farmControl.getTriggerManager().getTrigger("reactive");
-            for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.reactive.get()) {
-                ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(profileName.toLowerCase());
-                if (actionProfile == null) {
-                    farmControl.getLogger().warning("Unknown profile for world '" + world.getName() + "': '" + profileName.toLowerCase() + "'");
-                    continue;
-                }
-                triggerProfileMap.computeIfAbsent(reactiveTrigger, trigger -> new HashSet<>()).add(actionProfile);
-            }
+            addWorld(world);
         }
     }
 
     public void reload() {
         worldTriggerProfilesMap.clear();
         load();
+    }
+
+    public void addWorld(World world) {
+        Map<Trigger, Set<ActionProfile>> triggerProfileMap = worldTriggerProfilesMap.computeIfAbsent(world, w -> new HashMap<>());
+        Trigger proactiveTrigger = farmControl.getTriggerManager().getTrigger("proactive");
+        for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.proactive.get()) {
+            ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(profileName.toLowerCase());
+            if (actionProfile == null) {
+                farmControl.getLogger().warning("Unknown profile for world '" + world.getName() + "': '" + profileName.toLowerCase() + "'");
+                continue;
+            }
+            triggerProfileMap.computeIfAbsent(proactiveTrigger, trigger -> new HashSet<>()).add(actionProfile);
+        }
+        Trigger reactiveTrigger = farmControl.getTriggerManager().getTrigger("reactive");
+        for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.reactive.get()) {
+            ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(profileName.toLowerCase());
+            if (actionProfile == null) {
+                farmControl.getLogger().warning("Unknown profile for world '" + world.getName() + "': '" + profileName.toLowerCase() + "'");
+                continue;
+            }
+            triggerProfileMap.computeIfAbsent(reactiveTrigger, trigger -> new HashSet<>()).add(actionProfile);
+        }
+    }
+
+    public void removeWorld(World world) {
+        worldTriggerProfilesMap.remove(world);
     }
 
     public void register() {

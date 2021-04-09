@@ -3,6 +3,7 @@ package com.froobworld.farmcontrol.listener;
 import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.controller.action.Action;
 import com.froobworld.farmcontrol.data.FcData;
+import com.froobworld.farmcontrol.utils.Actioner;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
@@ -12,6 +13,8 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
+import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.event.world.WorldUnloadEvent;
 
 public class CompatibilityListener implements Listener {
     private final FarmControl farmControl;
@@ -121,6 +124,19 @@ public class CompatibilityListener implements Listener {
             }
             fcData.save(entity);
             FcData.removeIfEmpty(entity);
+        }
+    }
+
+    @EventHandler
+    public void onWorldLoad(WorldLoadEvent event) {
+        farmControl.getFarmController().addWorld(event.getWorld());
+    }
+
+    @EventHandler
+    public void onWorldUnload(WorldUnloadEvent event) {
+        farmControl.getFarmController().removeWorld(event.getWorld());
+        for (Entity entity : event.getWorld().getLivingEntities()) {
+            Actioner.undoAllActions(entity, farmControl);
         }
     }
 
