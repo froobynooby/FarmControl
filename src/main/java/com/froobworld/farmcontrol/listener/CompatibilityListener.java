@@ -2,6 +2,7 @@ package com.froobworld.farmcontrol.listener;
 
 import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.controller.action.Action;
+import com.froobworld.farmcontrol.controller.action.RemoveRandomMovementAction;
 import com.froobworld.farmcontrol.data.FcData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
@@ -96,6 +97,7 @@ public class CompatibilityListener implements Listener {
             return;
         }
         for (Action action : farmControl.getActionManager().getActions()) {
+            if (action instanceof RemoveRandomMovementAction) continue; // Hacky solution for https://github.com/froobynooby/FarmControl/issues/4
             if (farmControl.getFcConfig().worldSettings.of(entity.getWorld()).actionSettings.undoOn.of(action).tempt.get()) {
                 if (fcData.removeAction(action)) {
                     action.undoAction((Mob) entity);
