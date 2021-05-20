@@ -3,6 +3,7 @@ package com.froobworld.farmcontrol;
 import com.froobworld.farmcontrol.command.FarmControlCommand;
 import com.froobworld.farmcontrol.config.FcConfig;
 import com.froobworld.farmcontrol.controller.*;
+import com.froobworld.farmcontrol.controller.action.RemoveRandomMovementAction;
 import com.froobworld.farmcontrol.listener.CompatibilityListener;
 import com.froobworld.farmcontrol.metrics.FcMetrics;
 import org.bukkit.Bukkit;
@@ -49,6 +50,7 @@ public class FarmControl extends JavaPlugin {
         registerCommands();
 
         new FcMetrics(this, 9692);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, RemoveRandomMovementAction::cleanUp, 1200, 1200); // Hack to fix leaking entities
     }
 
     public void reload() {
@@ -72,6 +74,7 @@ public class FarmControl extends JavaPlugin {
     public void onDisable() {
         farmController.unRegister();
         farmController.unload();
+        RemoveRandomMovementAction.cleanUp();
     }
 
     public FcConfig getFcConfig() {

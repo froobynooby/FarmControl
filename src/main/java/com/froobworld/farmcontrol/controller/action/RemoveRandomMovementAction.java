@@ -9,7 +9,7 @@ import java.util.*;
 import static org.joor.Reflect.*;
 
 public class RemoveRandomMovementAction extends Action {
-    private final static Map<Object, Set<Object>> entityRemovedGoalsMap = new WeakHashMap<>();
+    private final static Map<Mob, Set<Object>> entityRemovedGoalsMap = new WeakHashMap<>();
     private final static Set<Class<?>> randomMovementGoals = new HashSet<>();
 
     static {
@@ -21,6 +21,10 @@ public class RemoveRandomMovementAction extends Action {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void cleanUp() {
+        entityRemovedGoalsMap.entrySet().removeIf(entry -> !entry.getKey().isValid());
     }
 
     public RemoveRandomMovementAction() {
@@ -46,7 +50,7 @@ public class RemoveRandomMovementAction extends Action {
                 removedGoals.add(next);
             }
         }
-        entityRemovedGoalsMap.compute(entityObject, (k, v) -> v == null ? removedGoals : Sets.union(removedGoals, v));
+        entityRemovedGoalsMap.compute(mob, (k, v) -> v == null ? removedGoals : Sets.union(removedGoals, v));
     }
 
     @Override
@@ -56,7 +60,7 @@ public class RemoveRandomMovementAction extends Action {
                 .field("goalSelector")
                 .field("d")
                 .as(Set.class);
-        Set<Object> removedGoals = entityRemovedGoalsMap.remove(entityObject);
+        Set<Object> removedGoals = entityRemovedGoalsMap.remove(mob);
         if (removedGoals != null) {
             wrappedGoals.addAll(removedGoals);
         }
