@@ -14,10 +14,10 @@ public class RemoveRandomMovementAction extends Action {
 
     static {
         try {
-        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomFly")));
-        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomStroll")));
-        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomStrollLand")));
-        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomSwim")));
+        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomFly", "world.entity.ai.goal")));
+        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomStroll", "world.entity.ai.goal")));
+        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomStrollLand", "world.entity.ai.goal")));
+        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomSwim", "world.entity.ai.goal")));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -35,7 +35,7 @@ public class RemoveRandomMovementAction extends Action {
     public void doAction(Mob mob) {
         Object entityObject = on(mob).call("getHandle").get();
         Set<?> wrappedGoals = on(entityObject)
-                .field("goalSelector")
+                .field(NmsUtils.getFieldOrMethodName("goalSelector", "bO"))
                 .field("d")
                 .as(Set.class);
         Iterator<?> goalIterator = wrappedGoals.iterator();
@@ -57,7 +57,7 @@ public class RemoveRandomMovementAction extends Action {
     public void undoAction(Mob mob) {
         Object entityObject = on(mob).call("getHandle").get();
         Set<Object> wrappedGoals = on(entityObject)
-                .field("goalSelector")
+                .field(NmsUtils.getFieldOrMethodName("goalSelector", "bO"))
                 .field("d")
                 .as(Set.class);
         Set<Object> removedGoals = entityRemovedGoalsMap.remove(mob);
