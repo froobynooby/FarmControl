@@ -4,3 +4,9 @@ comment=# This setting is no longer used.
 
 [comment-out]
 key=paper-settings.mspt-tracker-settings.trim-outliers-to-within
+
+[add-field]
+key=start-up-delay
+value=0
+before=world-settings
+comment=# How long in ticks should we wait before starting the checking tasks following the plugin's start up?\n#  * This is useful when using the 'reactive' mode where it is desirable to ignore the server's performance in the first\n#    few minutes following a restart.

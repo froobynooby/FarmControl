@@ -29,6 +29,9 @@ public class FcConfig extends NabConfiguration {
     @Entry(key = "cycle-period")
     public final ConfigEntry<Long> cyclePeriod = ConfigEntries.longEntry();
 
+    @Entry(key = "start-up-delay")
+    public final ConfigEntry<Long> startUpDelay = ConfigEntries.longEntry();
+
     @SectionMap(key = "world-settings", defaultKey = "default")
     public final ConfigSectionMap<World, WorldSettings> worldSettings = new ConfigSectionMap<>(World::getName, WorldSettings.class, true);
 

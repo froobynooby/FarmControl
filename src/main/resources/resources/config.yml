@@ -8,6 +8,11 @@ version: 4
 # Every how many ticks should we run the profile check / action cycle?
 cycle-period: 600
 
+# How long in ticks should we wait before starting the checking tasks following the plugin's start up?
+#  * This is useful when using the 'reactive' mode where it is desirable to ignore the server's performance in the first
+#    few minutes following a restart.
+start-up-delay: 0
+
 # These settings can be specified per world.
 #  * Note: If a world is not specified or if a setting is missing, it will use the settings listed under the default
 #    section.

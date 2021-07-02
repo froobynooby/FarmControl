@@ -75,8 +75,9 @@ public class FarmController {
         }
         triggerCheckTask = new TriggerCheckTask(farmControl, this, worldTriggerProfilesMap);
         long cyclePeriod = farmControl.getFcConfig().cyclePeriod.get();
+        long startUpDelay = farmControl.getFcConfig().startUpDelay.get();
         registered = true;
-        triggerTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(farmControl, triggerCheckTask, cyclePeriod, cyclePeriod);
+        triggerTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(farmControl, triggerCheckTask, startUpDelay + cyclePeriod, cyclePeriod);
     }
 
     public void unRegister() {
