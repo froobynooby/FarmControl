@@ -21,12 +21,6 @@ public class MixedEntitySet implements Iterable<SnapshotEntity> {
         }
     }
 
-    public void addAll(MixedEntitySet mixedEntitySet) {
-        for (SnapshotEntity entity : mixedEntitySet) {
-            add(entity);
-        }
-    }
-
     public boolean remove(SnapshotEntity entity) {
         return remove(entity, entity.getClassifications().iterator());
     }

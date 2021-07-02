@@ -7,11 +7,11 @@ import java.util.Collection;
 public class EntityGrouper {
 
     public static EntityGrouperResult groupEntities(Collection<SnapshotEntity> entities, GroupDefinition groupDefinition) {
-        EntityGrouperResult result = new EntityGrouperResult(groupDefinition);
+        EntityGrouperResult.Builder resultBuilder = new EntityGrouperResult.Builder(groupDefinition);
         for (SnapshotEntity entity : entities) {
-            result.addEntity(entity);
+            resultBuilder.addEntity(entity);
         }
-        return result;
+        return resultBuilder.build();
     }
 
 }
