@@ -1,0 +1,6 @@
+[comment]
+key=paper-settings.mspt-tracker-settings.trim-outliers-to-within
+comment=# This setting is no longer used.
+
+[comment-out]
+key=paper-settings.mspt-tracker-settings.trim-outliers-to-within

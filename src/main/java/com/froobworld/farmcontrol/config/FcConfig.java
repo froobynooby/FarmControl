@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class FcConfig extends NabConfiguration {
-    private static final int CURRENT_VERSION = 3;
+    private static final int CURRENT_VERSION = 4;
 
     public FcConfig(FarmControl farmControl) {
         super(
@@ -160,9 +160,6 @@ public class FcConfig extends NabConfiguration {
 
             @Entry(key = "collection-period")
             public final ConfigEntry<Integer> collectionPeriod = ConfigEntries.integerEntry();
-
-            @Entry(key = "trim-outliers-to-within")
-            public final ConfigEntry<Double> trimOutliersPercent= ConfigEntries.doubleEntry();
 
         }
 

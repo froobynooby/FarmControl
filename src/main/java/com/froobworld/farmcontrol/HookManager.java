@@ -32,8 +32,7 @@ public class HookManager {
         if (tickHook instanceof PaperTickHook) {
             msptTracker = new MsptTracker(
                     farmControl.getFcConfig().paperSettings.msptTracker.collectionPeriod.get(),
-                    tickHook,
-                    farmControl.getFcConfig().paperSettings.msptTracker.trimOutliersPercent.get()
+                    tickHook
             );
             msptTracker.register();
         }
