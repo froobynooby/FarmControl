@@ -35,7 +35,7 @@ public class RemoveRandomMovementAction extends Action {
     public void doAction(Mob mob) {
         Object entityObject = on(mob).call("getHandle").get();
         Set<?> wrappedGoals = on(entityObject)
-                .field(NmsUtils.getFieldOrMethodName("goalSelector", "bO"))
+                .field(NmsUtils.GoalSelectorHelper.getGoalSelectorFieldName())
                 .field("d")
                 .as(Set.class);
         Iterator<?> goalIterator = wrappedGoals.iterator();
@@ -57,7 +57,7 @@ public class RemoveRandomMovementAction extends Action {
     public void undoAction(Mob mob) {
         Object entityObject = on(mob).call("getHandle").get();
         Set<Object> wrappedGoals = on(entityObject)
-                .field(NmsUtils.getFieldOrMethodName("goalSelector", "bO"))
+                .field(NmsUtils.GoalSelectorHelper.getGoalSelectorFieldName())
                 .field("d")
                 .as(Set.class);
         Set<Object> removedGoals = entityRemovedGoalsMap.remove(mob);

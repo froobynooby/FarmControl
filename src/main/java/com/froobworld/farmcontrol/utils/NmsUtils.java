@@ -2,6 +2,8 @@ package com.froobworld.farmcontrol.utils;
 
 import org.bukkit.Bukkit;
 
+import java.lang.reflect.Field;
+
 import static org.joor.Reflect.*;
 
 public class NmsUtils {
@@ -22,6 +24,38 @@ public class NmsUtils {
 
     public static String getVersion() {
         return VERSION;
+    }
+
+    public static class GoalSelectorHelper {
+        private static boolean compatible = true;
+        private static String goalSelectorFieldName;
+
+        static {
+            try {
+                Class<?> entityInsentientClass = Class.forName(getFullyQualifiedClassName("EntityInsentient", "world.entity"));
+                Class<?> goalSelectorClass = Class.forName(getFullyQualifiedClassName("PathfinderGoalSelector", "world.entity.ai.goal"));
+                for (Field field : entityInsentientClass.getFields()) {
+                    if (field.getType().equals(goalSelectorClass)) {
+                        goalSelectorFieldName = field.getName();
+                        break;
+                    }
+                }
+                if (goalSelectorFieldName == null) {
+                    compatible = false;
+                }
+            } catch (ClassNotFoundException e) {
+                compatible = false;
+            }
+        }
+
+        public static String getGoalSelectorFieldName() {
+            return goalSelectorFieldName;
+        }
+
+        public static boolean isCompatible() {
+            return compatible;
+        }
+
     }
 
 }
