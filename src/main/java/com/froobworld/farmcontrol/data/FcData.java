@@ -13,16 +13,19 @@ import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
+import org.joor.Reflect;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class FcData {
-    private static final Cache<UUID, FcData> dataCache = CacheBuilder.newBuilder()
+    private static final Cache<Integer, Object> dataKeyCache = CacheBuilder.newBuilder()
+            .weakValues()
             .build();
+    private static final Map<Object, FcData> dataCache = new WeakHashMap<>();
     private static final NamespacedKey KEY = new NamespacedKey(FarmControl.getPlugin(FarmControl.class), "data");
     private static final PersistentDataType<String, FcData> TYPE = new PersistentDataType<String, FcData>() {
-        private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         @Override
         public @NotNull Class<String> getPrimitiveType() {
             return String.class;
@@ -145,11 +148,11 @@ public class FcData {
     }
 
     public static FcData get(Entity entity) {
-        FcData data = dataCache.getIfPresent(entity.getUniqueId());
+        FcData data = dataCache.get(getEntityObject(entity));
         if (data == null) {
             data = entity.getPersistentDataContainer().get(KEY, TYPE);
             if (data != null) {
-                dataCache.put(entity.getUniqueId(), data);
+                dataCache.put(getEntityObject(entity), data);
             }
         }
         return data;
@@ -159,7 +162,7 @@ public class FcData {
         FcData data = get(entity);
         if (data == null) {
             data = new FcData();
-            dataCache.put(entity.getUniqueId(), data);
+            dataCache.put(getEntityObject(entity), data);
         }
         return data;
     }
@@ -168,8 +171,19 @@ public class FcData {
         FcData data = get(entity);
         if (data != null && data.actionTriggerMap.isEmpty()) {
             entity.getPersistentDataContainer().remove(KEY);
-            dataCache.invalidate(entity.getUniqueId());
+            dataCache.remove(getEntityObject(entity));
         }
+    }
+
+    private static Object getEntityObject(Entity entity) {
+        Object key = dataKeyCache.getIfPresent(entity.getEntityId());
+        if (key == null) {
+            key = Reflect.on(entity)
+                    .call("getHandle")
+                    .get();
+            dataKeyCache.put(entity.getEntityId(), key);
+        }
+        return key;
     }
 
 }
