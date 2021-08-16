@@ -3,8 +3,6 @@ package com.froobworld.farmcontrol.data;
 import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.controller.action.Action;
 import com.froobworld.farmcontrol.controller.trigger.Trigger;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
@@ -18,11 +16,10 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class FcData {
-    private static final Cache<UUID, FcData> dataCache = CacheBuilder.newBuilder()
-            .build();
+    private static final Map<Entity, FcData> dataCache = new WeakHashMap<>();
     private static final NamespacedKey KEY = new NamespacedKey(FarmControl.getPlugin(FarmControl.class), "data");
     private static final PersistentDataType<String, FcData> TYPE = new PersistentDataType<String, FcData>() {
-        private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         @Override
         public @NotNull Class<String> getPrimitiveType() {
             return String.class;
@@ -145,11 +142,11 @@ public class FcData {
     }
 
     public static FcData get(Entity entity) {
-        FcData data = dataCache.getIfPresent(entity.getUniqueId());
+        FcData data = dataCache.get(entity);
         if (data == null) {
             data = entity.getPersistentDataContainer().get(KEY, TYPE);
             if (data != null) {
-                dataCache.put(entity.getUniqueId(), data);
+                dataCache.put(entity, data);
             }
         }
         return data;
@@ -159,7 +156,7 @@ public class FcData {
         FcData data = get(entity);
         if (data == null) {
             data = new FcData();
-            dataCache.put(entity.getUniqueId(), data);
+            dataCache.put(entity, data);
         }
         return data;
     }
@@ -168,7 +165,7 @@ public class FcData {
         FcData data = get(entity);
         if (data != null && data.actionTriggerMap.isEmpty()) {
             entity.getPersistentDataContainer().remove(KEY);
-            dataCache.invalidate(entity.getUniqueId());
+            dataCache.remove(entity);
         }
     }
 
