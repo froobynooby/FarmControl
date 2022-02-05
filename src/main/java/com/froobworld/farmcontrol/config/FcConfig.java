@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class FcConfig extends NabConfiguration {
-    private static final int CURRENT_VERSION = 4;
+    private static final int CURRENT_VERSION = 5;
 
     public FcConfig(FarmControl farmControl) {
         super(
@@ -98,6 +98,9 @@ public class FcConfig extends NabConfiguration {
 
             @Entry(key = "leashed")
             public final ConfigEntry<Boolean> leashed = new ConfigEntry<>();
+
+            @Entry(key = "patrol-leader")
+            public final ConfigEntry<Boolean> patrolLeader = new ConfigEntry<>();
 
             @Entry(key = "younger-than")
             public final ConfigEntry<Long> youngerThan = ConfigEntries.longEntry();

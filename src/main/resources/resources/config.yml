@@ -3,7 +3,7 @@
 # GitHub: https://github.com/froobynooby/FarmControl
 
 # Please don't change this!
-version: 4
+version: 5
 
 # Every how many ticks should we run the profile check / action cycle?
 cycle-period: 600
@@ -73,6 +73,9 @@ world-settings:
 
       # Should we not perform actions on mobs that are leashed?
       leashed: true
+
+      # Should we not perform actions on patrol leaders?
+      patrol-leader: false
 
       # Should we not perform actions on mobs that are younger than this value (in ticks)?
       younger-than: 0

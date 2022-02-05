@@ -22,6 +22,7 @@ public class ExclusionManager {
         List<String> excludeMeta = exclusionSettings.metadata.get();
         boolean excludeNamed = exclusionSettings.named.get();
         boolean excludeTamed = exclusionSettings.tamed.get();
+        boolean excludePatrolLeaders = exclusionSettings.patrolLeader.get();
         List<String> excludeType = exclusionSettings.type.get();
         long excludeTicksLived = exclusionSettings.youngerThan.get();
         return snapshotEntity -> {
@@ -35,6 +36,9 @@ public class ExclusionManager {
                 return true;
             }
             if (excludeTamed && snapshotEntity.isTamed()) {
+                return true;
+            }
+            if (excludePatrolLeaders && snapshotEntity.isPatrolLeader()) {
                 return true;
             }
             if (snapshotEntity.getTicksLived() < excludeTicksLived) {
