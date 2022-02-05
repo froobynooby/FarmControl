@@ -22,6 +22,8 @@ public final class EntityTypeUtils {
                 return entity -> Fish.class.isAssignableFrom(entity.getEntityClass());
             } else if (category.equalsIgnoreCase("tameable")) {
                 return entity -> Tameable.class.isAssignableFrom(entity.getEntityClass());
+            } else if (category.equalsIgnoreCase("raider")) {
+                return entity -> Raider.class.isAssignableFrom(entity.getEntityClass());
             }
         }
         return entity -> entity.getEntityType().toString().equalsIgnoreCase(string);
