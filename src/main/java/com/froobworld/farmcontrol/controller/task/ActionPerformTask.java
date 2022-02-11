@@ -1,8 +1,8 @@
 package com.froobworld.farmcontrol.controller.task;
 
 import com.froobworld.farmcontrol.controller.TriggerActionPair;
-import com.froobworld.farmcontrol.data.FcData;
 import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
+import com.froobworld.farmcontrol.data.FcData;
 import org.bukkit.entity.Mob;
 
 import java.util.Map;

@@ -12,7 +12,10 @@ import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class FcData {
@@ -20,6 +23,7 @@ public class FcData {
     private static final NamespacedKey KEY = new NamespacedKey(FarmControl.getPlugin(FarmControl.class), "data");
     private static final PersistentDataType<String, FcData> TYPE = new PersistentDataType<String, FcData>() {
         private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+
         @Override
         public @NotNull Class<String> getPrimitiveType() {
             return String.class;
@@ -54,7 +58,8 @@ public class FcData {
     private final ConcurrentHashMap<String, Set<String>> triggerActionMap = new ConcurrentHashMap<>();
     private boolean dirty = false;
 
-    private FcData() {}
+    private FcData() {
+    }
 
     public Set<String> getActions(Trigger trigger) {
         return triggerActionMap.get(trigger.getName());

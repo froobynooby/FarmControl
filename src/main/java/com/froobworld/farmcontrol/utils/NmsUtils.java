@@ -4,7 +4,7 @@ import org.bukkit.Bukkit;
 
 import java.lang.reflect.Field;
 
-import static org.joor.Reflect.*;
+import static org.joor.Reflect.on;
 
 public class NmsUtils {
     private static final String NMS_PACKAGE_NAME = on(Bukkit.getServer()).call("getHandle")

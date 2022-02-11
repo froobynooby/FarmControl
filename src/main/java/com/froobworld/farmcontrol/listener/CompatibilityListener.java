@@ -97,7 +97,8 @@ public class CompatibilityListener implements Listener {
             return;
         }
         for (Action action : farmControl.getActionManager().getActions()) {
-            if (action instanceof RemoveRandomMovementAction) continue; // Hacky solution for https://github.com/froobynooby/FarmControl/issues/4
+            if (action instanceof RemoveRandomMovementAction)
+                continue; // Hacky solution for https://github.com/froobynooby/FarmControl/issues/4
             if (farmControl.getFcConfig().worldSettings.of(entity.getWorld()).actionSettings.undoOn.of(action).tempt.get()) {
                 if (fcData.removeAction(action)) {
                     action.undoAction((Mob) entity);

@@ -62,7 +62,7 @@ public class FarmControlCommand implements CommandExecutor {
             sender.sendMessage("/" + cl + " reload");
         }
         if (sender.hasPermission("farmcontrol.command.status")) {
-            sender.sendMessage("/" + cl + " status " + (sender instanceof Player ? "[world]" :"<world>"));
+            sender.sendMessage("/" + cl + " status " + (sender instanceof Player ? "[world]" : "<world>"));
         }
     }
 

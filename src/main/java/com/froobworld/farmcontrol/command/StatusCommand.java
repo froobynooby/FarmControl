@@ -1,7 +1,6 @@
 package com.froobworld.farmcontrol.command;
 
 import com.froobworld.farmcontrol.FarmControl;
-import com.froobworld.farmcontrol.controller.action.Action;
 import com.froobworld.farmcontrol.data.FcData;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

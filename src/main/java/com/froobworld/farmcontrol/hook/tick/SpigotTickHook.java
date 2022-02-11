@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import static org.joor.Reflect.*;
+import static org.joor.Reflect.onClass;
 
 public class SpigotTickHook implements TickHook {
     private static final Reflect currentTick = onClass(NmsUtils.getFullyQualifiedClassName("MinecraftServer", "server")).field("currentTick");

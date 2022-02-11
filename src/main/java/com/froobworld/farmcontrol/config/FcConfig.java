@@ -147,7 +147,7 @@ public class FcConfig extends NabConfiguration {
         public final ConfigEntry<Integer> collectionPeriod = ConfigEntries.integerEntry();
 
         @Entry(key = "trim-outliers-to-within")
-        public final ConfigEntry<Double> trimOutliersPercent= ConfigEntries.doubleEntry();
+        public final ConfigEntry<Double> trimOutliersPercent = ConfigEntries.doubleEntry();
 
     }
 
