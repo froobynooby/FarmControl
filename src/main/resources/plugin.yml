@@ -18,6 +18,12 @@ permissions:
       - farmcontrol.command.farmcontrol
       - farmcontrol.command.reload
       - farmcontrol.command.status
+      - farmcontrol.command.history
+      - farmcontrol.command.notify
+
+  farmcontrol.command.farmcontrol:
+    default: op
+    description: Access to the base FarmControl command.
 
   farmcontrol.command.reload:
     default: op
