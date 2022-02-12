@@ -41,7 +41,7 @@ public class MsptTracker {
             } else if (sortedTickDurations.size() % 2 == 0) {
                 cachedMspt = 0.5 * (sortedTickDurations.get(sortedTickDurations.size() / 2) + sortedTickDurations.get(sortedTickDurations.size() / 2 - 1)) / MILLIS_PER_NANOS;
             } else {
-                cachedMspt = 0.5 * sortedTickDurations.get(sortedTickDurations.size() / 2) / MILLIS_PER_NANOS;
+                cachedMspt = (double) sortedTickDurations.get(sortedTickDurations.size() / 2) / MILLIS_PER_NANOS;
             }
         }
         return cachedMspt;
