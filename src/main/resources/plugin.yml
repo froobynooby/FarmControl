@@ -30,3 +30,15 @@ permissions:
     description: Access to the FarmControl status command.
     children:
       - farmcontrol.command.farmcontrol
+
+  farmcontrol.command.history:
+    default: op
+    description: Access to the FarmControl history command.
+    children:
+      - farmcontrol.command.farmcontrol
+
+  farmcontrol.command.notify:
+    default: op
+    description: Access to the FarmControl notify command.
+    children:
+      - farmcontrol.command.farmcontrol

@@ -2,6 +2,7 @@ package com.froobworld.farmcontrol.controller;
 
 import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.controller.task.*;
+import com.froobworld.farmcontrol.controller.tracker.CycleHistoryManager;
 import com.froobworld.farmcontrol.controller.trigger.Trigger;
 import com.froobworld.farmcontrol.utils.Actioner;
 import org.bukkit.Bukkit;
@@ -12,6 +13,7 @@ import java.util.*;
 
 public class FarmController {
     private final FarmControl farmControl;
+    private final CycleHistoryManager cycleHistoryManager;
     private final Map<World, Map<Trigger, Set<ActionProfile>>> worldTriggerProfilesMap = new HashMap<>();
     private Integer triggerTaskId = null;
     private TriggerCheckTask triggerCheckTask = null;
@@ -19,6 +21,7 @@ public class FarmController {
 
     public FarmController(FarmControl farmControl) {
         this.farmControl = farmControl;
+        cycleHistoryManager = new CycleHistoryManager(farmControl);
     }
 
     public void load() {
@@ -38,6 +41,10 @@ public class FarmController {
     public void reload() {
         unload();
         load();
+    }
+
+    public CycleHistoryManager getCycleHistoryManager() {
+        return cycleHistoryManager;
     }
 
     public void addWorld(World world) {

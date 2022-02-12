@@ -3,6 +3,7 @@ package com.froobworld.farmcontrol.controller.task;
 import com.froobworld.farmcontrol.controller.ActionProfile;
 import com.froobworld.farmcontrol.controller.FarmController;
 import com.froobworld.farmcontrol.controller.TriggerActionPair;
+import com.froobworld.farmcontrol.controller.tracker.CycleTracker;
 import com.froobworld.farmcontrol.controller.trigger.Trigger;
 import com.froobworld.farmcontrol.data.FcData;
 import com.froobworld.farmcontrol.group.EntityGrouper;
@@ -11,25 +12,30 @@ import com.froobworld.farmcontrol.group.Group;
 import com.froobworld.farmcontrol.controller.action.Action;
 import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
 import com.froobworld.farmcontrol.utils.MixedEntitySet;
+import org.bukkit.World;
 
 import java.util.*;
 import java.util.function.Predicate;
 
 public class ActionAllocationTask implements Runnable {
     private final FarmController farmController;
+    private final World world;
     private final Set<Trigger> triggers;
     private final List<SnapshotEntity> snapshotEntities;
     private final Map<Trigger, Set<ActionProfile>> actionProfiles;
     private final Predicate<SnapshotEntity> shouldExcludePredicate;
     private final Set<Action> allActions;
+    private final CycleTracker cycleTracker;
 
-    public ActionAllocationTask(FarmController farmController, Set<Trigger> triggers, List<SnapshotEntity> snapshotEntities, Map<Trigger, Set<ActionProfile>> actionProfiles, Predicate<SnapshotEntity> shouldExcludePredicate, Set<Action> allActions) {
+    public ActionAllocationTask(FarmController farmController, World world, Set<Trigger> triggers, List<SnapshotEntity> snapshotEntities, Map<Trigger, Set<ActionProfile>> actionProfiles, Predicate<SnapshotEntity> shouldExcludePredicate, Set<Action> allActions, CycleTracker cycleTracker) {
         this.farmController = farmController;
+        this.world = world;
         this.triggers = triggers;
         this.snapshotEntities = snapshotEntities;
         this.actionProfiles = actionProfiles;
         this.shouldExcludePredicate = shouldExcludePredicate;
         this.allActions = allActions;
+        this.cycleTracker = cycleTracker;
     }
 
     @Override
@@ -81,7 +87,7 @@ public class ActionAllocationTask implements Runnable {
             }
         }
 
-        farmController.submitActionPerformTask(new ActionPerformTask(triggerActionMap, unTriggerActionMap));
+        farmController.submitActionPerformTask(new ActionPerformTask(world, triggerActionMap, unTriggerActionMap, cycleTracker));
     }
 
     private static class TriggerActionProfilePair {
