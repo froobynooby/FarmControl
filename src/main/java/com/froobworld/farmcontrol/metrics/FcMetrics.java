@@ -83,12 +83,7 @@ public class FcMetrics {
                 }
             }
             if (usingReactiveMode && farmControl.getHookManager().getMsptTracker() != null) {
-                for (World world : Bukkit.getWorlds()) {
-                    if (farmControl.getFcConfig().paperSettings.worldSettings.of(world).alternativeReactiveModeSettings.useAlternativeSettings.get()) {
-                        return "mspt";
-                    }
-                }
-                return "tps";
+                return "mspt";
             }
             return null;
         }));
