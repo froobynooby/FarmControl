@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class FcConfig extends NabConfiguration {
-    private static final int CURRENT_VERSION = 5;
+    private static final int CURRENT_VERSION = 6;
 
     public FcConfig(FarmControl farmControl) {
         super(
@@ -61,11 +61,11 @@ public class FcConfig extends NabConfiguration {
 
         public static class ReactiveModeSettings extends ConfigSection {
 
-            @Entry(key = "trigger-tps-threshold")
-            public final ConfigEntry<Double> triggerTpsThreshold = ConfigEntries.doubleEntry();
+            @Entry(key = "trigger-mspt-threshold")
+            public final ConfigEntry<Double> triggerMsptThreshold = ConfigEntries.doubleEntry();
 
-            @Entry(key = "untrigger-tps-threshold")
-            public final ConfigEntry<Double> untriggerTpsThreshold = ConfigEntries.doubleEntry();
+            @Entry(key = "untrigger-mspt-threshold")
+            public final ConfigEntry<Double> untriggerMsptThreshold = ConfigEntries.doubleEntry();
 
             @Section(key = "untrigger-settings")
             public final UntriggerSettings untriggerSettings = new UntriggerSettings();
@@ -138,56 +138,13 @@ public class FcConfig extends NabConfiguration {
 
     }
 
-    @Section(key = "tps-tracker-settings")
-    public final TpsTrackerSettings tpsTracker = new TpsTrackerSettings();
+    @Section(key = "mspt-tracker-settings")
+    public final MsptTrackerSettings msptTracker = new MsptTrackerSettings();
 
-    public static class TpsTrackerSettings extends ConfigSection {
+    public static class MsptTrackerSettings extends ConfigSection {
 
         @Entry(key = "collection-period")
         public final ConfigEntry<Integer> collectionPeriod = ConfigEntries.integerEntry();
-
-        @Entry(key = "trim-outliers-to-within")
-        public final ConfigEntry<Double> trimOutliersPercent = ConfigEntries.doubleEntry();
-
-    }
-
-    @Section(key = "paper-settings")
-    public final PaperSettings paperSettings = new PaperSettings();
-
-    public static class PaperSettings extends ConfigSection {
-
-        @Section(key = "mspt-tracker-settings")
-        public final MsptTrackerSettings msptTracker = new MsptTrackerSettings();
-
-        @SectionMap(key = "world-settings", defaultKey = "default")
-        public final ConfigSectionMap<World, WorldSettings> worldSettings = new ConfigSectionMap<>(World::getName, WorldSettings.class, true);
-
-        public static class MsptTrackerSettings extends ConfigSection {
-
-            @Entry(key = "collection-period")
-            public final ConfigEntry<Integer> collectionPeriod = ConfigEntries.integerEntry();
-
-        }
-
-        public static class WorldSettings extends ConfigSection {
-
-            @Section(key = "alternative-reactive-mode-settings")
-            public final AlternativeReactiveModeSettings alternativeReactiveModeSettings = new AlternativeReactiveModeSettings();
-
-            public static class AlternativeReactiveModeSettings extends ConfigSection {
-
-                @Entry(key = "use-alternative-settings")
-                public final ConfigEntry<Boolean> useAlternativeSettings = new ConfigEntry<>();
-
-                @Entry(key = "trigger-mspt-threshold")
-                public final ConfigEntry<Double> triggerMsptThreshold = ConfigEntries.doubleEntry();
-
-                @Entry(key = "untrigger-mspt-threshold")
-                public final ConfigEntry<Double> untriggerMsptThreshold = ConfigEntries.doubleEntry();
-
-            }
-
-        }
 
     }
 

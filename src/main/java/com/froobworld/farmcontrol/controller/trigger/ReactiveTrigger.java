@@ -14,24 +14,13 @@ public class ReactiveTrigger extends Trigger {
 
     @Override
     public TriggerStatus getTriggerStatus(World world) {
-        boolean useMspt = farmControl.getFcConfig().paperSettings.worldSettings.of(world).alternativeReactiveModeSettings.useAlternativeSettings.get();
-        useMspt &= farmControl.getHookManager().getMsptTracker() != null;
-
-        if (useMspt) {
-            double mspt = farmControl.getHookManager().getMsptTracker().getMspt();
-            if (mspt >= farmControl.getFcConfig().paperSettings.worldSettings.of(world).alternativeReactiveModeSettings.triggerMsptThreshold.get()) {
-                return TriggerStatus.TRIGGERED;
-            } else if (mspt <= farmControl.getFcConfig().paperSettings.worldSettings.of(world).alternativeReactiveModeSettings.untriggerMsptThreshold.get()) {
-                return TriggerStatus.UNTRIGGERED;
-            }
-        } else {
-            double tps = farmControl.getHookManager().getTpsTracker().getTps();
-            if (tps <= farmControl.getFcConfig().worldSettings.of(world).reactiveModeSettings.triggerTpsThreshold.get()) {
-                return TriggerStatus.TRIGGERED;
-            } else if (tps >= farmControl.getFcConfig().worldSettings.of(world).reactiveModeSettings.untriggerTpsThreshold.get()) {
-                return TriggerStatus.UNTRIGGERED;
-            }
+        double mspt = farmControl.getHookManager().getMsptTracker().getMspt();
+        if (mspt >= farmControl.getFcConfig().worldSettings.of(world).reactiveModeSettings.triggerMsptThreshold.get()) {
+            return TriggerStatus.TRIGGERED;
+        } else if (mspt <= farmControl.getFcConfig().worldSettings.of(world).reactiveModeSettings.untriggerMsptThreshold.get()) {
+            return TriggerStatus.UNTRIGGERED;
         }
+
         return TriggerStatus.IDLE;
     }
 

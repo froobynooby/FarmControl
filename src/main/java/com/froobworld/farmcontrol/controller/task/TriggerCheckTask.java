@@ -4,6 +4,7 @@ import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.controller.ActionProfile;
 import com.froobworld.farmcontrol.controller.FarmController;
 import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
+import com.froobworld.farmcontrol.controller.tracker.CycleTracker;
 import com.froobworld.farmcontrol.controller.trigger.Trigger;
 import com.froobworld.farmcontrol.controller.trigger.UntriggerStrategy;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
@@ -35,6 +36,7 @@ public class TriggerCheckTask implements Runnable {
 
 
     public void run() {
+        CycleTracker cycleTracker = farmController.getCycleHistoryManager().startCycleTracker(worldTriggerProfilesMap.keySet());
         for (World world : worldTriggerProfilesMap.keySet()) {
             worldLastTriggerCount.putIfAbsent(world, new HashMap<>());
             Map<Trigger, Set<ActionProfile>> triggerProfilesMap = worldTriggerProfilesMap.get(world);
@@ -62,7 +64,9 @@ public class TriggerCheckTask implements Runnable {
                 }
             }
             if (!profilesToRun.isEmpty()) {
-                executorService.submit(new ActionAllocationTask(farmController, triggeredTriggers, snapshotEntities, profilesToRun, farmControl.getExclusionManager().getExclusionPredicate(world), farmControl.getActionManager().getActions()));
+                executorService.submit(new ActionAllocationTask(farmController, world, triggeredTriggers, snapshotEntities, profilesToRun, farmControl.getExclusionManager().getExclusionPredicate(world), farmControl.getActionManager().getActions(), cycleTracker));
+            } else {
+                cycleTracker.signalCompletion(world);
             }
             if (!untriggerStrategyMap.isEmpty()) {
                 executorService.submit(new UntriggerAllocationTask(farmControl, farmController, snapshotEntities, untriggerStrategyMap));

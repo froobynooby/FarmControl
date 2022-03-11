@@ -1,0 +1,42 @@
+[move]
+from=paper-settings.mspt-tracker-settings
+to=mspt-tracker-settings
+before=tps-tracker-settings
+
+[move]
+from=paper-settings.world-settings.*.alternative-reactive-mode-settings.untrigger-mspt-threshold
+to=world-settings.{0}.reactive-mode-settings.untrigger-mspt-threshold
+before=trigger-tps-threshold
+
+[move]
+from=paper-settings.world-settings.*.alternative-reactive-mode-settings.trigger-mspt-threshold
+to=world-settings.{0}.reactive-mode-settings.trigger-mspt-threshold
+before=untrigger-mspt-threshold
+
+[comment]
+key=paper-settings
+comment=# These settings are no longer used.
+
+[comment-out]
+key=paper-settings
+
+[comment]
+key=tps-tracker-settings
+comment=# TPS is no longer a supported metric for reactive mode.
+
+[comment-out]
+key=tps-tracker-settings
+
+[comment]
+key=world-settings.default.reactive-mode-settings.trigger-tps-threshold
+comment=# TPS is no longer a supported metric for reactive mode.
+
+[comment-out]
+key=world-settings.default.reactive-mode-settings.trigger-tps-threshold
+
+[comment]
+key=world-settings.default.reactive-mode-settings.untrigger-tps-threshold
+comment=# TPS is no longer a supported metric for reactive mode.
+
+[comment-out]
+key=world-settings.default.reactive-mode-settings.untrigger-tps-threshold

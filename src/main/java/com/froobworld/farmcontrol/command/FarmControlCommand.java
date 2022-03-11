@@ -21,11 +21,15 @@ public class FarmControlCommand implements CommandExecutor {
 
     private final ReloadCommand reloadCommand;
     private final StatusCommand statusCommand;
+    private final HistoryCommand historyCommand;
+    private final NotifyCommand notifyCommand;
 
     public FarmControlCommand(FarmControl farmControl) {
         this.farmControl = farmControl;
         reloadCommand = new ReloadCommand(farmControl);
         statusCommand = new StatusCommand(farmControl);
+        historyCommand = new HistoryCommand(farmControl);
+        notifyCommand = new NotifyCommand(farmControl);
     }
 
     @Override
@@ -50,6 +54,22 @@ public class FarmControlCommand implements CommandExecutor {
                 return true;
             }
         }
+        if ((args[0].equalsIgnoreCase("history"))) {
+            if (sender.hasPermission("farmcontrol.command.history")) {
+                return historyCommand.onCommand(sender, command, s, args);
+            } else {
+                sender.sendMessage(NO_PERMISSION_MESSAGE);
+                return true;
+            }
+        }
+        if ((args[0].equalsIgnoreCase("notify"))) {
+            if (sender.hasPermission("farmcontrol.command.notify")) {
+                return notifyCommand.onCommand(sender, command, s, args);
+            } else {
+                sender.sendMessage(NO_PERMISSION_MESSAGE);
+                return true;
+            }
+        }
         sendHelp(sender, s);
         return true;
     }
@@ -63,6 +83,12 @@ public class FarmControlCommand implements CommandExecutor {
         }
         if (sender.hasPermission("farmcontrol.command.status")) {
             sender.sendMessage("/" + cl + " status " + (sender instanceof Player ? "[world]" : "<world>"));
+        }
+        if (sender.hasPermission("farmcontrol.command.history")) {
+            sender.sendMessage("/" + cl + " history ");
+        }
+        if (sender.hasPermission("farmcontrol.command.notify")) {
+            sender.sendMessage("/" + cl + " notify ");
         }
     }
 
@@ -79,6 +105,12 @@ public class FarmControlCommand implements CommandExecutor {
                     if (sender.hasPermission("farmcontrol.command.status")) {
                         completions.add("status");
                         completions.add("stats");
+                    }
+                    if (sender.hasPermission("farmcontrol.command.history")) {
+                        completions.add("history");
+                    }
+                    if (sender.hasPermission("farmcontrol.command.notify")) {
+                        completions.add("notify");
                     }
                 }
                 if (args.length == 2) {
