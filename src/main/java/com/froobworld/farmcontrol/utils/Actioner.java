@@ -8,7 +8,8 @@ import org.bukkit.entity.Mob;
 
 public final class Actioner {
 
-    private Actioner() {}
+    private Actioner() {
+    }
 
     public static void undoAllActions(Entity entity, FarmControl farmControl) {
         if (!(entity instanceof Mob)) {

@@ -14,5 +14,6 @@ public class RemoveAction extends Action {
     }
 
     @Override
-    public void undoAction(Mob mob) {}
+    public void undoAction(Mob mob) {
+    }
 }

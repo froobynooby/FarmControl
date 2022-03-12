@@ -6,7 +6,7 @@ import org.bukkit.entity.Mob;
 
 import java.util.*;
 
-import static org.joor.Reflect.*;
+import static org.joor.Reflect.on;
 
 public class RemoveRandomMovementAction extends Action {
     private final static Map<Mob, Set<Object>> entityRemovedGoalsMap = new WeakHashMap<>();
@@ -14,10 +14,10 @@ public class RemoveRandomMovementAction extends Action {
 
     static {
         try {
-        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomFly", "world.entity.ai.goal")));
-        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomStroll", "world.entity.ai.goal")));
-        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomStrollLand", "world.entity.ai.goal")));
-        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomSwim", "world.entity.ai.goal")));
+            randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomFly", "world.entity.ai.goal")));
+            randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomStroll", "world.entity.ai.goal")));
+            randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomStrollLand", "world.entity.ai.goal")));
+            randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomSwim", "world.entity.ai.goal")));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -56,7 +56,7 @@ public class RemoveRandomMovementAction extends Action {
     @Override
     public void undoAction(Mob mob) {
         Object entityObject = on(mob).call("getHandle").get();
-        Set<Object> wrappedGoals = on(entityObject)
+        Set wrappedGoals = on(entityObject)
                 .field(NmsUtils.GoalSelectorHelper.getGoalSelectorFieldName())
                 .field("d")
                 .as(Set.class);

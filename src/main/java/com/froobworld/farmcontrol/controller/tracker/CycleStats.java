@@ -9,7 +9,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.EntityType;
 
 import java.util.*;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class CycleStats {
@@ -73,7 +72,8 @@ public class CycleStats {
         private final Set<SnapshotEntity> removedEntities = new HashSet<>();
         private final Map<Action, Map<EntityType, Integer>> actionCounts = new HashMap<>();
 
-        private Builder() {}
+        private Builder() {
+        }
 
         public static Builder start(long startTime) {
             Builder builder = new Builder();

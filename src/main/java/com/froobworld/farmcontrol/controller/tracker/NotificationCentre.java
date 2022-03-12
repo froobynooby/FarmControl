@@ -90,7 +90,7 @@ public class NotificationCentre {
             return;
         }
         try (BufferedReader reader = new BufferedReader(new FileReader(userFile))) {
-            for(String line; (line = reader.readLine()) != null; ) {
+            for (String line; (line = reader.readLine()) != null; ) {
                 if (!line.isEmpty()) {
                     notifiableUsers.add(UUID.fromString(line));
                 }

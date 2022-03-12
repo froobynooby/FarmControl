@@ -2,7 +2,9 @@ package com.froobworld.farmcontrol.group;
 
 import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 public class EntityGrouperResult {
@@ -25,7 +27,7 @@ public class EntityGrouperResult {
         }
 
         public void addEntity(SnapshotEntity entity) {
-            if (!groupDefinition.getTypePredicate().test(entity) || groupDefinition.getExcludeTypePredicate().test(entity)) {
+            if (!groupDefinition.getTypePredicate().test(entity) || groupDefinition.getExcludeTypePredicate().test(entity) || !groupDefinition.getNamePredicate().test(entity)) {
                 return;
             }
             ListIterator<ProtoGroup> iterator = protoGroups.listIterator();
