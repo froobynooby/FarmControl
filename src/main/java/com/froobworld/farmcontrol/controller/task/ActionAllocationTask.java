@@ -3,6 +3,8 @@ package com.froobworld.farmcontrol.controller.task;
 import com.froobworld.farmcontrol.controller.ActionProfile;
 import com.froobworld.farmcontrol.controller.FarmController;
 import com.froobworld.farmcontrol.controller.TriggerActionPair;
+import com.froobworld.farmcontrol.controller.action.Action;
+import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
 import com.froobworld.farmcontrol.controller.tracker.CycleTracker;
 import com.froobworld.farmcontrol.controller.trigger.Trigger;
 import com.froobworld.farmcontrol.data.FcData;

@@ -4,7 +4,8 @@ import java.util.concurrent.TimeUnit;
 
 public final class DurationDisplayer {
 
-    private DurationDisplayer() {}
+    private DurationDisplayer() {
+    }
 
     private static String quantityText(int quantity, String singularSuffix, String pluralSuffix) {
         String quantityText = quantity + "";
