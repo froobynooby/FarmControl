@@ -16,6 +16,7 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.function.Predicate;
 
 public class TriggerCheckTask implements Runnable {
     private final FarmControl farmControl;
@@ -62,11 +63,12 @@ public class TriggerCheckTask implements Runnable {
             List<SnapshotEntity> snapshotEntities = new ArrayList<>();
             CompletableFuture<Void> completableFuture = CompletableFuture.completedFuture(null);
             if (!profilesToRun.isEmpty() || !untriggerStrategyMap.isEmpty()) {
+                Predicate<Mob> exclusionPredicate = farmControl.getExclusionManager().getExclusionPredicate(world);
                 for (Mob entity : world.getEntitiesByClass(Mob.class)) {
                     CompletableFuture<Void> entityFuture = new CompletableFuture<>();
                     ScheduledTask scheduledTask = farmControl.getHookManager().getSchedulerHook().runEntityTaskAsap(() -> {
                         try {
-                            SnapshotEntity snapshotEntity = new SnapshotEntity(entity);
+                            SnapshotEntity snapshotEntity = new SnapshotEntity(entity, exclusionPredicate.test(entity));
                             synchronized (snapshotEntities) {
                                 snapshotEntities.add(snapshotEntity);
                             }
@@ -81,7 +83,7 @@ public class TriggerCheckTask implements Runnable {
             }
             completableFuture.thenRunAsync(() -> {
                 if (!profilesToRun.isEmpty()) {
-                    executorService.submit(new ActionAllocationTask(farmController, world, farmControl.getHookManager().getSchedulerHook(), triggeredTriggers, snapshotEntities, profilesToRun, farmControl.getExclusionManager().getExclusionPredicate(world), farmControl.getActionManager().getActions(), cycleTracker));
+                    executorService.submit(new ActionAllocationTask(farmController, world, farmControl.getHookManager().getSchedulerHook(), triggeredTriggers, snapshotEntities, profilesToRun, farmControl.getActionManager().getActions(), cycleTracker));
                 } else {
                     cycleTracker.signalCompletion(world);
                 }

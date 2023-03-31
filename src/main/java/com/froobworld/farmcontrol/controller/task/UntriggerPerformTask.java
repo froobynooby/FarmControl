@@ -1,9 +1,12 @@
 package com.froobworld.farmcontrol.controller.task;
 
+import com.froobworld.farmcontrol.api.event.PostEntityActionUndoEvent;
+import com.froobworld.farmcontrol.api.event.PreEntityActionUndoEvent;
 import com.froobworld.farmcontrol.controller.TriggerActionPair;
 import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
 import com.froobworld.farmcontrol.data.FcData;
 import com.froobworld.farmcontrol.hook.scheduler.SchedulerHook;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Mob;
 
 import java.util.Map;
@@ -32,7 +35,9 @@ public class UntriggerPerformTask implements Runnable {
                 }
                 for (TriggerActionPair triggerActionPair : actionsToUndo.get(snapshotEntity)) {
                     if (fcData.remove(triggerActionPair.trigger, triggerActionPair.action)) {
+                        Bukkit.getPluginManager().callEvent(new PreEntityActionUndoEvent(entity, triggerActionPair.action));
                         triggerActionPair.action.undoAction(entity);
+                        Bukkit.getPluginManager().callEvent(new PostEntityActionUndoEvent(entity, triggerActionPair.action));
                     }
                 }
                 fcData.save(entity);

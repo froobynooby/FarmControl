@@ -2,7 +2,7 @@ package com.froobworld.farmcontrol.controller.action;
 
 import org.bukkit.entity.Mob;
 
-public abstract class Action {
+public abstract class Action implements com.froobworld.farmcontrol.api.action.Action {
     private final String name;
     private final boolean removes;
     private final boolean persistent;

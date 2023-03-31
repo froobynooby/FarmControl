@@ -1,0 +1,23 @@
+plugins {
+    id 'java'
+}
+
+group 'com.froobworld'
+version '1.2.0'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://papermc.io/repo/repository/maven-public/"
+    }
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
+}
+
+test {
+    useJUnitPlatform()
+}

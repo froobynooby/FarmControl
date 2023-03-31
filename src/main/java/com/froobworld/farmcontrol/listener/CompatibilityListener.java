@@ -1,9 +1,8 @@
 package com.froobworld.farmcontrol.listener;
 
 import com.froobworld.farmcontrol.FarmControl;
-import com.froobworld.farmcontrol.controller.action.Action;
 import com.froobworld.farmcontrol.controller.action.RemoveRandomMovementAction;
-import com.froobworld.farmcontrol.data.FcData;
+import com.froobworld.farmcontrol.utils.Actioner;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
@@ -29,19 +28,9 @@ public class CompatibilityListener implements Listener {
         if (!(entity instanceof Mob)) {
             return;
         }
-        FcData fcData = FcData.get(entity);
-        if (fcData == null) {
-            return;
-        }
-        for (Action action : farmControl.getActionManager().getActions()) {
-            if (farmControl.getFcConfig().worldSettings.of(entity.getWorld()).actionSettings.undoOn.of(action).interact.get()) {
-                if (fcData.removeAction(action)) {
-                    action.undoAction((Mob) entity);
-                }
-            }
-        }
-        fcData.save(entity);
-        FcData.removeIfEmpty(entity);
+        Actioner.undoAllActions(entity, farmControl, action -> {
+            return farmControl.getFcConfig().worldSettings.of(entity.getWorld()).actionSettings.undoOn.of(action).interact.get();
+        });
     }
 
     @EventHandler
@@ -50,19 +39,9 @@ public class CompatibilityListener implements Listener {
         if (!(entity instanceof Mob)) {
             return;
         }
-        FcData fcData = FcData.get(entity);
-        if (fcData == null) {
-            return;
-        }
-        for (Action action : farmControl.getActionManager().getActions()) {
-            if (farmControl.getFcConfig().worldSettings.of(entity.getWorld()).actionSettings.undoOn.of(action).damage.get()) {
-                if (fcData.removeAction(action)) {
-                    action.undoAction((Mob) entity);
-                }
-            }
-        }
-        fcData.save(entity);
-        FcData.removeIfEmpty(entity);
+        Actioner.undoAllActions(entity, farmControl, action -> {
+            return farmControl.getFcConfig().worldSettings.of(entity.getWorld()).actionSettings.undoOn.of(action).damage.get();
+        });
     }
 
     @EventHandler
@@ -71,19 +50,9 @@ public class CompatibilityListener implements Listener {
         if (!(entity instanceof Mob)) {
             return;
         }
-        FcData fcData = FcData.get(entity);
-        if (fcData == null) {
-            return;
-        }
-        for (Action action : farmControl.getActionManager().getActions()) {
-            if (farmControl.getFcConfig().worldSettings.of(entity.getWorld()).actionSettings.undoOn.of(action).target.get()) {
-                if (fcData.removeAction(action)) {
-                    action.undoAction((Mob) entity);
-                }
-            }
-        }
-        fcData.save(entity);
-        FcData.removeIfEmpty(entity);
+        Actioner.undoAllActions(entity, farmControl, action -> {
+            return farmControl.getFcConfig().worldSettings.of(entity.getWorld()).actionSettings.undoOn.of(action).target.get();
+        });
     }
 
     @EventHandler
@@ -92,20 +61,10 @@ public class CompatibilityListener implements Listener {
             return;
         }
         Entity entity = event.getEntity();
-        FcData fcData = FcData.get(entity);
-        if (fcData == null) {
-            return;
-        }
-        for (Action action : farmControl.getActionManager().getActions()) {
-            if (action instanceof RemoveRandomMovementAction) continue; // Hacky solution for https://github.com/froobynooby/FarmControl/issues/4
-            if (farmControl.getFcConfig().worldSettings.of(entity.getWorld()).actionSettings.undoOn.of(action).tempt.get()) {
-                if (fcData.removeAction(action)) {
-                    action.undoAction((Mob) entity);
-                }
-            }
-        }
-        fcData.save(entity);
-        FcData.removeIfEmpty(entity);
+        Actioner.undoAllActions(entity, farmControl, action -> {
+            if (action instanceof RemoveRandomMovementAction) return false; // Hacky solution for https://github.com/froobynooby/FarmControl/issues/4
+            return farmControl.getFcConfig().worldSettings.of(entity.getWorld()).actionSettings.undoOn.of(action).tempt.get();
+        });
     }
 
     @EventHandler
@@ -114,17 +73,7 @@ public class CompatibilityListener implements Listener {
             if (!(entity instanceof Mob)) {
                 continue;
             }
-            FcData fcData = FcData.get(entity);
-            if (fcData == null) {
-                return;
-            }
-            for (Action action : farmControl.getActionManager().getActions()) {
-                if (fcData.removeAction(action)) {
-                    action.undoAction((Mob) entity);
-                }
-            }
-            fcData.save(entity);
-            FcData.removeIfEmpty(entity);
+            Actioner.undoAllActions(entity, farmControl);
         }
     }
 

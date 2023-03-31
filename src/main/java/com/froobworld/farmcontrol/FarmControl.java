@@ -7,6 +7,7 @@ import com.froobworld.farmcontrol.controller.action.RemoveRandomMovementAction;
 import com.froobworld.farmcontrol.listener.CompatibilityListener;
 import com.froobworld.farmcontrol.metrics.FcMetrics;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class FarmControl extends JavaPlugin {
     private ProfileManager profileManager;
     private ExclusionManager exclusionManager;
     private FarmController farmController;
+    private FarmControlApi farmControlApi;
 
     public void onEnable() {
         this.fcConfig = new FcConfig(this);
@@ -51,6 +53,9 @@ public class FarmControl extends JavaPlugin {
 
         new FcMetrics(this, 9692);
         hookManager.getSchedulerHook().runRepeatingTask(RemoveRandomMovementAction::cleanUp, 1200, 1200); // Hack to fix leaking entities
+
+        farmControlApi = new FarmControlApi(this);
+        Bukkit.getServicesManager().register(com.froobworld.farmcontrol.api.FarmControlApi.class, farmControlApi, this, ServicePriority.Normal);
     }
 
     public void reload() {
@@ -75,6 +80,7 @@ public class FarmControl extends JavaPlugin {
         farmController.unRegister();
         farmController.unload();
         RemoveRandomMovementAction.cleanUp();
+        Bukkit.getServicesManager().unregister(farmControlApi);
     }
 
     public FcConfig getFcConfig() {

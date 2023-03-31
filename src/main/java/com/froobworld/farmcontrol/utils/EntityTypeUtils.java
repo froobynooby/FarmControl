@@ -13,17 +13,17 @@ public final class EntityTypeUtils {
         if (string.toLowerCase().startsWith("category:")) {
             String category = string.split(":")[1];
             if (category.equalsIgnoreCase("animal")) {
-                return entity -> Animals.class.isAssignableFrom(entity.getEntityClass());
+                return entity -> Animals.class.isAssignableFrom(entity.getEntity().getClass());
             } else if (category.equalsIgnoreCase("monster")) {
-                return entity -> Monster.class.isAssignableFrom(entity.getEntityClass());
+                return entity -> Monster.class.isAssignableFrom(entity.getEntity().getClass());
             } else if (category.equalsIgnoreCase("ambient")) {
-                return entity -> Ambient.class.isAssignableFrom(entity.getEntityClass());
+                return entity -> Ambient.class.isAssignableFrom(entity.getEntity().getClass());
             } else if (category.equalsIgnoreCase("fish")) {
-                return entity -> Fish.class.isAssignableFrom(entity.getEntityClass());
+                return entity -> Fish.class.isAssignableFrom(entity.getEntity().getClass());
             } else if (category.equalsIgnoreCase("tameable")) {
-                return entity -> Tameable.class.isAssignableFrom(entity.getEntityClass());
+                return entity -> Tameable.class.isAssignableFrom(entity.getEntity().getClass());
             } else if (category.equalsIgnoreCase("raider")) {
-                return entity -> Raider.class.isAssignableFrom(entity.getEntityClass());
+                return entity -> Raider.class.isAssignableFrom(entity.getEntity().getClass());
             }
         }
         return entity -> entity.getEntityType().toString().equalsIgnoreCase(string);

@@ -1,11 +1,16 @@
 package com.froobworld.farmcontrol.controller.task;
 
+import com.froobworld.farmcontrol.api.event.PostEntityActionEvent;
+import com.froobworld.farmcontrol.api.event.PostEntityActionUndoEvent;
+import com.froobworld.farmcontrol.api.event.PreEntityActionEvent;
+import com.froobworld.farmcontrol.api.event.PreEntityActionUndoEvent;
 import com.froobworld.farmcontrol.controller.TriggerActionPair;
 import com.froobworld.farmcontrol.controller.tracker.CycleTracker;
 import com.froobworld.farmcontrol.data.FcData;
 import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
 import com.froobworld.farmcontrol.hook.scheduler.ScheduledTask;
 import com.froobworld.farmcontrol.hook.scheduler.SchedulerHook;
+import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Mob;
 
@@ -43,7 +48,9 @@ public class ActionPerformTask implements Runnable {
                     Set<TriggerActionPair> triggerActionPairs = triggerActionMap.get(snapshotEntity);
                     for (TriggerActionPair triggerActionPair : triggerActionPairs) {
                         if (fcData.add(triggerActionPair.trigger, triggerActionPair.action)) {
+                            Bukkit.getPluginManager().callEvent(new PreEntityActionEvent(entity, triggerActionPair.action));
                             triggerActionPair.action.doAction(entity);
+                            Bukkit.getPluginManager().callEvent(new PostEntityActionEvent(entity, triggerActionPair.action));
                             cycleTracker.reportAction(triggerActionPair.action, snapshotEntity);
                         }
                     }
@@ -69,7 +76,9 @@ public class ActionPerformTask implements Runnable {
                 Set<TriggerActionPair> triggerActionPairs = unTriggerActionMap.get(snapshotEntity);
                 for (TriggerActionPair triggerActionPair : triggerActionPairs) {
                     if (fcData.remove(triggerActionPair.trigger, triggerActionPair.action)) {
+                        Bukkit.getPluginManager().callEvent(new PreEntityActionUndoEvent(entity, triggerActionPair.action));
                         triggerActionPair.action.undoAction(entity);
+                        Bukkit.getPluginManager().callEvent(new PostEntityActionUndoEvent(entity, triggerActionPair.action));
                     }
                 }
                 fcData.save(entity);

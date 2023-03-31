@@ -26,7 +26,14 @@ public class ActionManager {
     }
 
     public void addAction(Action action) {
+        if (actions.containsKey(action.getName())) {
+            throw new IllegalStateException("An action named '" + action.getName() + "' has already been registered");
+        }
         actions.put(action.getName(), action);
+    }
+
+    public void removeAction(Action action) {
+        actions.remove(action.getName());
     }
 
     public Action getAction(String actionName) {
