@@ -7,10 +7,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up JDK
+      - name: Set up NabConfiguration JDK
         uses: actions/setup-java@v2
         with:
-          java-version: 17
+          java-version: 8
           distribution: 'adopt'
 
       - name: Check out NabConfiguration
@@ -23,6 +23,12 @@ jobs:
 
       - name: Install NabConfiguration
         run: ./gradlew install
+
+      - name: Set up FarmControl JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: 17
+          distribution: 'adopt'
 
       - name: Check out FarmControl
         uses: actions/checkout@v2
