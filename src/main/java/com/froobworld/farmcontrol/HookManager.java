@@ -16,17 +16,17 @@ public class HookManager {
 
     public HookManager(FarmControl farmControl) {
         this.farmControl = farmControl;
-        if (PaperTickHook.isCompatible()) {
-            tickHook = new PaperTickHook();
-        } else {
-            tickHook = new SpigotTickHook();
-        }
-        tickHook.register(farmControl);
         if (RegionisedSchedulerHook.isCompatible()) {
             schedulerHook = new RegionisedSchedulerHook(farmControl);
         } else {
             schedulerHook = new BukkitSchedulerHook(farmControl);
         }
+        if (PaperTickHook.isCompatible()) {
+            tickHook = new PaperTickHook();
+        } else {
+            tickHook = new SpigotTickHook(schedulerHook);
+        }
+        tickHook.register(farmControl);
     }
 
     public void load() {
