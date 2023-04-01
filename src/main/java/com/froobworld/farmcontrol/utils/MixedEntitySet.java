@@ -6,8 +6,14 @@ import com.google.common.collect.Maps;
 import java.util.*;
 
 public class MixedEntitySet implements Iterable<SnapshotEntity> {
-    private final Set<SnapshotEntity> unclassifiedEntities = new HashSet<>();
+    private final Comparator<SnapshotEntity> comparator;
+    private final Set<SnapshotEntity> unclassifiedEntities;
     private final Map<Object, MixedEntitySet> classifiedEntityMap = new HashMap<>();
+
+    public MixedEntitySet(Comparator<SnapshotEntity> comparator) {
+        this.comparator = comparator;
+        unclassifiedEntities = new TreeSet<>(comparator);
+    }
 
     public boolean add(SnapshotEntity entity) {
         return add(entity, entity.getClassifications().iterator());
@@ -17,7 +23,7 @@ public class MixedEntitySet implements Iterable<SnapshotEntity> {
         if (!classificationIterator.hasNext()) {
             return unclassifiedEntities.add(entity);
         } else {
-            return classifiedEntityMap.computeIfAbsent(classificationIterator.next(), c -> new MixedEntitySet()).add(entity, classificationIterator);
+            return classifiedEntityMap.computeIfAbsent(classificationIterator.next(), c -> new MixedEntitySet(comparator)).add(entity, classificationIterator);
         }
     }
 
