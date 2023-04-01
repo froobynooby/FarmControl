@@ -10,9 +10,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.io.*;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -20,7 +22,7 @@ public class NotificationCentre {
     private static final UUID CONSOLE_UUID = new UUID(0, 0);
     private final FarmControl farmControl;
     private final ExecutorService executorService;
-    private final Set<UUID> notifiableUsers = new HashSet<>();
+    private final Set<UUID> notifiableUsers = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     public NotificationCentre(FarmControl farmControl) {
         this.farmControl = farmControl;
@@ -83,7 +85,7 @@ public class NotificationCentre {
         return notifiableUsers.contains(uuid);
     }
 
-    public void load() {
+    public synchronized void load() {
         notifiableUsers.clear();
         File userFile = new File(farmControl.getDataFolder(), "notifiable-users.txt");
         if (!userFile.exists()) {
@@ -100,7 +102,7 @@ public class NotificationCentre {
         }
     }
 
-    private void save() {
+    private synchronized void save() {
         final Set<UUID> users = new HashSet<>(notifiableUsers);
         final File userFile = new File(farmControl.getDataFolder(), "notifiable-users.txt");
         executorService.submit(() -> {

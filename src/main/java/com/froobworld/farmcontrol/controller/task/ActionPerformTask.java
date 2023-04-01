@@ -76,7 +76,7 @@ public class ActionPerformTask implements Runnable {
                 FcData.removeIfEmpty(entity);
             }, null, entity);
         }
-        future.thenRunAsync(() -> cycleTracker.signalCompletion(world));
+        future.thenRunAsync(() -> schedulerHook.runTask(() -> cycleTracker.signalCompletion(world)));
     }
 
 }
