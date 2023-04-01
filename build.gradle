@@ -1,5 +1,5 @@
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
     id 'java'
 }
 
@@ -7,7 +7,7 @@ group 'com.froobworld'
 version '1.2.0'
 jar.enabled = false;
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.17
 
 repositories {
     mavenLocal();
@@ -19,7 +19,7 @@ repositories {
         url "https://oss.sonatype.org/content/groups/public/"
     }
     maven {
-        url "https://papermc.io/repo/repository/maven-public/"
+        url "https://repo.papermc.io/repository/maven-public/"
     }
     maven {
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
@@ -30,12 +30,13 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-    compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
+    testImplementation 'junit:junit:4.13.2'
+    //compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
+    compileOnly 'dev.folia:folia-api:1.19.4-R0.1-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.10.9'
-    compile 'org.jooq:joor-java-8:0.9.13'
-    compile 'com.froobworld:nab-configuration:1.0.2'
-    compile 'org.bstats:bstats-bukkit:2.2.1'
+    implementation 'org.jooq:joor-java-8:0.9.14'
+    implementation 'com.froobworld:nab-configuration:1.0.2'
+    implementation 'org.bstats:bstats-bukkit:2.2.1'
 }
 
 processResources {

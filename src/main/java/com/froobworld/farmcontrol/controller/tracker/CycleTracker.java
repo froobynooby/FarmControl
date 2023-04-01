@@ -28,7 +28,7 @@ public class CycleTracker {
         empty = false;
     }
 
-    public void signalCompletion(World world) {
+    public synchronized void signalCompletion(World world) {
         worldsWaitingOn.remove(world.getUID());
         if (worldsWaitingOn.isEmpty() && !empty) {
             cycleHistoryManager.reportCompletedCycle(statsBuilder.end(System.currentTimeMillis()));

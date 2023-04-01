@@ -50,7 +50,7 @@ public class FarmControl extends JavaPlugin {
         registerCommands();
 
         new FcMetrics(this, 9692);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, RemoveRandomMovementAction::cleanUp, 1200, 1200); // Hack to fix leaking entities
+        hookManager.getSchedulerHook().runRepeatingTask(RemoveRandomMovementAction::cleanUp, 1200, 1200); // Hack to fix leaking entities
     }
 
     public void reload() {

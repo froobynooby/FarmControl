@@ -81,7 +81,7 @@ public class CycleStats {
             return builder;
         }
 
-        public void action(Action action, SnapshotEntity entity) {
+        public synchronized void action(Action action, SnapshotEntity entity) {
             affectedEntities.add(entity);
             if (action.removes()) {
                 removedEntities.add(entity);

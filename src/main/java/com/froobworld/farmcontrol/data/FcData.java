@@ -3,6 +3,7 @@ package com.froobworld.farmcontrol.data;
 import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.controller.action.Action;
 import com.froobworld.farmcontrol.controller.trigger.Trigger;
+import com.google.common.collect.MapMaker;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
@@ -16,7 +17,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class FcData {
-    private static final Map<Entity, FcData> dataCache = new WeakHashMap<>();
+    private static final Map<Entity, FcData> dataCache = new MapMaker().weakKeys().makeMap();
     private static final NamespacedKey KEY = new NamespacedKey(FarmControl.getPlugin(FarmControl.class), "data");
     private static final PersistentDataType<String, FcData> TYPE = new PersistentDataType<String, FcData>() {
         private final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
