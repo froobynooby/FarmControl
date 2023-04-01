@@ -21,7 +21,7 @@ public class CycleHistoryManager {
         return new CycleTracker(this, worlds);
     }
 
-    void reportCompletedCycle(CycleStats cycleStats) {
+    synchronized void reportCompletedCycle(CycleStats cycleStats) {
         this.cycleStats.add(cycleStats);
         if (this.cycleStats.size() > 5) {
             this.cycleStats.remove();

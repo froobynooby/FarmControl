@@ -1,6 +1,7 @@
 package com.froobworld.farmcontrol.hook.tick;
 
 import com.froobworld.farmcontrol.FarmControl;
+import com.froobworld.farmcontrol.hook.scheduler.ScheduledTask;
 import com.froobworld.farmcontrol.utils.NmsUtils;
 import org.bukkit.Bukkit;
 
@@ -36,13 +37,12 @@ public class SpigotTickHook implements TickHook {
     }
 
     private final Set<Consumer<Long>> tickConsumers = new HashSet<>();
-    private Integer taskId;
+    private ScheduledTask scheduledTask;
 
     @Override
     public void register(FarmControl farmControl) {
-        if (taskId == null) {
-            taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(
-                    farmControl,
+        if (scheduledTask == null) {
+            scheduledTask = farmControl.getHookManager().getSchedulerHook().runRepeatingTask(
                     () -> tickConsumers.forEach(consumer -> consumer.accept(getLastTickTime())),
                     0, 1
             );

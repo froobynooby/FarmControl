@@ -1,6 +1,7 @@
 package com.froobworld.farmcontrol.controller.action;
 
 import com.froobworld.farmcontrol.utils.NmsUtils;
+import com.google.common.collect.MapMaker;
 import com.google.common.collect.Sets;
 import org.bukkit.entity.Mob;
 
@@ -9,7 +10,7 @@ import java.util.*;
 import static org.joor.Reflect.*;
 
 public class RemoveRandomMovementAction extends Action {
-    private final static Map<Mob, Set<Object>> entityRemovedGoalsMap = new WeakHashMap<>();
+    private final static Map<Mob, Set<Object>> entityRemovedGoalsMap = new MapMaker().weakKeys().makeMap();
     private final static Set<Class<?>> randomMovementGoals = new HashSet<>();
 
     static {

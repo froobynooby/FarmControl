@@ -48,7 +48,7 @@ public class UntriggerAllocationTask implements Runnable {
                 undos += untriggerStrategy.getEntityWeightFunction().apply(entity.getEntityType());
             }
         }
-        farmController.submitUntriggerPerformTask(new UntriggerPerformTask(actionsToUndo));
+        farmController.submitUntriggerPerformTask(new UntriggerPerformTask(farmControl.getHookManager().getSchedulerHook(), actionsToUndo));
     }
 
 }

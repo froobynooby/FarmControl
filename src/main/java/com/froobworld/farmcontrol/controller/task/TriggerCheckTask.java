@@ -7,11 +7,13 @@ import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
 import com.froobworld.farmcontrol.controller.tracker.CycleTracker;
 import com.froobworld.farmcontrol.controller.trigger.Trigger;
 import com.froobworld.farmcontrol.controller.trigger.UntriggerStrategy;
+import com.froobworld.farmcontrol.hook.scheduler.ScheduledTask;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.bukkit.World;
 import org.bukkit.entity.Mob;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -58,19 +60,35 @@ public class TriggerCheckTask implements Runnable {
 
             untriggerStrategyMap.entrySet().removeIf(entry -> worldLastTriggerCount.get(world).getOrDefault(entry.getKey(), 0) <= entry.getValue().getMinimumCyclesBeforeUndo());
             List<SnapshotEntity> snapshotEntities = new ArrayList<>();
+            CompletableFuture<Void> completableFuture = CompletableFuture.completedFuture(null);
             if (!profilesToRun.isEmpty() || !untriggerStrategyMap.isEmpty()) {
                 for (Mob entity : world.getEntitiesByClass(Mob.class)) {
-                    snapshotEntities.add(new SnapshotEntity(entity));
+                    CompletableFuture<Void> entityFuture = new CompletableFuture<>();
+                    ScheduledTask scheduledTask = farmControl.getHookManager().getSchedulerHook().runEntityTaskAsap(() -> {
+                        try {
+                            SnapshotEntity snapshotEntity = new SnapshotEntity(entity);
+                            synchronized (snapshotEntities) {
+                                snapshotEntities.add(snapshotEntity);
+                            }
+                        } finally {
+                            entityFuture.complete(null);
+                        }
+                    }, () -> entityFuture.complete(null), entity);
+                    if (scheduledTask != null) {
+                        completableFuture = completableFuture.thenCompose(v -> entityFuture);
+                    }
                 }
             }
-            if (!profilesToRun.isEmpty()) {
-                executorService.submit(new ActionAllocationTask(farmController, world, triggeredTriggers, snapshotEntities, profilesToRun, farmControl.getExclusionManager().getExclusionPredicate(world), farmControl.getActionManager().getActions(), cycleTracker));
-            } else {
-                cycleTracker.signalCompletion(world);
-            }
-            if (!untriggerStrategyMap.isEmpty()) {
-                executorService.submit(new UntriggerAllocationTask(farmControl, farmController, snapshotEntities, untriggerStrategyMap));
-            }
+            completableFuture.thenRunAsync(() -> {
+                if (!profilesToRun.isEmpty()) {
+                    executorService.submit(new ActionAllocationTask(farmController, world, farmControl.getHookManager().getSchedulerHook(), triggeredTriggers, snapshotEntities, profilesToRun, farmControl.getExclusionManager().getExclusionPredicate(world), farmControl.getActionManager().getActions(), cycleTracker));
+                } else {
+                    cycleTracker.signalCompletion(world);
+                }
+                if (!untriggerStrategyMap.isEmpty()) {
+                    executorService.submit(new UntriggerAllocationTask(farmControl, farmController, snapshotEntities, untriggerStrategyMap));
+                }
+            });
         }
     }
 

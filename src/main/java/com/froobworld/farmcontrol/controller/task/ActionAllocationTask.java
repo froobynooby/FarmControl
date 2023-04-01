@@ -11,6 +11,7 @@ import com.froobworld.farmcontrol.group.EntityGrouperResult;
 import com.froobworld.farmcontrol.group.Group;
 import com.froobworld.farmcontrol.controller.action.Action;
 import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
+import com.froobworld.farmcontrol.hook.scheduler.SchedulerHook;
 import com.froobworld.farmcontrol.utils.MixedEntitySet;
 import org.bukkit.World;
 
@@ -20,6 +21,7 @@ import java.util.function.Predicate;
 public class ActionAllocationTask implements Runnable {
     private final FarmController farmController;
     private final World world;
+    private final SchedulerHook schedulerHook;
     private final Set<Trigger> triggers;
     private final List<SnapshotEntity> snapshotEntities;
     private final Map<Trigger, Set<ActionProfile>> actionProfiles;
@@ -27,9 +29,10 @@ public class ActionAllocationTask implements Runnable {
     private final Set<Action> allActions;
     private final CycleTracker cycleTracker;
 
-    public ActionAllocationTask(FarmController farmController, World world, Set<Trigger> triggers, List<SnapshotEntity> snapshotEntities, Map<Trigger, Set<ActionProfile>> actionProfiles, Predicate<SnapshotEntity> shouldExcludePredicate, Set<Action> allActions, CycleTracker cycleTracker) {
+    public ActionAllocationTask(FarmController farmController, World world, SchedulerHook schedulerHook, Set<Trigger> triggers, List<SnapshotEntity> snapshotEntities, Map<Trigger, Set<ActionProfile>> actionProfiles, Predicate<SnapshotEntity> shouldExcludePredicate, Set<Action> allActions, CycleTracker cycleTracker) {
         this.farmController = farmController;
         this.world = world;
+        this.schedulerHook = schedulerHook;
         this.triggers = triggers;
         this.snapshotEntities = snapshotEntities;
         this.actionProfiles = actionProfiles;
@@ -87,7 +90,7 @@ public class ActionAllocationTask implements Runnable {
             }
         }
 
-        farmController.submitActionPerformTask(new ActionPerformTask(world, triggerActionMap, unTriggerActionMap, cycleTracker));
+        farmController.submitActionPerformTask(new ActionPerformTask(world, schedulerHook, triggerActionMap, unTriggerActionMap, cycleTracker));
     }
 
     private static class TriggerActionProfilePair {

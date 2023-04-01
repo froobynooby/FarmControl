@@ -4,6 +4,7 @@ main: com.froobworld.farmcontrol.FarmControl
 api-version: 1.15
 authors: [froobynooby]
 description: A plugin for controlling the size and functions of farms.
+folia-supported: true
 
 commands:
   farmcontrol:

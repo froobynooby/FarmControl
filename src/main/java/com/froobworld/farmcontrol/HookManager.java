@@ -1,5 +1,8 @@
 package com.froobworld.farmcontrol;
 
+import com.froobworld.farmcontrol.hook.scheduler.BukkitSchedulerHook;
+import com.froobworld.farmcontrol.hook.scheduler.RegionisedSchedulerHook;
+import com.froobworld.farmcontrol.hook.scheduler.SchedulerHook;
 import com.froobworld.farmcontrol.hook.tick.PaperTickHook;
 import com.froobworld.farmcontrol.hook.tick.SpigotTickHook;
 import com.froobworld.farmcontrol.hook.tick.TickHook;
@@ -8,6 +11,7 @@ import com.froobworld.farmcontrol.utils.MsptTracker;
 public class HookManager {
     private final FarmControl farmControl;
     private final TickHook tickHook;
+    private final SchedulerHook schedulerHook;
     private MsptTracker msptTracker;
 
     public HookManager(FarmControl farmControl) {
@@ -18,6 +22,11 @@ public class HookManager {
             tickHook = new SpigotTickHook();
         }
         tickHook.register(farmControl);
+        if (RegionisedSchedulerHook.isCompatible()) {
+            schedulerHook = new RegionisedSchedulerHook(farmControl);
+        } else {
+            schedulerHook = new BukkitSchedulerHook(farmControl);
+        }
     }
 
     public void load() {
@@ -35,6 +44,10 @@ public class HookManager {
 
     public MsptTracker getMsptTracker() {
         return msptTracker;
+    }
+
+    public SchedulerHook getSchedulerHook() {
+        return schedulerHook;
     }
 
 }
