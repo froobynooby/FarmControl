@@ -80,7 +80,9 @@ public class FarmController {
     public void removeWorld(World world) {
         worldTriggerProfilesMap.remove(world);
         for (Entity entity : world.getLivingEntities()) {
-            Actioner.undoAllActions(entity, farmControl);
+            farmControl.getHookManager().getSchedulerHook().runEntityTaskAsap(
+                    () -> Actioner.undoAllActions(entity, farmControl),
+                    null, entity);
         }
     }
 
