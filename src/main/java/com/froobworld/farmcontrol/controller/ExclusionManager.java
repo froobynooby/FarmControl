@@ -2,6 +2,7 @@ package com.froobworld.farmcontrol.controller;
 
 import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.config.FcConfig;
+import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 
@@ -18,7 +19,7 @@ public class ExclusionManager {
         this.farmControl = farmControl;
     }
 
-    public Predicate<Mob> getExclusionPredicate(World world) {
+    public Predicate<SnapshotEntity> getExclusionPredicate(World world) {
         FcConfig.WorldSettings.ExclusionSettings exclusionSettings = farmControl.getFcConfig().worldSettings.of(world).exclusionSettings;
         boolean excludeLeashed = exclusionSettings.leashed.get();
         boolean excludeLoveMode = exclusionSettings.loveMode.get();
@@ -28,35 +29,41 @@ public class ExclusionManager {
         boolean excludePatrolLeaders = exclusionSettings.patrolLeader.get();
         List<String> excludeType = exclusionSettings.type.get();
         long excludeTicksLived = exclusionSettings.youngerThan.get();
-        return entity -> {
-            if (excludeLeashed && entity.isLeashed()) {
+        return snapshotEntity -> {
+            if (excludeLeashed && snapshotEntity.isLeashed()) {
                 return true;
             }
-            if (excludeLoveMode && entity instanceof Animals && ((Animals) entity).isLoveMode()) {
+            if (excludeLoveMode && snapshotEntity.isLoveMode()) {
                 return true;
             }
-            if (excludeNamed && entity.getCustomName() != null) {
+            if (excludeNamed && snapshotEntity.hasCustomName()) {
                 return true;
             }
-            if (excludeTamed && entity instanceof Tameable && ((Tameable) entity).isTamed()) {
+            if (excludeTamed && snapshotEntity.isTamed()) {
                 return true;
             }
-            if (excludePatrolLeaders && entity instanceof Raider && ((Raider) entity).isPatrolLeader()) {
+            if (excludePatrolLeaders && snapshotEntity.isPatrolLeader()) {
                 return true;
             }
-            if (entity.getTicksLived() < excludeTicksLived) {
+            if (snapshotEntity.getTicksLived() < excludeTicksLived) {
                 return true;
             }
             for (String meta : excludeMeta) {
-                if (entity.hasMetadata(meta)) {
+                if (snapshotEntity.hasMetadata(meta)) {
                     return true;
                 }
             }
             for (String type : excludeType) {
-                if (entity.getType().toString().equalsIgnoreCase(type)) {
+                if (snapshotEntity.getEntityType().toString().equalsIgnoreCase(type)) {
                     return true;
                 }
             }
+            return false;
+        };
+    }
+
+    public Predicate<Mob> getCustomExclusionPredicate(World world) {
+        return entity -> {
             for (Predicate<Mob> customPredicate : customPredicates) {
                 if (customPredicate.test(entity)) {
                     return true;

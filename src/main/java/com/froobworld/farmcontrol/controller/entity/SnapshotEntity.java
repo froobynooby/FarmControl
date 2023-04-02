@@ -10,16 +10,28 @@ import java.util.List;
 
 public class SnapshotEntity {
     private final Mob entity;
-    private final boolean excluded;
+    private final boolean customExcluded;
     private final Vector location;
     private final FcData fcData;
+    private final boolean leashed;
+    private final boolean loveMode;
+    private final boolean customName;
+    private final boolean tamed;
+    private final boolean isPatrolLeader;
+    private final int ticksLived;
     private final List<Object> classifications = new ArrayList<>();
 
     public SnapshotEntity(Mob entity, boolean excluded) {
         this.entity = entity;
-        this.excluded = excluded;
+        this.customExcluded = excluded;
         this.location = entity.getLocation().toVector();
         this.fcData = FcData.get(entity);
+        this.leashed = entity.isLeashed();
+        this.loveMode = entity instanceof Animals && ((Animals) entity).isLoveMode();
+        this.customName = entity.getCustomName() != null;
+        this.tamed = entity instanceof Tameable && ((Tameable) entity).isTamed();
+        this.isPatrolLeader = entity instanceof Raider && ((Raider) entity).isPatrolLeader();
+        this.ticksLived = entity.getTicksLived();
         classifications.add(entity.getType());
         if (entity instanceof Colorable) {
             classifications.add(((Colorable) entity).getColor());
@@ -27,6 +39,10 @@ public class SnapshotEntity {
         if (entity instanceof Villager) {
             classifications.add(((Villager) entity).getProfession());
         }
+    }
+
+    public Class<? extends Mob> getEntityClass() {
+        return entity.getClass();
     }
 
     public EntityType getEntityType() {
@@ -45,11 +61,39 @@ public class SnapshotEntity {
         return entity;
     }
 
+    public boolean hasMetadata(String key) {
+        return entity.hasMetadata(key);
+    }
+
+    public boolean isLeashed() {
+        return leashed;
+    }
+
+    public boolean isLoveMode() {
+        return loveMode;
+    }
+
+    public boolean hasCustomName() {
+        return customName;
+    }
+
+    public boolean isTamed() {
+        return tamed;
+    }
+
+    public boolean isPatrolLeader() {
+        return isPatrolLeader;
+    }
+
+    public int getTicksLived() {
+        return ticksLived;
+    }
+
     public List<Object> getClassifications() {
         return classifications;
     }
 
-    public boolean isExcluded() {
-        return excluded;
+    public boolean isCustomExcluded() {
+        return customExcluded;
     }
 }

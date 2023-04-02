@@ -16,6 +16,7 @@ import com.froobworld.farmcontrol.utils.MixedEntitySet;
 import org.bukkit.World;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 public class ActionAllocationTask implements Runnable {
     private final FarmController farmController;
@@ -24,16 +25,18 @@ public class ActionAllocationTask implements Runnable {
     private final Set<Trigger> triggers;
     private final List<SnapshotEntity> snapshotEntities;
     private final Map<Trigger, Set<ActionProfile>> actionProfiles;
+    private final Predicate<SnapshotEntity> shouldExcludePredicate;
     private final Set<Action> allActions;
     private final CycleTracker cycleTracker;
 
-    public ActionAllocationTask(FarmController farmController, World world, SchedulerHook schedulerHook, Set<Trigger> triggers, List<SnapshotEntity> snapshotEntities, Map<Trigger, Set<ActionProfile>> actionProfiles, Set<Action> allActions, CycleTracker cycleTracker) {
+    public ActionAllocationTask(FarmController farmController, World world, SchedulerHook schedulerHook, Set<Trigger> triggers, List<SnapshotEntity> snapshotEntities, Map<Trigger, Set<ActionProfile>> actionProfiles, Predicate<SnapshotEntity> shouldExcludePredicate, Set<Action> allActions, CycleTracker cycleTracker) {
         this.farmController = farmController;
         this.world = world;
         this.schedulerHook = schedulerHook;
         this.triggers = triggers;
         this.snapshotEntities = snapshotEntities;
         this.actionProfiles = actionProfiles;
+        this.shouldExcludePredicate = shouldExcludePredicate;
         this.allActions = allActions;
         this.cycleTracker = cycleTracker;
     }
@@ -54,7 +57,7 @@ public class ActionAllocationTask implements Runnable {
                 MixedEntitySet.MixedEntityIterator iterator = group.getMembers().iterator();
                 while (group.meetsCondition() && iterator.hasNext()) {
                     SnapshotEntity next = iterator.next();
-                    if (next.isExcluded()) {
+                    if (next.isCustomExcluded() || shouldExcludePredicate.test(next)) {
                         iterator.skipLast();
                         continue;
                     }
