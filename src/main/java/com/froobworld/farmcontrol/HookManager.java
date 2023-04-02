@@ -30,6 +30,9 @@ public class HookManager {
     }
 
     public void load() {
+        if (RegionisedSchedulerHook.isCompatible()) {
+            return;
+        }
         msptTracker = new MsptTracker(
                 farmControl.getFcConfig().msptTracker.collectionPeriod.get(),
                 tickHook
@@ -38,7 +41,9 @@ public class HookManager {
     }
 
     public void reload() {
-        msptTracker.unregister();
+        if (msptTracker != null) {
+            msptTracker.unregister();
+        }
         load();
     }
 
