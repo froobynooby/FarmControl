@@ -4,7 +4,7 @@ import com.froobworld.farmcontrol.hook.scheduler.BukkitSchedulerHook;
 import com.froobworld.farmcontrol.hook.scheduler.RegionisedSchedulerHook;
 import com.froobworld.farmcontrol.hook.scheduler.SchedulerHook;
 import com.froobworld.farmcontrol.hook.tick.PaperTickHook;
-import com.froobworld.farmcontrol.hook.tick.SpigotTickHook;
+import com.froobworld.farmcontrol.hook.tick.BukkitTickHook;
 import com.froobworld.farmcontrol.hook.tick.TickHook;
 import com.froobworld.farmcontrol.utils.MsptTracker;
 
@@ -21,23 +21,26 @@ public class HookManager {
         } else {
             schedulerHook = new BukkitSchedulerHook(farmControl);
         }
-        if (PaperTickHook.isCompatible()) {
+        if (RegionisedSchedulerHook.isCompatible()) {
+            tickHook = null;
+        } else if (PaperTickHook.isCompatible()) {
             tickHook = new PaperTickHook();
         } else {
-            tickHook = new SpigotTickHook(schedulerHook);
+            tickHook = new BukkitTickHook(schedulerHook);
         }
-        tickHook.register(farmControl);
+        if (tickHook != null) {
+            tickHook.register(farmControl);
+        }
     }
 
     public void load() {
-        if (RegionisedSchedulerHook.isCompatible()) {
-            return;
+        if (tickHook != null) {
+            msptTracker = new MsptTracker(
+                    farmControl.getFcConfig().msptTracker.collectionPeriod.get(),
+                    tickHook
+            );
+            msptTracker.register();
         }
-        msptTracker = new MsptTracker(
-                farmControl.getFcConfig().msptTracker.collectionPeriod.get(),
-                tickHook
-        );
-        msptTracker.register();
     }
 
     public void reload() {
@@ -49,6 +52,10 @@ public class HookManager {
 
     public MsptTracker getMsptTracker() {
         return msptTracker;
+    }
+
+    public TickHook getTickHook() {
+        return tickHook;
     }
 
     public SchedulerHook getSchedulerHook() {

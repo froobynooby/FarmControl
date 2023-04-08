@@ -13,7 +13,7 @@ import java.util.function.Consumer;
 
 import static org.joor.Reflect.*;
 
-public class SpigotTickHook implements TickHook {
+public class BukkitTickHook implements TickHook {
     private static final long[] tickTimes;
     static {
         Class<?> serverClass = null;
@@ -41,7 +41,7 @@ public class SpigotTickHook implements TickHook {
     private final SchedulerHook schedulerHook;
     private ScheduledTask scheduledTask;
 
-    public SpigotTickHook(SchedulerHook schedulerHook) {
+    public BukkitTickHook(SchedulerHook schedulerHook) {
         this.schedulerHook = schedulerHook;
     }
 
