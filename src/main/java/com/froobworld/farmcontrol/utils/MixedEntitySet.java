@@ -11,8 +11,9 @@ public class MixedEntitySet implements Iterable<SnapshotEntity> {
     private final Map<Object, MixedEntitySet> classifiedEntityMap = new HashMap<>();
 
     public MixedEntitySet(Comparator<SnapshotEntity> comparator) {
-        this.comparator = comparator;
-        unclassifiedEntities = new TreeSet<>(comparator);
+        // if equal, resolve by comparing the entity ID
+        this.comparator = comparator.thenComparingInt(SnapshotEntity::getEntityId);
+        unclassifiedEntities = new TreeSet<>(this.comparator);
     }
 
     public boolean add(SnapshotEntity entity) {

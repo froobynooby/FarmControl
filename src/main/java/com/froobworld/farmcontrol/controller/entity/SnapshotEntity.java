@@ -10,6 +10,7 @@ import java.util.List;
 
 public class SnapshotEntity {
     private final Mob entity;
+    private final int entityId;
     private final Vector location;
     private final FcData fcData;
     private final boolean leashed;
@@ -22,6 +23,7 @@ public class SnapshotEntity {
 
     public SnapshotEntity(Mob entity) {
         this.entity = entity;
+        this.entityId = entity.getEntityId();
         this.location = entity.getLocation().toVector();
         this.fcData = FcData.get(entity);
         this.leashed = entity.isLeashed();
@@ -41,6 +43,10 @@ public class SnapshotEntity {
 
     public Class<? extends Mob> getEntityClass() {
         return entity.getClass();
+    }
+
+    public int getEntityId() {
+        return entityId;
     }
 
     public EntityType getEntityType() {
