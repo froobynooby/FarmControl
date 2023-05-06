@@ -5,7 +5,7 @@ import org.bukkit.entity.Mob;
 public class DisableCollisionsAction extends Action {
 
     public DisableCollisionsAction() {
-        super("disable-collisions", false, false);
+        super("disable-collisions", false, false, true);
     }
 
     @Override

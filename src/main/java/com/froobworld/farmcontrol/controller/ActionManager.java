@@ -2,6 +2,7 @@ package com.froobworld.farmcontrol.controller;
 
 import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.controller.action.*;
+import com.froobworld.farmcontrol.controller.breeding.BreedingBlocker;
 import com.froobworld.farmcontrol.utils.NmsUtils;
 
 import java.util.HashMap;
@@ -18,6 +19,7 @@ public class ActionManager {
         addAction(new RemoveAction());
         addAction(new RemoveAiAction());
         addAction(new RemoveAwarenessAction());
+        addAction(new DisableBreedingAction(new BreedingBlocker(farmControl)));
         if (NmsUtils.GoalSelectorHelper.isCompatible()) {
             addAction(new RemoveRandomMovementAction());
         } else {

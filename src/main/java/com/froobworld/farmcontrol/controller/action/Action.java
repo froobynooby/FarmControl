@@ -6,14 +6,16 @@ public abstract class Action {
     private final String name;
     private final boolean removes;
     private final boolean persistent;
+    private final boolean undoOnUnload;
 
-    public Action(String name, boolean removes, boolean persistent) {
+    public Action(String name, boolean removes, boolean persistent, boolean undoOnUnload) {
         if (!name.matches("[a-z-]+")) {
             throw new IllegalArgumentException("Name must match [a-z-]+");
         }
         this.name = name;
         this.removes = removes;
         this.persistent = persistent;
+        this.undoOnUnload = undoOnUnload;
     }
 
     public final String getName() {
@@ -28,8 +30,11 @@ public abstract class Action {
         return persistent;
     }
 
+    public boolean undoOnUnload() {
+        return undoOnUnload;
+    }
+
     public abstract void doAction(Mob mob);
 
     public abstract void undoAction(Mob mob);
-
 }

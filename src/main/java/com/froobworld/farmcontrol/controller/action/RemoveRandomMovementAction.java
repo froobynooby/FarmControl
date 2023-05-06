@@ -29,7 +29,7 @@ public class RemoveRandomMovementAction extends Action {
     }
 
     public RemoveRandomMovementAction() {
-        super("remove-random-movement", false, false);
+        super("remove-random-movement", false, false, true);
     }
 
     @Override

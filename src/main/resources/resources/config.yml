@@ -3,7 +3,7 @@
 # GitHub: https://github.com/froobynooby/FarmControl
 
 # Please don't change this!
-version: 6
+version: 7
 
 # Every how many ticks should we run the profile check / action cycle?
 cycle-period: 600
@@ -23,6 +23,7 @@ world-settings:
       # These profiles are constantly run.
       proactive:
         - soft-nerf-animal-farms
+      #  - soft-limit-animal-farms
       #  - trim-animal-farms
       #  - trim-sparse-animal-farms
 
@@ -130,6 +131,13 @@ world-settings:
 
         disable-collisions:
           tempt: true
+
+        disable-breeding:
+          # You have to interact with an animal to breed it, so never undo this action on interact.
+          interact: false
+
+          # Holding the food required to breed an animal will tempt it, so never undo this action on tempt.
+          tempt: false
 
 # These settings concern how we determine the server's MSPT.
 mspt-tracker-settings:

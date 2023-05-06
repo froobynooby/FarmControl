@@ -5,7 +5,7 @@ import org.bukkit.entity.Mob;
 public class RemoveAwarenessAction extends Action {
 
     public RemoveAwarenessAction() {
-        super("remove-awareness", false, true);
+        super("remove-awareness", false, true, true);
     }
 
     @Override

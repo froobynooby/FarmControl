@@ -119,6 +119,9 @@ public class CompatibilityListener implements Listener {
                 return;
             }
             for (Action action : farmControl.getActionManager().getActions()) {
+                if (!action.undoOnUnload()) {
+                    continue;
+                }
                 if (fcData.removeAction(action)) {
                     action.undoAction((Mob) entity);
                 }

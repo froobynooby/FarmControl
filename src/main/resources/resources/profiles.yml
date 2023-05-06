@@ -34,6 +34,17 @@ profiles:
       - remove-ai
       - disable-collisions
 
+  # Disable breeding in farms containing 20 or more animals of the same type
+  soft-limit-animal-farms:
+    group:
+      types:
+        - "category:animal"
+      count: 20
+      distance: 5
+      pure: true
+    actions:
+      - disable-breeding
+
   # No more than 20 animals (all of the same type) within close proximity
   trim-animal-farms:
     group:

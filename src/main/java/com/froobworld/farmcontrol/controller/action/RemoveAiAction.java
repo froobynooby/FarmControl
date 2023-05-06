@@ -6,7 +6,7 @@ import org.bukkit.util.Vector;
 public class RemoveAiAction extends Action {
 
     public RemoveAiAction() {
-        super("remove-ai", false, true);
+        super("remove-ai", false, true, true);
     }
 
     @Override
