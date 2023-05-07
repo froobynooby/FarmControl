@@ -18,8 +18,9 @@ public class CycleTracker {
     CycleTracker(CycleHistoryManager cycleHistoryManager, Collection<World> worldsRequired) {
         this.cycleHistoryManager = cycleHistoryManager;
         statsBuilder = CycleStats.Builder.start(System.currentTimeMillis());
+        //noinspection Convert2MethodRef - the compiler changes the method reference to WorldInfo:getUID, which breaks compatibility
         worldsWaitingOn = worldsRequired.stream()
-                .map(World::getUID)
+                .map(world -> world.getUID())
                 .collect(Collectors.toSet());
     }
 

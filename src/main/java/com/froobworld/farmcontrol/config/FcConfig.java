@@ -32,8 +32,9 @@ public class FcConfig extends NabConfiguration {
     @Entry(key = "start-up-delay")
     public final ConfigEntry<Long> startUpDelay = ConfigEntries.longEntry();
 
+    @SuppressWarnings("Convert2MethodRef") // the compiler changes the method reference to WorldInfo:getName, which breaks compatibility
     @SectionMap(key = "world-settings", defaultKey = "default")
-    public final ConfigSectionMap<World, WorldSettings> worldSettings = new ConfigSectionMap<>(World::getName, WorldSettings.class, true);
+    public final ConfigSectionMap<World, WorldSettings> worldSettings = new ConfigSectionMap<>(world -> world.getName(), WorldSettings.class, true);
 
     public static class WorldSettings extends ConfigSection {
 
