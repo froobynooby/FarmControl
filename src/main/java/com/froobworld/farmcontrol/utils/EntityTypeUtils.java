@@ -16,8 +16,6 @@ public final class EntityTypeUtils {
                 return entity -> Animals.class.isAssignableFrom(entity.getEntityClass());
             } else if (category.equalsIgnoreCase("monster")) {
                 return entity -> Monster.class.isAssignableFrom(entity.getEntityClass());
-            } else if (category.equalsIgnoreCase("projectile")) {
-                return entity -> Projectile.class.isAssignableFrom(entity.getEntityClass());
             } else if (category.equalsIgnoreCase("golem")) {
                 return entity -> Golem.class.isAssignableFrom(entity.getEntityClass());
             } else if (category.equalsIgnoreCase("ambient")) {
