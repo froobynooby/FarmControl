@@ -7,8 +7,7 @@ import java.util.function.Predicate;
 
 public final class EntityTypeUtils {
 
-    private EntityTypeUtils() {
-    }
+    private EntityTypeUtils(){}
 
     public static Predicate<SnapshotEntity> fromString(String string) {
         if (string.toLowerCase().startsWith("category:")) {
