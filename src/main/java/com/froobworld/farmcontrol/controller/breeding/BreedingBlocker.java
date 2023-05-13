@@ -9,6 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityBreedEvent;
 import org.bukkit.event.entity.EntityEnterLoveModeEvent;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -55,6 +56,13 @@ public class BreedingBlocker implements Listener {
             if (event.getHumanEntity() instanceof Player) {
                 sendFailureMessage((Player) event.getHumanEntity(), event.getEntity());
             }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    private void onBreed(EntityBreedEvent event) {
+        if (isBreedingDisabled(event.getMother()) && isBreedingDisabled(event.getFather())) {
+            event.setCancelled(true);
         }
     }
 
