@@ -45,6 +45,16 @@ profiles:
     actions:
       - disable-breeding
 
+  # Disable breeding in villager farms containing 20 or more villagers
+  soft-limit-villager-breeders:
+    group:
+      types:
+        - "villager"
+      count: 20
+      distance: 10
+    actions:
+      - disable-breeding
+
   # No more than 20 animals (all of the same type) within close proximity
   trim-animal-farms:
     group:

@@ -24,6 +24,7 @@ world-settings:
       proactive:
         - soft-nerf-animal-farms
       #  - soft-limit-animal-farms
+      #  - soft-limit-villager-breeders
       #  - trim-animal-farms
       #  - trim-sparse-animal-farms
 
