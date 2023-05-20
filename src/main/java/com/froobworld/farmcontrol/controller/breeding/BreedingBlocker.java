@@ -38,7 +38,7 @@ public class BreedingBlocker implements Listener {
     }
 
     public boolean isBreedingDisabled(Entity entity) {
-        return entity.getPersistentDataContainer().has(pdcKey);
+        return entity.getPersistentDataContainer().has(pdcKey, PersistentDataType.BYTE);
     }
 
     private void sendFailureMessage(Player player, Entity entity) {
