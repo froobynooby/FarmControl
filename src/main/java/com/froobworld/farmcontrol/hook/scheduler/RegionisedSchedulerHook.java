@@ -46,7 +46,7 @@ public class RegionisedSchedulerHook implements SchedulerHook {
 
     public static boolean isCompatible() {
         try {
-            Class.forName("io.papermc.paper.threadedregions.scheduler.AsyncScheduler");
+            Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
         } catch (ClassNotFoundException e) {
             return false;
         }
