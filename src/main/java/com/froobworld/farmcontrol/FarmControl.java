@@ -5,6 +5,7 @@ import com.froobworld.farmcontrol.config.FcConfig;
 import com.froobworld.farmcontrol.controller.*;
 import com.froobworld.farmcontrol.controller.action.RemoveRandomMovementAction;
 import com.froobworld.farmcontrol.listener.CompatibilityListener;
+import com.froobworld.farmcontrol.message.MessageManager;
 import com.froobworld.farmcontrol.metrics.FcMetrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,6 +20,7 @@ public class FarmControl extends JavaPlugin {
     private ProfileManager profileManager;
     private ExclusionManager exclusionManager;
     private FarmController farmController;
+    private MessageManager messageManager;
 
     public void onEnable() {
         this.fcConfig = new FcConfig(this);
@@ -42,6 +44,14 @@ public class FarmControl extends JavaPlugin {
             return;
         }
         exclusionManager = new ExclusionManager(this);
+        messageManager = new MessageManager(this);
+        try {
+            messageManager.reload();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
         farmController = new FarmController(this);
         farmController.load();
         farmController.register();
@@ -64,6 +74,11 @@ public class FarmControl extends JavaPlugin {
         try {
             profileManager.reload();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            messageManager.reload();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         farmController.reload();
@@ -105,6 +120,10 @@ public class FarmControl extends JavaPlugin {
         return hookManager;
     }
 
+    public MessageManager getMessageManager() {
+        return messageManager;
+    }
+
     public void registerCommands() {
         FarmControlCommand farmControlCommand = new FarmControlCommand(this);
         getCommand("farmcontrol").setExecutor(farmControlCommand);
@@ -112,5 +131,4 @@ public class FarmControl extends JavaPlugin {
         getCommand("farmcontrol").setPermission("farmcontrol.command.farmcontrol");
         getCommand("farmcontrol").setPermissionMessage(FarmControlCommand.NO_PERMISSION_MESSAGE);
     }
-
 }

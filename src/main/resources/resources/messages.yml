@@ -1,0 +1,9 @@
+# Message configuration for FarmControl.
+# All messages are formatted using the MiniMessage language.
+# See https://docs.advntr.dev/minimessage/format.html for a formatting guide.
+
+# Please don't change this!
+version: 1
+
+# Displayed to players who attempt to breed animals affected by the disable-breeding action.
+breeding-disabled: "<red>Breeding has been disabled for this animal."

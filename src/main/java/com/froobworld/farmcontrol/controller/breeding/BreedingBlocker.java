@@ -3,7 +3,6 @@ package com.froobworld.farmcontrol.controller.breeding;
 import com.froobworld.farmcontrol.FarmControl;
 import com.google.common.collect.MapMaker;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -19,12 +18,13 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class BreedingBlocker implements Listener {
-    private static final String  FAILURE_MESSAGE = ChatColor.RED + "Breeding has been disabled for this animal.";
     private static final long MESSAGE_RATE_LIMIT = TimeUnit.MILLISECONDS.toMillis(500);
+    private final FarmControl farmControl;
     private final Map<Player, Map<UUID, Long>> lastMessage = new MapMaker().weakKeys().makeMap();
     private final NamespacedKey pdcKey;
 
     public BreedingBlocker(FarmControl farmControl) {
+        this.farmControl = farmControl;
         pdcKey = NamespacedKey.fromString("breeding-disabled", farmControl);
         Bukkit.getPluginManager().registerEvents(this, farmControl);
     }
@@ -44,7 +44,7 @@ public class BreedingBlocker implements Listener {
     private void sendFailureMessage(Player player, Entity entity) {
         // Don't spam failure messages for attempting to breed the same animal in quick succession
         if (System.currentTimeMillis() - lastMessage.computeIfAbsent(player, k -> new HashMap<>()).computeIfAbsent(entity.getUniqueId(), k -> 0L) > MESSAGE_RATE_LIMIT) {
-            player.sendMessage(FAILURE_MESSAGE);
+            farmControl.getMessageManager().sendMessage(player, "breeding-disabled");
             lastMessage.get(player).put(entity.getUniqueId(), System.currentTimeMillis());
         }
     }
