@@ -1,6 +1,7 @@
 package com.froobworld.farmcontrol.controller.entity;
 
 import com.froobworld.farmcontrol.data.FcData;
+import org.bukkit.DyeColor;
 import org.bukkit.entity.*;
 import org.bukkit.material.Colorable;
 import org.bukkit.util.Vector;
@@ -34,7 +35,10 @@ public class SnapshotEntity {
         this.ticksLived = entity.getTicksLived();
         classifications.add(entity.getType());
         if (entity instanceof Colorable) {
-            classifications.add(((Colorable) entity).getColor());
+            DyeColor colour = ((Colorable) entity).getColor();
+            if (colour != null) {
+                classifications.add(colour);
+            }
         }
         if (entity instanceof Villager) {
             classifications.add(((Villager) entity).getProfession());
