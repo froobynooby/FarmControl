@@ -100,11 +100,9 @@ public class FarmControlCommand implements CommandExecutor {
                 if (args.length == 1) {
                     if (sender.hasPermission("farmcontrol.command.reload")) {
                         completions.add("reload");
-                        completions.add("rl");
                     }
                     if (sender.hasPermission("farmcontrol.command.status")) {
                         completions.add("status");
-                        completions.add("stats");
                     }
                     if (sender.hasPermission("farmcontrol.command.history")) {
                         completions.add("history");
