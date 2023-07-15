@@ -75,8 +75,10 @@ public class FarmControl extends JavaPlugin {
     }
 
     public void onDisable() {
-        farmController.unRegister();
-        farmController.unload();
+        if (farmController != null) {
+            farmController.unRegister();
+            farmController.unload();
+        }
         RemoveRandomMovementAction.cleanUp();
     }
 
