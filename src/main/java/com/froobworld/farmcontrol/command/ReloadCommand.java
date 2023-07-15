@@ -16,8 +16,13 @@ public class ReloadCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-        farmControl.reload();
-        sender.sendMessage(ChatColor.YELLOW + "Plugin reloaded.");
+        try {
+            farmControl.reload();
+            sender.sendMessage(ChatColor.YELLOW + "Plugin reloaded.");
+        } catch (Exception e) {
+            sender.sendMessage(ChatColor.RED + "Encountered an error reloading the plugin, see console for details.");
+            e.printStackTrace();
+        }
         return true;
     }
 }

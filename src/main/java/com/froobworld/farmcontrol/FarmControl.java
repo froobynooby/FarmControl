@@ -63,24 +63,12 @@ public class FarmControl extends JavaPlugin {
         hookManager.getSchedulerHook().runRepeatingTask(RemoveRandomMovementAction::cleanUp, 1200, 1200); // Hack to fix leaking entities
     }
 
-    public void reload() {
-        try {
-            fcConfig.load();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void reload() throws Exception {
+        fcConfig.load();
         hookManager.reload();
         farmController.unRegister();
-        try {
-            profileManager.reload();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            messageManager.reload();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        profileManager.reload();
+        messageManager.reload();
         farmController.reload();
         farmController.register();
 
