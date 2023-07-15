@@ -3,7 +3,7 @@ version: ${version}
 main: com.froobworld.farmcontrol.FarmControl
 api-version: 1.15
 authors: [froobynooby]
-description: A plugin for controlling the size and functions of farms.
+description: A farm limiter and governor.
 folia-supported: true
 
 commands:
