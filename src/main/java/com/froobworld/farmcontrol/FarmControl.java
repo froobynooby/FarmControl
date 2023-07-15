@@ -4,7 +4,6 @@ import com.froobworld.farmcontrol.command.FarmControlCommand;
 import com.froobworld.farmcontrol.config.FcConfig;
 import com.froobworld.farmcontrol.controller.*;
 import com.froobworld.farmcontrol.controller.action.RemoveRandomMovementAction;
-import com.froobworld.farmcontrol.listener.CompatibilityListener;
 import com.froobworld.farmcontrol.message.MessageManager;
 import com.froobworld.farmcontrol.metrics.FcMetrics;
 import org.bukkit.Bukkit;
@@ -55,7 +54,6 @@ public class FarmControl extends JavaPlugin {
         farmController = new FarmController(this);
         farmController.load();
         farmController.register();
-        Bukkit.getPluginManager().registerEvents(new CompatibilityListener(this), this);
 
         registerCommands();
 

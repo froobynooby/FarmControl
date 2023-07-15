@@ -17,6 +17,7 @@ public class FarmController {
     private final FarmControl farmControl;
     private final CycleHistoryManager cycleHistoryManager;
     private final Map<World, Map<Trigger, Set<ActionProfile>>> worldTriggerProfilesMap = new HashMap<>();
+    private final CompatibilityListener compatibilityListener;
     private ScheduledTask scheduledTask;
     private TriggerCheckTask triggerCheckTask = null;
     private boolean registered;
@@ -24,6 +25,7 @@ public class FarmController {
     public FarmController(FarmControl farmControl) {
         this.farmControl = farmControl;
         cycleHistoryManager = new CycleHistoryManager(farmControl);
+        compatibilityListener = new CompatibilityListener(farmControl, this);
     }
 
     public void load() {

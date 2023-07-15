@@ -6,11 +6,17 @@ import com.froobworld.farmcontrol.data.FcData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
+import java.util.function.Predicate;
+
 public final class Actioner {
 
     private Actioner() {}
 
     public static void undoAllActions(Entity entity, FarmControl farmControl) {
+        undoActions(entity, action -> true, farmControl);
+    }
+
+    public static void undoActions(Entity entity, Predicate<Action> actionUndoPredicate, FarmControl farmControl) {
         if (!(entity instanceof Mob)) {
             return;
         }
@@ -19,8 +25,10 @@ public final class Actioner {
             return;
         }
         for (Action action : farmControl.getActionManager().getActions()) {
-            if (fcData.removeAction(action)) {
-                action.undoAction((Mob) entity);
+            if (actionUndoPredicate.test(action)) {
+                if (fcData.removeAction(action)) {
+                    action.undoAction((Mob) entity);
+                }
             }
         }
         fcData.save(entity);
