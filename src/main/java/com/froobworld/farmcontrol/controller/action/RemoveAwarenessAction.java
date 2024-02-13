@@ -1,5 +1,6 @@
 package com.froobworld.farmcontrol.controller.action;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
 public class RemoveAwarenessAction extends Action {
@@ -9,7 +10,10 @@ public class RemoveAwarenessAction extends Action {
     }
 
     @Override
-    public void doAction(Mob mob) {
+    public void doAction(Entity entity) {
+        if (!(entity instanceof Mob mob)) {
+            return;
+        }
         mob.setAware(false);
     }
 

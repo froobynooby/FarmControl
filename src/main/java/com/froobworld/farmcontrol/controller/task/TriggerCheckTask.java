@@ -10,6 +10,7 @@ import com.froobworld.farmcontrol.controller.trigger.UntriggerStrategy;
 import com.froobworld.farmcontrol.hook.scheduler.ScheduledTask;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.bukkit.World;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
 import java.util.*;
@@ -62,7 +63,7 @@ public class TriggerCheckTask implements Runnable {
             List<SnapshotEntity> snapshotEntities = new ArrayList<>();
             CompletableFuture<Void> completableFuture = CompletableFuture.completedFuture(null);
             if (!profilesToRun.isEmpty() || !untriggerStrategyMap.isEmpty()) {
-                for (Mob entity : world.getEntitiesByClass(Mob.class)) {
+                for (Entity entity : world.getEntities()) {
                     CompletableFuture<Void> entityFuture = new CompletableFuture<>();
                     ScheduledTask scheduledTask = farmControl.getHookManager().getSchedulerHook().runEntityTaskAsap(() -> {
                         try {

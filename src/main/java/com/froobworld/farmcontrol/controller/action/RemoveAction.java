@@ -1,5 +1,6 @@
 package com.froobworld.farmcontrol.controller.action;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
 public class RemoveAction extends Action {
@@ -9,8 +10,8 @@ public class RemoveAction extends Action {
     }
 
     @Override
-    public void doAction(Mob mob) {
-        mob.remove();
+    public void doAction(Entity entity) {
+        entity.remove();
     }
 
     @Override

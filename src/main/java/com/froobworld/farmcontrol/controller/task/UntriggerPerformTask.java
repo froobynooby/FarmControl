@@ -4,6 +4,7 @@ import com.froobworld.farmcontrol.controller.TriggerActionPair;
 import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
 import com.froobworld.farmcontrol.data.FcData;
 import com.froobworld.farmcontrol.hook.scheduler.SchedulerHook;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
 import java.util.Map;
@@ -21,9 +22,9 @@ public class UntriggerPerformTask implements Runnable {
     @Override
     public void run() {
         for (SnapshotEntity snapshotEntity : actionsToUndo.keySet()) {
-            Mob entity = snapshotEntity.getEntity();
+            Entity entity = snapshotEntity.getEntity();
             schedulerHook.runEntityTaskAsap(() -> {
-                if (!entity.isValid()) {
+                if (!(entity instanceof Mob mob) || !entity.isValid()) {
                     return;
                 }
                 FcData fcData = FcData.get(entity);
@@ -32,7 +33,7 @@ public class UntriggerPerformTask implements Runnable {
                 }
                 for (TriggerActionPair triggerActionPair : actionsToUndo.get(snapshotEntity)) {
                     if (fcData.remove(triggerActionPair.trigger, triggerActionPair.action)) {
-                        triggerActionPair.action.undoAction(entity);
+                        triggerActionPair.action.undoAction(mob);
                     }
                 }
                 fcData.save(entity);

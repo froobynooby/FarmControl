@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SnapshotEntity {
-    private final Mob entity;
+    private final Entity entity;
     private final int entityId;
     private final Vector location;
     private final FcData fcData;
@@ -19,19 +19,21 @@ public class SnapshotEntity {
     private final boolean customName;
     private final boolean tamed;
     private final boolean isPatrolLeader;
+    private final boolean isMob;
     private final int ticksLived;
     private final List<Object> classifications = new ArrayList<>();
 
-    public SnapshotEntity(Mob entity) {
+    public SnapshotEntity(Entity entity) {
         this.entity = entity;
         this.entityId = entity.getEntityId();
         this.location = entity.getLocation().toVector();
         this.fcData = FcData.get(entity);
-        this.leashed = entity.isLeashed();
+        this.leashed = entity instanceof Mob && ((Mob) entity).isLeashed();
         this.loveMode = entity instanceof Animals && ((Animals) entity).isLoveMode();
         this.customName = entity.getCustomName() != null;
         this.tamed = entity instanceof Tameable && ((Tameable) entity).isTamed();
         this.isPatrolLeader = entity instanceof Raider && ((Raider) entity).isPatrolLeader();
+        this.isMob = entity instanceof Mob;
         this.ticksLived = entity.getTicksLived();
         classifications.add(entity.getType());
         if (entity instanceof Colorable) {
@@ -45,7 +47,7 @@ public class SnapshotEntity {
         }
     }
 
-    public Class<? extends Mob> getEntityClass() {
+    public Class<? extends Entity> getEntityClass() {
         return entity.getClass();
     }
 
@@ -65,7 +67,7 @@ public class SnapshotEntity {
         return fcData;
     }
 
-    public Mob getEntity() {
+    public Entity getEntity() {
         return entity;
     }
 
@@ -99,5 +101,9 @@ public class SnapshotEntity {
 
     public List<Object> getClassifications() {
         return classifications;
+    }
+
+    public boolean isMob() {
+        return isMob;
     }
 }

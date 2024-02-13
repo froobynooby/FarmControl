@@ -1,5 +1,6 @@
 package com.froobworld.farmcontrol.controller.action;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
 public abstract class Action {
@@ -34,7 +35,7 @@ public abstract class Action {
         return undoOnUnload;
     }
 
-    public abstract void doAction(Mob mob);
+    public abstract void doAction(Entity entity);
 
     public abstract void undoAction(Mob mob);
 }

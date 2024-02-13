@@ -1,5 +1,6 @@
 package com.froobworld.farmcontrol.controller.action;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
 public class KillAction extends Action {
@@ -9,8 +10,12 @@ public class KillAction extends Action {
     }
 
     @Override
-    public void doAction(Mob mob) {
-        mob.setHealth(0);
+    public void doAction(Entity entity) {
+        if (!(entity instanceof Mob ent)) {
+            return;
+        }
+
+        ent.setHealth(0);
     }
 
     @Override

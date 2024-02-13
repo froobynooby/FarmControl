@@ -1,6 +1,7 @@
 package com.froobworld.farmcontrol.controller.action;
 
 import com.froobworld.farmcontrol.controller.breeding.BreedingBlocker;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
 public class DisableBreedingAction extends Action {
@@ -12,8 +13,12 @@ public class DisableBreedingAction extends Action {
     }
 
     @Override
-    public void doAction(Mob mob) {
-        breedingBlocker.setBreedingDisabled(mob, true);
+    public void doAction(Entity entity) {
+        if (!(entity instanceof Mob)) {
+            return;
+        }
+
+        breedingBlocker.setBreedingDisabled(entity, true);
     }
 
     @Override

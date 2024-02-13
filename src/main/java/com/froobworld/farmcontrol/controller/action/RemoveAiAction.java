@@ -1,5 +1,6 @@
 package com.froobworld.farmcontrol.controller.action;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 import org.bukkit.util.Vector;
 
@@ -10,7 +11,10 @@ public class RemoveAiAction extends Action {
     }
 
     @Override
-    public void doAction(Mob mob) {
+    public void doAction(Entity entity) {
+        if (!(entity instanceof Mob mob)) {
+            return;
+        }
         mob.setAI(false);
     }
 

@@ -3,6 +3,7 @@ package com.froobworld.farmcontrol.controller.action;
 import com.froobworld.farmcontrol.utils.NmsUtils;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Sets;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
 import java.util.*;
@@ -33,7 +34,11 @@ public class RemoveRandomMovementAction extends Action {
     }
 
     @Override
-    public void doAction(Mob mob) {
+    public void doAction(Entity entity) {
+        if (!(entity instanceof Mob mob)) {
+            return;
+        }
+
         Object entityObject = on(mob).call("getHandle").get();
         Set<?> wrappedGoals = on(entityObject)
                 .field(NmsUtils.GoalSelectorHelper.getGoalSelectorFieldName())
