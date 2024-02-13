@@ -28,6 +28,8 @@ public final class EntityTypeUtils {
                 return entity -> Raider.class.isAssignableFrom(entity.getEntityClass());
             } else if (category.equalsIgnoreCase("vehicle")) {
                 return entity -> Vehicle.class.isAssignableFrom(entity.getEntityClass());
+            } else if (category.equalsIgnoreCase("item")) {
+                return entity -> Item.class.isAssignableFrom(entity.getEntityClass());
             }
         }
         return entity -> entity.getEntityType().toString().equalsIgnoreCase(string);
