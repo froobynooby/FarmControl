@@ -19,7 +19,10 @@ public class RemoveAiAction extends Action {
     }
 
     @Override
-    public void undoAction(Mob mob) {
+    public void undoAction(Entity entity) {
+        if (!(entity instanceof Mob mob)) {
+            return;
+        }
         mob.setAI(true);
         mob.setVelocity(new Vector(0, 0, 0));
     }

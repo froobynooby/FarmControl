@@ -19,7 +19,6 @@ public class SnapshotEntity {
     private final boolean customName;
     private final boolean tamed;
     private final boolean isPatrolLeader;
-    private final boolean isMob;
     private final int ticksLived;
     private final List<Object> classifications = new ArrayList<>();
 
@@ -33,7 +32,6 @@ public class SnapshotEntity {
         this.customName = entity.getCustomName() != null;
         this.tamed = entity instanceof Tameable && ((Tameable) entity).isTamed();
         this.isPatrolLeader = entity instanceof Raider && ((Raider) entity).isPatrolLeader();
-        this.isMob = entity instanceof Mob;
         this.ticksLived = entity.getTicksLived();
         classifications.add(entity.getType());
         if (entity instanceof Colorable) {
@@ -103,7 +101,4 @@ public class SnapshotEntity {
         return classifications;
     }
 
-    public boolean isMob() {
-        return isMob;
-    }
 }

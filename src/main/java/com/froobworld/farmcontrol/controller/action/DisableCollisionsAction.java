@@ -19,7 +19,10 @@ public class DisableCollisionsAction extends Action {
     }
 
     @Override
-    public void undoAction(Mob mob) {
+    public void undoAction(Entity entity) {
+        if (!(entity instanceof Mob mob)) {
+            return;
+        }
         mob.setCollidable(true);
     }
 }

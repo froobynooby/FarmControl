@@ -9,10 +9,7 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -50,7 +47,7 @@ public class StatusCommand implements CommandExecutor {
         Map<String, AtomicInteger> actionCount = new HashMap<>();
 
         CompletableFuture<Void> completableFuture = CompletableFuture.completedFuture(null);
-        for (Entity entity : world.getEntities()) {
+        for (Entity entity : world.getEntitiesByClasses(Mob.class, Vehicle.class, Projectile.class, Item.class)) {
             entityCount.incrementAndGet();
             CompletableFuture<Void> entityFuture = new CompletableFuture();
             ScheduledTask scheduledTask = farmControl.getHookManager().getSchedulerHook().runEntityTaskAsap(() -> {

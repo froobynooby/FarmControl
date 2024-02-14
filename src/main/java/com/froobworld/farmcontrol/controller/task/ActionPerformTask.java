@@ -60,7 +60,7 @@ public class ActionPerformTask implements Runnable {
         for (SnapshotEntity snapshotEntity : unTriggerActionMap.keySet()) {
             Entity entity = snapshotEntity.getEntity();
             schedulerHook.runEntityTaskAsap(() -> {
-                if (!(entity instanceof Mob mob) || !entity.isValid()) {
+                if (!entity.isValid()) {
                     return;
                 }
                 FcData fcData = snapshotEntity.getFcData();
@@ -70,7 +70,7 @@ public class ActionPerformTask implements Runnable {
                 Set<TriggerActionPair> triggerActionPairs = unTriggerActionMap.get(snapshotEntity);
                 for (TriggerActionPair triggerActionPair : triggerActionPairs) {
                     if (fcData.remove(triggerActionPair.trigger, triggerActionPair.action)) {
-                        triggerActionPair.action.undoAction(mob);
+                        triggerActionPair.action.undoAction(entity);
                     }
                 }
                 fcData.save(entity);

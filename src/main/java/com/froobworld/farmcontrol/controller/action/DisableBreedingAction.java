@@ -17,12 +17,14 @@ public class DisableBreedingAction extends Action {
         if (!(entity instanceof Mob)) {
             return;
         }
-
         breedingBlocker.setBreedingDisabled(entity, true);
     }
 
     @Override
-    public void undoAction(Mob mob) {
+    public void undoAction(Entity entity) {
+        if (!(entity instanceof Mob mob)) {
+            return;
+        }
         breedingBlocker.setBreedingDisabled(mob, false);
     }
 }

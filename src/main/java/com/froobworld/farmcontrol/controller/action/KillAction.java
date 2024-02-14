@@ -11,13 +11,12 @@ public class KillAction extends Action {
 
     @Override
     public void doAction(Entity entity) {
-        if (!(entity instanceof Mob ent)) {
+        if (!(entity instanceof Mob mob)) {
             return;
         }
-
-        ent.setHealth(0);
+        mob.setHealth(0);
     }
 
     @Override
-    public void undoAction(Mob mob) {}
+    public void undoAction(Entity entity) {}
 }

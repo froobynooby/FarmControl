@@ -37,5 +37,5 @@ public abstract class Action {
 
     public abstract void doAction(Entity entity);
 
-    public abstract void undoAction(Mob mob);
+    public abstract void undoAction(Entity entity);
 }

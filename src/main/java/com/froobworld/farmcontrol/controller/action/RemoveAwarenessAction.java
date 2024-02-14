@@ -18,7 +18,10 @@ public class RemoveAwarenessAction extends Action {
     }
 
     @Override
-    public void undoAction(Mob mob) {
+    public void undoAction(Entity entity) {
+        if (!(entity instanceof Mob mob)) {
+            return;
+        }
         mob.setAware(true);
     }
 }

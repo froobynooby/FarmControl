@@ -60,7 +60,10 @@ public class RemoveRandomMovementAction extends Action {
     }
 
     @Override
-    public void undoAction(Mob mob) {
+    public void undoAction(Entity entity) {
+        if (!(entity instanceof Mob mob)) {
+            return;
+        }
         Object entityObject = on(mob).call("getHandle").get();
         Set<Object> wrappedGoals = on(entityObject)
                 .field(NmsUtils.GoalSelectorHelper.getGoalSelectorFieldName())

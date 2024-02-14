@@ -11,7 +11,7 @@ import com.froobworld.farmcontrol.hook.scheduler.ScheduledTask;
 import com.froobworld.farmcontrol.utils.Actioner;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -86,7 +86,7 @@ public class FarmController {
 
     public void removeWorld(World world) {
         worldTriggerProfilesMap.remove(world);
-        for (Entity entity : world.getEntities()) {
+        for (Entity entity : world.getEntitiesByClasses(Mob.class, Vehicle.class, Projectile.class, Item.class)) {
             farmControl.getHookManager().getSchedulerHook().runEntityTaskAsap(
                     () -> Actioner.undoAllActions(entity, farmControl),
                     null, entity);
