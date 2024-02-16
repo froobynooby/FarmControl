@@ -6,7 +6,7 @@ import org.bukkit.entity.Mob;
 public class RemoveAction extends Action {
 
     public RemoveAction() {
-        super("remove", true, false, false);
+        super("remove", true, false, false, Entity.class);
     }
 
     @Override

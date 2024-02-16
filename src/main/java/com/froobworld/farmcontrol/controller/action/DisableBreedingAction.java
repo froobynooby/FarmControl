@@ -8,7 +8,7 @@ public class DisableBreedingAction extends Action {
     private final BreedingBlocker breedingBlocker;
 
     public DisableBreedingAction(BreedingBlocker breedingBlocker) {
-        super("disable-breeding", false, true, false);
+        super("disable-breeding", false, true, false, Mob.class);
         this.breedingBlocker = breedingBlocker;
     }
 
