@@ -12,20 +12,17 @@ public final class EntityTypeUtils {
     public static Predicate<SnapshotEntity> fromString(String string) {
         if (string.toLowerCase().startsWith("category:")) {
             String category = string.split(":")[1];
-            if (category.equalsIgnoreCase("animal")) {
-                return entity -> Animals.class.isAssignableFrom(entity.getEntityClass());
-            } else if (category.equalsIgnoreCase("monster")) {
-                return entity -> Monster.class.isAssignableFrom(entity.getEntityClass());
-            } else if (category.equalsIgnoreCase("golem")) {
-                return entity -> Golem.class.isAssignableFrom(entity.getEntityClass());
-            } else if (category.equalsIgnoreCase("ambient")) {
-                return entity -> Ambient.class.isAssignableFrom(entity.getEntityClass());
-            } else if (category.equalsIgnoreCase("fish")) {
-                return entity -> Fish.class.isAssignableFrom(entity.getEntityClass());
-            } else if (category.equalsIgnoreCase("tameable")) {
-                return entity -> Tameable.class.isAssignableFrom(entity.getEntityClass());
-            } else if (category.equalsIgnoreCase("raider")) {
-                return entity -> Raider.class.isAssignableFrom(entity.getEntityClass());
+            switch (category.toLowerCase()) {
+                case "animal" -> {return entity -> Animals.class.isAssignableFrom(entity.getEntityClass());}
+                case "monster" -> {return entity -> Monster.class.isAssignableFrom(entity.getEntityClass());}
+                case "golem" -> {return entity -> Golem.class.isAssignableFrom(entity.getEntityClass());}
+                case "ambient" -> {return entity -> Ambient.class.isAssignableFrom(entity.getEntityClass());}
+                case "fish" -> {return entity -> Fish.class.isAssignableFrom(entity.getEntityClass());}
+                case "tameable" -> {return entity -> Tameable.class.isAssignableFrom(entity.getEntityClass());}
+                case "raider" -> {return entity -> Raider.class.isAssignableFrom(entity.getEntityClass());}
+                case "mob" -> {return entity -> Mob.class.isAssignableFrom(entity.getEntityClass());}
+                case "vehicle" -> {return entity -> Vehicle.class.isAssignableFrom(entity.getEntityClass());}
+                case "projectile" -> {return entity -> Projectile.class.isAssignableFrom(entity.getEntityClass());}
             }
         }
         return entity -> entity.getEntityType().toString().equalsIgnoreCase(string);

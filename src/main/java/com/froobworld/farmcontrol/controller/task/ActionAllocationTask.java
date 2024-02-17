@@ -68,6 +68,9 @@ public class ActionAllocationTask implements Runnable {
                     Set<TriggerActionPair> triggerActionPairs = triggerActionMap.computeIfAbsent(next, e -> new HashSet<>());
                     Set<TriggerActionPair> unTriggerActionPairs = unTriggerActionMap.getOrDefault(next, Collections.emptySet());
                     for (Action action : triggerProfilePair.actionProfile.getActions()) {
+                        if (!action.getEntityClass().isAssignableFrom(next.getEntityClass())) {
+                            continue;
+                        }
                         TriggerActionPair triggerActionPair = new TriggerActionPair(triggerProfilePair.trigger, action);
                         triggerActionPairs.add(triggerActionPair);
                         unTriggerActionPairs.remove(triggerActionPair);

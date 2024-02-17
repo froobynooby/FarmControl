@@ -7,7 +7,7 @@ import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
 import com.froobworld.farmcontrol.hook.scheduler.ScheduledTask;
 import com.froobworld.farmcontrol.hook.scheduler.SchedulerHook;
 import org.bukkit.World;
-import org.bukkit.entity.Mob;
+import org.bukkit.entity.Entity;
 
 import java.util.Map;
 import java.util.Set;
@@ -32,7 +32,7 @@ public class ActionPerformTask implements Runnable {
     public void run() {
         CompletableFuture<Void> future = CompletableFuture.completedFuture(null);
         for (SnapshotEntity snapshotEntity : triggerActionMap.keySet()) {
-            Mob entity = snapshotEntity.getEntity();
+            Entity entity = snapshotEntity.getEntity();
             CompletableFuture<Void> entityFuture = new CompletableFuture<>();
             ScheduledTask scheduledTask = schedulerHook.runEntityTaskAsap(() -> {
                 try {
@@ -57,7 +57,7 @@ public class ActionPerformTask implements Runnable {
             }
         }
         for (SnapshotEntity snapshotEntity : unTriggerActionMap.keySet()) {
-            Mob entity = snapshotEntity.getEntity();
+            Entity entity = snapshotEntity.getEntity();
             schedulerHook.runEntityTaskAsap(() -> {
                 if (!entity.isValid()) {
                     return;

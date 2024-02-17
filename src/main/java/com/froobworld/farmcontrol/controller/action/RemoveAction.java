@@ -1,18 +1,18 @@
 package com.froobworld.farmcontrol.controller.action;
 
-import org.bukkit.entity.Mob;
+import org.bukkit.entity.Entity;
 
 public class RemoveAction extends Action {
 
     public RemoveAction() {
-        super("remove", true, false, false);
+        super("remove", Entity.class, true, false, false);
     }
 
     @Override
-    public void doAction(Mob mob) {
-        mob.remove();
+    public void doAction(Entity entity) {
+        entity.remove();
     }
 
     @Override
-    public void undoAction(Mob mob) {}
+    public void undoAction(Entity entity) {}
 }

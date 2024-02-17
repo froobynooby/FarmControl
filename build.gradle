@@ -27,6 +27,9 @@ repositories {
     maven {
         url = 'https://repo.codemc.org/repository/maven-public/'
     }
+    maven {
+        url = 'https://jitpack.io'
+    }
 }
 
 dependencies {
@@ -35,7 +38,7 @@ dependencies {
     compileOnly 'dev.folia:folia-api:1.19.4-R0.1-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.10.9'
     implementation 'org.jooq:joor-java-8:0.9.14'
-    implementation 'com.froobworld:nab-configuration:1.0.2'
+    implementation 'com.github.froobynooby:nab-configuration:master-SNAPSHOT' //'com.froobworld:nab-configuration:1.0.2'
     implementation 'org.bstats:bstats-bukkit:2.2.1'
 }
 
