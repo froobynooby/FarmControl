@@ -17,8 +17,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.List;
 
 public class FarmController {
+    public static final Class<?>[] ENTITY_CLASSES = List.of(Mob.class, Vehicle.class, Projectile.class, Item.class).toArray(new Class[0]);
     private final FarmControl farmControl;
     private final CycleHistoryManager cycleHistoryManager;
     private final Map<World, Map<Trigger, Set<ActionProfile>>> worldTriggerProfilesMap = new HashMap<>();
@@ -86,7 +88,7 @@ public class FarmController {
 
     public void removeWorld(World world) {
         worldTriggerProfilesMap.remove(world);
-        for (Entity entity : world.getEntitiesByClasses(Mob.class, Vehicle.class, Projectile.class, Item.class)) {
+        for (Entity entity : world.getEntities()) {
             farmControl.getHookManager().getSchedulerHook().runEntityTaskAsap(
                     () -> Actioner.undoAllActions(entity, farmControl),
                     null, entity);

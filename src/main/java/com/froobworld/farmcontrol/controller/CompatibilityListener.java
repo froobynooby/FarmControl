@@ -42,6 +42,9 @@ public class CompatibilityListener implements Listener {
 
     @EventHandler
     public void onEntityTarget(EntityTargetLivingEntityEvent event) {
+        if (event.getTarget() == null) {
+            return;
+        }
         Actioner.undoActions(event.getTarget(), action -> {
             return farmControl.getFcConfig().worldSettings.of(event.getEntity().getWorld()).actionSettings.undoOn.of(action).target.get();
         }, farmControl);

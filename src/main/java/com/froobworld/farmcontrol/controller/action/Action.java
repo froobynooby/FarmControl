@@ -1,24 +1,23 @@
 package com.froobworld.farmcontrol.controller.action;
 
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Mob;
 
 public abstract class Action {
     private final String name;
+    private final Class<?> entityClass;
     private final boolean removes;
     private final boolean persistent;
     private final boolean undoOnUnload;
-    private final Class<?> entityClass;
 
-    public Action(String name, boolean removes, boolean persistent, boolean undoOnUnload, Class<?> entityClass) {
+    public Action(String name, Class<?> entityClass, boolean removes, boolean persistent, boolean undoOnUnload) {
         if (!name.matches("[a-z-]+")) {
             throw new IllegalArgumentException("Name must match [a-z-]+");
         }
+        this.entityClass = entityClass;
         this.name = name;
         this.removes = removes;
         this.persistent = persistent;
         this.undoOnUnload = undoOnUnload;
-        this.entityClass = entityClass;
     }
 
     public final String getName() {

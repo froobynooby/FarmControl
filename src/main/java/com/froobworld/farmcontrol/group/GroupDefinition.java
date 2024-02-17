@@ -63,7 +63,7 @@ public class GroupDefinition {
         Predicate<SnapshotEntity> typePredicate = section.getStringList("types").stream()
                 .map(EntityTypeUtils::fromString)
                 .reduce(Predicate::or)
-                .orElse(snapshotEntity -> true);
+                .orElse(snapshotEntity -> false); // require explicit specification of types by defaulting to false
         Predicate<SnapshotEntity> excludeTypePredicate = section.getStringList("exclude-types").stream()
                 .map(EntityTypeUtils::fromString)
                 .reduce(Predicate::or)

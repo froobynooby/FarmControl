@@ -8,7 +8,6 @@ import com.froobworld.farmcontrol.hook.scheduler.ScheduledTask;
 import com.froobworld.farmcontrol.hook.scheduler.SchedulerHook;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Mob;
 
 import java.util.Map;
 import java.util.Set;

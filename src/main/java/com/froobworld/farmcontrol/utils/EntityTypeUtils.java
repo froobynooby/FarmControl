@@ -20,6 +20,7 @@ public final class EntityTypeUtils {
                 case "fish" -> {return entity -> Fish.class.isAssignableFrom(entity.getEntityClass());}
                 case "tameable" -> {return entity -> Tameable.class.isAssignableFrom(entity.getEntityClass());}
                 case "raider" -> {return entity -> Raider.class.isAssignableFrom(entity.getEntityClass());}
+                case "mob" -> {return entity -> Mob.class.isAssignableFrom(entity.getEntityClass());}
                 case "vehicle" -> {return entity -> Vehicle.class.isAssignableFrom(entity.getEntityClass());}
                 case "projectile" -> {return entity -> Projectile.class.isAssignableFrom(entity.getEntityClass());}
             }

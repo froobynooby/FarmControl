@@ -1,6 +1,7 @@
 package com.froobworld.farmcontrol.command;
 
 import com.froobworld.farmcontrol.FarmControl;
+import com.froobworld.farmcontrol.controller.FarmController;
 import com.froobworld.farmcontrol.data.FcData;
 import com.froobworld.farmcontrol.hook.scheduler.ScheduledTask;
 import org.bukkit.Bukkit;
@@ -47,7 +48,7 @@ public class StatusCommand implements CommandExecutor {
         Map<String, AtomicInteger> actionCount = new HashMap<>();
 
         CompletableFuture<Void> completableFuture = CompletableFuture.completedFuture(null);
-        for (Entity entity : world.getEntitiesByClasses(Mob.class, Vehicle.class, Projectile.class, Item.class)) {
+        for (Entity entity : world.getEntitiesByClasses(FarmController.ENTITY_CLASSES)) {
             entityCount.incrementAndGet();
             CompletableFuture<Void> entityFuture = new CompletableFuture();
             ScheduledTask scheduledTask = farmControl.getHookManager().getSchedulerHook().runEntityTaskAsap(() -> {

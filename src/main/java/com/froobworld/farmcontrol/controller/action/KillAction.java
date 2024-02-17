@@ -6,7 +6,7 @@ import org.bukkit.entity.Mob;
 public class KillAction extends Action {
 
     public KillAction() {
-        super("kill", true, false, false, Mob.class);
+        super("kill", Mob.class, true, false, false);
     }
 
     @Override

@@ -62,7 +62,7 @@ public class TriggerCheckTask implements Runnable {
             List<SnapshotEntity> snapshotEntities = new ArrayList<>();
             CompletableFuture<Void> completableFuture = CompletableFuture.completedFuture(null);
             if (!profilesToRun.isEmpty() || !untriggerStrategyMap.isEmpty()) {
-                for (Entity entity : world.getEntitiesByClasses(Mob.class, Vehicle.class, Projectile.class, Item.class)) {
+                for (Entity entity : world.getEntitiesByClasses(FarmController.ENTITY_CLASSES)) {
                     CompletableFuture<Void> entityFuture = new CompletableFuture<>();
                     ScheduledTask scheduledTask = farmControl.getHookManager().getSchedulerHook().runEntityTaskAsap(() -> {
                         try {
