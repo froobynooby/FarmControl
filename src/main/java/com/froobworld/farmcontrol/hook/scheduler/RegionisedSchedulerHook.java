@@ -17,6 +17,14 @@ public class RegionisedSchedulerHook implements SchedulerHook {
     }
 
     @Override
+    public ScheduledTask runTaskAsap(Runnable runnable) {
+        if (Bukkit.isGlobalTickThread()) {
+            runnable.run();
+        }
+        return runTask(runnable);
+    }
+
+    @Override
     public ScheduledTask runRepeatingTask(Runnable runnable, long initDelay, long period) {
         return new RegionisedScheduledTask(Bukkit.getGlobalRegionScheduler().runAtFixedRate(farmControl, task -> runnable.run(), initDelay, period));
     }

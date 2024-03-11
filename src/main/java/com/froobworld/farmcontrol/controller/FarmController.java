@@ -13,11 +13,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 public class FarmController {
     public static final Class<?>[] ENTITY_CLASSES = List.of(Mob.class, Vehicle.class, Projectile.class, Item.class).toArray(new Class[0]);
@@ -88,11 +85,13 @@ public class FarmController {
 
     public void removeWorld(World world) {
         worldTriggerProfilesMap.remove(world);
-        for (Entity entity : world.getEntities()) {
-            farmControl.getHookManager().getSchedulerHook().runEntityTaskAsap(
-                    () -> Actioner.undoAllActions(entity, farmControl),
-                    null, entity);
-        }
+        farmControl.getHookManager().getEntityGetterHook().getEntities(world).thenAccept(entities -> {
+            for (Entity entity : entities) {
+                farmControl.getHookManager().getSchedulerHook().runEntityTaskAsap(
+                        () -> Actioner.undoAllActions(entity, farmControl),
+                        null, entity);
+            }
+        });
     }
 
     public void register() {

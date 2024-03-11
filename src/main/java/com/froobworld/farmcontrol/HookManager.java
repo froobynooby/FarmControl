@@ -1,5 +1,8 @@
 package com.froobworld.farmcontrol;
 
+import com.froobworld.farmcontrol.hook.entitygetter.BukkitEntityGetterHook;
+import com.froobworld.farmcontrol.hook.entitygetter.EntityGetterHook;
+import com.froobworld.farmcontrol.hook.entitygetter.RegionisedEntityGetterHook;
 import com.froobworld.farmcontrol.hook.scheduler.BukkitSchedulerHook;
 import com.froobworld.farmcontrol.hook.scheduler.RegionisedSchedulerHook;
 import com.froobworld.farmcontrol.hook.scheduler.SchedulerHook;
@@ -12,6 +15,7 @@ public class HookManager {
     private final FarmControl farmControl;
     private final TickHook tickHook;
     private final SchedulerHook schedulerHook;
+    private final EntityGetterHook entityGetterHook;
     private MsptTracker msptTracker;
 
     public HookManager(FarmControl farmControl) {
@@ -27,6 +31,11 @@ public class HookManager {
             tickHook = new PaperTickHook();
         } else {
             tickHook = new BukkitTickHook(schedulerHook);
+        }
+        if (RegionisedEntityGetterHook.isCompatible()) {
+            entityGetterHook = new RegionisedEntityGetterHook(farmControl);
+        } else {
+            entityGetterHook = new BukkitEntityGetterHook();
         }
         if (tickHook != null) {
             tickHook.register(farmControl);
@@ -62,4 +71,7 @@ public class HookManager {
         return schedulerHook;
     }
 
+    public EntityGetterHook getEntityGetterHook() {
+        return entityGetterHook;
+    }
 }

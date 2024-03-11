@@ -17,6 +17,14 @@ public class BukkitSchedulerHook implements SchedulerHook {
     }
 
     @Override
+    public ScheduledTask runTaskAsap(Runnable runnable) {
+        if (Bukkit.isPrimaryThread()) {
+            runnable.run();
+        }
+        return runTask(runnable);
+    }
+
+    @Override
     public ScheduledTask runRepeatingTask(Runnable runnable, long initDelay, long period) {
         return new BukkitScheduledTask(Bukkit.getScheduler().scheduleSyncRepeatingTask(farmControl, runnable, initDelay, period));
     }
