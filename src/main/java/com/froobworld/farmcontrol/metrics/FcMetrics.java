@@ -2,7 +2,6 @@ package com.froobworld.farmcontrol.metrics;
 
 import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.metrics.charts.*;
-import org.bstats.bukkit.Metrics;
 
 public class FcMetrics {
     private final FarmControl farmControl;

@@ -35,11 +35,11 @@ repositories {
 dependencies {
     testImplementation 'junit:junit:4.13.2'
     //compileOnly 'com.destroystokyo.paper:paper-api:1.15.2-R0.1-SNAPSHOT'
-    compileOnly 'dev.folia:folia-api:1.19.4-R0.1-SNAPSHOT'
+    compileOnly 'dev.folia:folia-api:1.20.4-R0.1-SNAPSHOT'
     compileOnly 'me.clip:placeholderapi:2.10.9'
     implementation 'org.jooq:joor-java-8:0.9.14'
     implementation 'com.github.froobynooby:nab-configuration:master-SNAPSHOT' //'com.froobworld:nab-configuration:1.0.2'
-    implementation 'org.bstats:bstats-bukkit:2.2.1'
+    implementation 'org.bstats:bstats-base:3.0.2'
 }
 
 processResources {

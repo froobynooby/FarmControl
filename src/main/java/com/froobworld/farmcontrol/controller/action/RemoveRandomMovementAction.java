@@ -1,5 +1,6 @@
 package com.froobworld.farmcontrol.controller.action;
 
+import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.utils.NmsUtils;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Sets;
@@ -25,8 +26,15 @@ public class RemoveRandomMovementAction extends Action {
         }
     }
 
-    public static void cleanUp() {
-        entityRemovedGoalsMap.entrySet().removeIf(entry -> !entry.getKey().isValid());
+    public static void cleanUp(FarmControl farmControl) {
+        List<Mob> mobs = new ArrayList<>(entityRemovedGoalsMap.keySet());
+        for (Mob mob : mobs) {
+            farmControl.getHookManager().getSchedulerHook().runEntityTaskAsap(() -> {
+                if (!mob.isValid()) {
+                    entityRemovedGoalsMap.remove(mob);
+                }
+            }, () -> entityRemovedGoalsMap.remove(mob), mob);
+        }
     }
 
     public RemoveRandomMovementAction() {
