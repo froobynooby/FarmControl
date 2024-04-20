@@ -45,6 +45,18 @@ public class SnapshotEntity {
         if (entity instanceof Villager) {
             classifications.add(((Villager) entity).getProfession());
         }
+        if (entity instanceof Item) {
+            classifications.add(((Item) entity).getItemStack().getType());
+        }
+        if (entity instanceof Boat) {
+            // try to add boat type, falling back to wood type for version < 1.19
+            try {
+                classifications.add(((Boat) entity).getBoatType());
+            } catch (Throwable throwable) {
+                //noinspection deprecation
+                classifications.add(((Boat) entity).getWoodType());
+            }
+        }
     }
 
     public Class<? extends Entity> getEntityClass() {
