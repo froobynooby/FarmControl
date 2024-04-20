@@ -1,0 +1,5 @@
+[add-field]
+before=younger-than
+key=world-settings.default.exclusion-settings.pickupable
+value=true
+comment=# Should we not perform actions on projectiles that can be picked up by a player?

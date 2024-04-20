@@ -20,6 +20,7 @@ public class SnapshotEntity {
     private final boolean tamed;
     private final boolean isPatrolLeader;
     private final int ticksLived;
+    private final boolean pickupable;
     private final List<Object> classifications = new ArrayList<>();
 
     public SnapshotEntity(Entity entity) {
@@ -32,6 +33,7 @@ public class SnapshotEntity {
         this.customName = entity.getCustomName() != null;
         this.tamed = entity instanceof Tameable && ((Tameable) entity).isTamed();
         this.isPatrolLeader = entity instanceof Raider && ((Raider) entity).isPatrolLeader();
+        this.pickupable = entity instanceof AbstractArrow && ((AbstractArrow) entity).getPickupStatus() == AbstractArrow.PickupStatus.ALLOWED;
         this.ticksLived = entity.getTicksLived();
         classifications.add(entity.getType());
         if (entity instanceof Colorable) {
@@ -91,6 +93,10 @@ public class SnapshotEntity {
 
     public boolean isPatrolLeader() {
         return isPatrolLeader;
+    }
+
+    public boolean isPickupable() {
+        return pickupable;
     }
 
     public int getTicksLived() {

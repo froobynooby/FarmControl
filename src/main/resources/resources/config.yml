@@ -2,7 +2,7 @@
 # GitHub: https://github.com/froobynooby/FarmControl
 
 # Please don't change this!
-version: 7
+version: 8
 
 # Every how many ticks should we run the profile check / action cycle?
 cycle-period: 600
@@ -78,6 +78,9 @@ world-settings:
       # Should we not perform actions on patrol leaders?
       patrol-leader: false
 
+      # Should we not perform actions on projectiles that can be picked up by a player?
+      pickupable: true
+
       # Should we not perform actions on mobs that are younger than this value (in ticks)?
       younger-than: 0
 
@@ -85,6 +88,7 @@ world-settings:
       type:
         - chest_boat
         - minecart_chest
+        - trident
       #  - villager
 
       # For which metadata should we not perform actions on a mob?
