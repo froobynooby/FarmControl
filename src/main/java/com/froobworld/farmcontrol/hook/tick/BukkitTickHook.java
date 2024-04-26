@@ -26,11 +26,13 @@ public class BukkitTickHook implements TickHook {
             tickTimes = null;
         } else {
             String fieldName = null;
-            for (Field field : serverClass.getFields()) {
+            for (Field field : serverClass.getDeclaredFields()) {
+                System.out.println(field);
                 if (field.getType().equals(long[].class)) {
                     fieldName = field.getName();
                 }
             }
+            System.out.println(fieldName);
             tickTimes = on(Bukkit.getServer())
                     .call("getServer")
                     .get(fieldName);

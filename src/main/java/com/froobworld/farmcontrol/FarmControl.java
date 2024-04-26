@@ -58,7 +58,6 @@ public class FarmControl extends JavaPlugin {
         registerCommands();
 
         new FcMetrics(this, 9692);
-        hookManager.getSchedulerHook().runRepeatingTask(() -> RemoveRandomMovementAction.cleanUp(this), 1200, 1200); // Hack to fix leaking entities
     }
 
     public void reload() throws Exception {
@@ -77,7 +76,6 @@ public class FarmControl extends JavaPlugin {
             farmController.unRegister();
             farmController.unload();
         }
-        RemoveRandomMovementAction.cleanUp(this);
     }
 
     public FcConfig getFcConfig() {

@@ -14,7 +14,6 @@ public class KillAction extends Action {
         if (!(entity instanceof Mob mob)) {
             return;
         }
-        mob.setHealth(0);
     }
 
     @Override
