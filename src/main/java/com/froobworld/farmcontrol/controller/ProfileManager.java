@@ -3,6 +3,7 @@ package com.froobworld.farmcontrol.controller;
 import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.controller.action.Action;
 import com.froobworld.farmcontrol.group.GroupDefinition;
+import com.froobworld.farmcontrol.utils.EntityCategory;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -10,6 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProfileManager {
     private final FarmControl farmControl;
@@ -33,7 +35,7 @@ public class ProfileManager {
         for (String name : Objects.requireNonNull(profilesSection).getKeys(false)) {
             try {
                 ConfigurationSection profileSection = Objects.requireNonNull(profilesSection.getConfigurationSection(name));
-                GroupDefinition groupDefinition = GroupDefinition.fromConfigurationSection(Objects.requireNonNull(profileSection.getConfigurationSection("group")));
+                GroupDefinition groupDefinition = GroupDefinition.fromConfigurationSection(farmControl, name, Objects.requireNonNull(profileSection.getConfigurationSection("group")));
                 Set<Action> actions = new HashSet<>();
                 for (String actionName : profileSection.getStringList("actions")) {
                     Action action = farmControl.getActionManager().getAction(actionName.toLowerCase());
@@ -41,10 +43,23 @@ public class ProfileManager {
                         farmControl.getLogger().warning("Unknown action for profile '" + name + "': '" + actionName.toLowerCase() + "'");
                         continue;
                     }
+                    Set<String> incompatibleCategories = new HashSet<>();
+                    for (EntityCategory memberCategory : groupDefinition.getMemberCategories()) {
+                        if (!memberCategory.isCompatibleWith(action)) {
+                            incompatibleCategories.add(memberCategory.getName());
+                        }
+                    }
+                    if (!incompatibleCategories.isEmpty()) {
+                        String incompatibleCategoriesString = incompatibleCategories.stream()
+                                .map(Object::toString)
+                                .collect(Collectors.joining(", "));
+                        farmControl.getLogger().warning("Note: action '" + actionName + "' in profile '" + name + "' is incompatible with the following entity types: " + incompatibleCategoriesString);
+                    }
                     actions.add(action);
                 }
                 actionProfileMap.put(name, new ActionProfile(groupDefinition, actions));
             } catch (Exception ex) {
+                ex.printStackTrace();
                 farmControl.getLogger().warning("Unable to load the profile '" + name + "'. Incorrect syntax?");
             }
         }
