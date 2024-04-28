@@ -1,7 +1,7 @@
 package com.froobworld.farmcontrol.controller.action;
 
 import com.froobworld.farmcontrol.FarmControl;
-import com.froobworld.farmcontrol.utils.NmsUtils;
+import com.froobworld.farmcontrol.hook.nms.mobgoal.MobGoalNmsHook;
 import com.google.common.collect.MapMaker;
 import com.google.common.collect.Sets;
 import org.bukkit.entity.Entity;
@@ -9,22 +9,9 @@ import org.bukkit.entity.Mob;
 
 import java.util.*;
 
-import static org.joor.Reflect.*;
-
 public class RemoveRandomMovementAction extends Action {
-    private final static Map<Mob, Set<Object>> entityRemovedGoalsMap = new MapMaker().weakKeys().makeMap();
-    private final static Set<Class<?>> randomMovementGoals = new HashSet<>();
-
-    static {
-        try {
-        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomFly", "world.entity.ai.goal")));
-        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomStroll", "world.entity.ai.goal")));
-        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomStrollLand", "world.entity.ai.goal")));
-        randomMovementGoals.add(Class.forName(NmsUtils.getFullyQualifiedClassName("PathfinderGoalRandomSwim", "world.entity.ai.goal")));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+    private final static Map<Mob, Map<Object, Set<Object>>> entityRemovedGoalsMap = new MapMaker().weakKeys().makeMap();
+    private final MobGoalNmsHook nmsHook;
 
     public static void cleanUp(FarmControl farmControl) {
         List<Mob> mobs = new ArrayList<>(entityRemovedGoalsMap.keySet());
@@ -37,8 +24,9 @@ public class RemoveRandomMovementAction extends Action {
         }
     }
 
-    public RemoveRandomMovementAction() {
+    public RemoveRandomMovementAction(MobGoalNmsHook nmsHook) {
         super("remove-random-movement", Mob.class, false, false, true);
+        this.nmsHook = nmsHook;
     }
 
     @Override
@@ -47,24 +35,24 @@ public class RemoveRandomMovementAction extends Action {
             return;
         }
 
-        Object entityObject = on(mob).call("getHandle").get();
-        Set<?> wrappedGoals = on(entityObject)
-                .field(NmsUtils.GoalSelectorHelper.getGoalSelectorFieldName())
-                .field("d")
-                .as(Set.class);
-        Iterator<?> goalIterator = wrappedGoals.iterator();
-        Set<Object> removedGoals = new HashSet<>();
-        while (goalIterator.hasNext()) {
-            Object next = goalIterator.next();
-            Class<?> nextClass = on(next)
-                    .field("a")
-                    .get().getClass();
-            if (randomMovementGoals.contains(nextClass)) {
-                goalIterator.remove();
-                removedGoals.add(next);
+        for (Object goalSelector : nmsHook.getGoalSelectors(mob)) {
+            Set<Object> wrappedGoals = nmsHook.getWrappedGoals(goalSelector);
+            Set<Object> removedGoals = new HashSet<>();
+
+            Iterator<Object> goalIterator = wrappedGoals.iterator();
+            while (goalIterator.hasNext()) {
+                Object nextGoal = goalIterator.next();
+                Class<?> nextClass = nmsHook.unwrapGoal(nextGoal).getClass();
+
+                if (nmsHook.getRandomMovementGoalClasses().contains(nextClass)) {
+                    goalIterator.remove();
+                    removedGoals.add(nextGoal);
+                }
             }
+            entityRemovedGoalsMap
+                    .compute(mob, (k, v) -> v == null ? new HashMap<>() : v)
+                    .compute(goalSelector, (k, v) -> v == null ? removedGoals : Sets.union(removedGoals, v));
         }
-        entityRemovedGoalsMap.compute(mob, (k, v) -> v == null ? removedGoals : Sets.union(removedGoals, v));
     }
 
     @Override
@@ -72,14 +60,19 @@ public class RemoveRandomMovementAction extends Action {
         if (!(entity instanceof Mob mob)) {
             return;
         }
-        Object entityObject = on(mob).call("getHandle").get();
-        Set<Object> wrappedGoals = on(entityObject)
-                .field(NmsUtils.GoalSelectorHelper.getGoalSelectorFieldName())
-                .field("d")
-                .as(Set.class);
-        Set<Object> removedGoals = entityRemovedGoalsMap.remove(mob);
-        if (removedGoals != null) {
-            wrappedGoals.addAll(removedGoals);
+        Map<Object, Set<Object>> removedGoalsMap = entityRemovedGoalsMap.remove(mob);
+        if (removedGoalsMap == null) {
+            return;
+        }
+        Iterator<Object> goalSelectorIterator = removedGoalsMap.keySet().iterator();
+        while (goalSelectorIterator.hasNext()) {
+            Object goalSelector = goalSelectorIterator.next();
+            Set<Object> wrappedGoals = nmsHook.getWrappedGoals(goalSelector);
+            Set<Object> removedGoals = removedGoalsMap.get(goalSelector);
+            if (removedGoals != null) {
+                wrappedGoals.addAll(removedGoals);
+            }
+            goalSelectorIterator.remove();
         }
     }
 

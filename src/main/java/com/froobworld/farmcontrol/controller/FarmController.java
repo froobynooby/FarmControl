@@ -6,7 +6,6 @@ import com.froobworld.farmcontrol.controller.task.TriggerCheckTask;
 import com.froobworld.farmcontrol.controller.task.UntriggerPerformTask;
 import com.froobworld.farmcontrol.controller.tracker.CycleHistoryManager;
 import com.froobworld.farmcontrol.controller.trigger.Trigger;
-import com.froobworld.farmcontrol.hook.scheduler.RegionisedSchedulerHook;
 import com.froobworld.farmcontrol.hook.scheduler.ScheduledTask;
 import com.froobworld.farmcontrol.utils.Actioner;
 import org.bukkit.Bukkit;
@@ -14,7 +13,6 @@ import org.bukkit.World;
 import org.bukkit.entity.*;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 public class FarmController {
     public static final Class<?>[] ENTITY_CLASSES = List.of(Mob.class, Vehicle.class, Projectile.class, Item.class).toArray(new Class[0]);
@@ -66,7 +64,7 @@ public class FarmController {
             }
             triggerProfileMap.computeIfAbsent(proactiveTrigger, trigger -> new HashSet<>()).add(actionProfile);
         }
-        if (!RegionisedSchedulerHook.isCompatible()) {
+        if (farmControl.getHookManager().getMsptTracker() != null) {
             Trigger reactiveTrigger = farmControl.getTriggerManager().getTrigger("reactive");
             for (String profileName : farmControl.getFcConfig().worldSettings.of(world).profiles.reactive.get()) {
                 ActionProfile actionProfile = farmControl.getProfileManager().getActionProfile(profileName.toLowerCase());
@@ -78,7 +76,7 @@ public class FarmController {
             }
         } else {
             if (!farmControl.getFcConfig().worldSettings.of(world).profiles.proactive.get().isEmpty()) {
-                farmControl.getLogger().warning("Reactive mode is not supported on Folia - ignoring reactive profiles for world '" + world.getName() + "'");
+                farmControl.getLogger().warning("Reactive mode is not supported on your version - ignoring reactive profiles for world '" + world.getName() + "'");
             }
         }
     }

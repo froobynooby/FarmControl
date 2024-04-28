@@ -3,7 +3,6 @@ package com.froobworld.farmcontrol.controller;
 import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.controller.action.*;
 import com.froobworld.farmcontrol.controller.breeding.BreedingBlocker;
-import com.froobworld.farmcontrol.utils.NmsUtils;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,8 +19,8 @@ public class ActionManager {
         addAction(new RemoveAiAction());
         addAction(new RemoveAwarenessAction());
         addAction(new DisableBreedingAction(new BreedingBlocker(farmControl)));
-        if (NmsUtils.GoalSelectorHelper.isCompatible()) {
-            addAction(new RemoveRandomMovementAction());
+        if (farmControl.getHookManager().getNmsHooks().getMobGoalNmsHook() != null) {
+            addAction(new RemoveRandomMovementAction(farmControl.getHookManager().getNmsHooks().getMobGoalNmsHook()));
         } else {
             farmControl.getLogger().warning("The remove-random-movement action is not available on this version.");
         }

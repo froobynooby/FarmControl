@@ -3,6 +3,7 @@ package com.froobworld.farmcontrol;
 import com.froobworld.farmcontrol.hook.entitygetter.BukkitEntityGetterHook;
 import com.froobworld.farmcontrol.hook.entitygetter.EntityGetterHook;
 import com.froobworld.farmcontrol.hook.entitygetter.RegionisedEntityGetterHook;
+import com.froobworld.farmcontrol.hook.nms.NmsHooks;
 import com.froobworld.farmcontrol.hook.scheduler.BukkitSchedulerHook;
 import com.froobworld.farmcontrol.hook.scheduler.RegionisedSchedulerHook;
 import com.froobworld.farmcontrol.hook.scheduler.SchedulerHook;
@@ -13,6 +14,7 @@ import com.froobworld.farmcontrol.utils.MsptTracker;
 
 public class HookManager {
     private final FarmControl farmControl;
+    private final NmsHooks nmsHooks;
     private final TickHook tickHook;
     private final SchedulerHook schedulerHook;
     private final EntityGetterHook entityGetterHook;
@@ -20,6 +22,7 @@ public class HookManager {
 
     public HookManager(FarmControl farmControl) {
         this.farmControl = farmControl;
+        nmsHooks = new NmsHooks();
         if (RegionisedSchedulerHook.isCompatible()) {
             schedulerHook = new RegionisedSchedulerHook(farmControl);
         } else {
@@ -29,8 +32,10 @@ public class HookManager {
             tickHook = null;
         } else if (PaperTickHook.isCompatible()) {
             tickHook = new PaperTickHook();
+        } else if (nmsHooks.getTickTimeNmsHook() != null) {
+            tickHook = new BukkitTickHook(schedulerHook, nmsHooks.getTickTimeNmsHook());
         } else {
-            tickHook = new BukkitTickHook(schedulerHook);
+            tickHook = null;
         }
         if (RegionisedEntityGetterHook.isCompatible()) {
             entityGetterHook = new RegionisedEntityGetterHook(farmControl);
@@ -73,5 +78,9 @@ public class HookManager {
 
     public EntityGetterHook getEntityGetterHook() {
         return entityGetterHook;
+    }
+
+    public NmsHooks getNmsHooks() {
+        return nmsHooks;
     }
 }
