@@ -2,7 +2,7 @@
 # GitHub: https://github.com/froobynooby/FarmControl
 
 # Please don't change this!
-version: 8
+version: 9
 
 # Every how many ticks should we run the profile check / action cycle?
 cycle-period: 600
@@ -80,6 +80,9 @@ world-settings:
 
       # Should we not perform actions on projectiles that can be picked up by a player?
       pickupable: true
+
+      # Should we not perform actions on mobs that are mounted (e.g. a boat with a villager in it)?
+      mounted: true
 
       # Should we not perform actions on mobs that are younger than this value (in ticks)?
       younger-than: 0

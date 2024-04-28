@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class FcConfig extends NabConfiguration {
-    private static final int CURRENT_VERSION = 8;
+    private static final int CURRENT_VERSION = 9;
 
     public FcConfig(FarmControl farmControl) {
         super(
@@ -105,6 +105,9 @@ public class FcConfig extends NabConfiguration {
 
             @Entry(key = "pickupable")
             public final ConfigEntry<Boolean> pickupable = new ConfigEntry<>();
+
+            @Entry(key = "mounted")
+            public final ConfigEntry<Boolean> mounted = new ConfigEntry<>();
 
             @Entry(key = "younger-than")
             public final ConfigEntry<Long> youngerThan = ConfigEntries.longEntry();

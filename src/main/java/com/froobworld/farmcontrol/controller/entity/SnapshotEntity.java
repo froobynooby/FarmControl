@@ -23,6 +23,7 @@ public class SnapshotEntity {
     private final boolean isPatrolLeader;
     private final int ticksLived;
     private final boolean pickupable;
+    private final boolean mounted;
     private final List<Object> classifications = new ArrayList<>();
 
     public SnapshotEntity(Entity entity) {
@@ -37,6 +38,7 @@ public class SnapshotEntity {
         this.isPatrolLeader = entity instanceof Raider && ((Raider) entity).isPatrolLeader();
         this.pickupable = entity instanceof AbstractArrow && ((AbstractArrow) entity).getPickupStatus() == AbstractArrow.PickupStatus.ALLOWED;
         this.ticksLived = entity.getTicksLived();
+        this.mounted = !entity.getPassengers().isEmpty();
         classifications.add(entity.getType());
         if (entity instanceof Colorable) {
             DyeColor colour = ((Colorable) entity).getColor();
@@ -116,6 +118,10 @@ public class SnapshotEntity {
 
     public boolean isPickupable() {
         return pickupable;
+    }
+
+    public boolean isMounted() {
+        return mounted;
     }
 
     public int getTicksLived() {
