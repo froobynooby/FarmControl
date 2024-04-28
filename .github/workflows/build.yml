@@ -7,23 +7,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up NabConfiguration JDK
-        uses: actions/setup-java@v2
-        with:
-          java-version: 8
-          distribution: 'adopt'
-
-      - name: Check out NabConfiguration
-        uses: actions/checkout@v2
-        with:
-          repository: froobynooby/nab-configuration
-
-      - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1
-
-      - name: Install NabConfiguration
-        run: ./gradlew install
-
       - name: Set up FarmControl JDK
         uses: actions/setup-java@v2
         with:
