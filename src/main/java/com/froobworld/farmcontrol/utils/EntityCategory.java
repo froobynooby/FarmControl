@@ -63,7 +63,7 @@ public class EntityCategory {
     }
 
     public boolean isMember(SnapshotEntity entity) {
-        return isMember(entity.getEntityClass());
+        return isMember(entity.getEntityType());
     }
 
     public boolean isMember(EntityType entityType) {
@@ -90,7 +90,7 @@ public class EntityCategory {
     }
 
     public static EntityCategory ofName(String categoryName) {
-        return EntityCategory.entityCategoryMap.get(categoryName);
+        return EntityCategory.entityCategoryMap.get(categoryName.toLowerCase());
     }
 
 }
