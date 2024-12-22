@@ -20,7 +20,7 @@ public class TriggerCheckTask implements Runnable {
     private final FarmController farmController;
     private final ExecutorService executorService;
     private final Map<World, Map<Trigger, Set<ActionProfile>>> worldTriggerProfilesMap;
-    private final Map<World, Map<Trigger, Integer>> worldLastTriggerCount = new HashMap<>();
+    private final Map<UUID, Map<Trigger, Integer>> worldLastTriggerCount = new HashMap<>();
 
     public TriggerCheckTask(FarmControl farmControl, FarmController farmController, Map<World, Map<Trigger, Set<ActionProfile>>> worldTriggerProfilesMap) {
         this.farmControl = farmControl;
@@ -38,7 +38,7 @@ public class TriggerCheckTask implements Runnable {
     public void run() {
         CycleTracker cycleTracker = farmController.getCycleHistoryManager().startCycleTracker(worldTriggerProfilesMap.keySet());
         for (World world : worldTriggerProfilesMap.keySet()) {
-            worldLastTriggerCount.putIfAbsent(world, new HashMap<>());
+            worldLastTriggerCount.putIfAbsent(world.getUID(), new HashMap<>());
             Map<Trigger, Set<ActionProfile>> triggerProfilesMap = worldTriggerProfilesMap.get(world);
             Map<Trigger, Set<ActionProfile>> profilesToRun = new HashMap<>();
             Map<Trigger, UntriggerStrategy> untriggerStrategyMap = new HashMap<>();
@@ -49,14 +49,14 @@ public class TriggerCheckTask implements Runnable {
                 if (triggerStatus == Trigger.TriggerStatus.TRIGGERED) {
                     triggeredTriggers.add(trigger);
                     profilesToRun.computeIfAbsent(trigger, t -> new HashSet<>()).addAll(triggerProfilesMap.get(trigger));
-                    worldLastTriggerCount.get(world).put(trigger, 0);
+                    worldLastTriggerCount.get(world.getUID()).put(trigger, 0);
                 } else if (triggerStatus == Trigger.TriggerStatus.UNTRIGGERED) {
                     untriggerStrategyMap.put(trigger, trigger.getUntriggerStrategy(world));
-                    worldLastTriggerCount.get(world).compute(trigger, (t, v) -> v == null ? 1 : (v + 1));
+                    worldLastTriggerCount.get(world.getUID()).compute(trigger, (t, v) -> v == null ? 1 : (v + 1));
                 }
             }
 
-            untriggerStrategyMap.entrySet().removeIf(entry -> worldLastTriggerCount.get(world).getOrDefault(entry.getKey(), 0) <= entry.getValue().getMinimumCyclesBeforeUndo());
+            untriggerStrategyMap.entrySet().removeIf(entry -> worldLastTriggerCount.get(world.getUID()).getOrDefault(entry.getKey(), 0) <= entry.getValue().getMinimumCyclesBeforeUndo());
             CompletableFuture<List<SnapshotEntity>> completableFuture = CompletableFuture.completedFuture(null);
             if (!profilesToRun.isEmpty() || !untriggerStrategyMap.isEmpty()) {
                 completableFuture = farmControl.getHookManager().getEntityGetterHook().getSnapshotEntities(world, FarmController.ENTITY_CLASSES);
