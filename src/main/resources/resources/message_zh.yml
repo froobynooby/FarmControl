@@ -1,0 +1,9 @@
+# FarmControl消息配置
+# 配置所有文字支持MiniMessage格式
+# 访问 https://docs.advntr.dev/minimessage/format.html 获得格式提示
+
+# 请勿更改版本号！
+version: 1
+
+# 配置文件中距离中的生物到达上限后提示玩家禁止继续繁殖的提示语
+breeding-disabled: "<red>此附近同类型生物过多，繁殖已经被阻止"
