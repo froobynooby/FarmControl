@@ -94,6 +94,13 @@ world-settings:
         - trident
       #  - villager
 
+    inclusion-settings:
+      # Which types of mobs should we always perform actions on,
+      # even if they would normally be excluded by the exclusion settings?
+      type:
+        - villager
+
+
       # For which metadata should we not perform actions on a mob?
       #  * Some plugins will add metadata to mobs that they spawn or use. This setting allows you to exclude those mobs
       #    from having actions performed on them by this plugin.

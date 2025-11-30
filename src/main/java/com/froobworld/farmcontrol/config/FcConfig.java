@@ -44,6 +44,9 @@ public class FcConfig extends NabConfiguration {
         @Section(key = "exclusion-settings")
         public final ExclusionSettings exclusionSettings = new ExclusionSettings();
 
+        @Section(key = "inclusion-settings")
+        public final InclusionSettings inclusionSettings = new InclusionSettings();
+
         @Section(key = "action-settings")
         public final ActionSettings actionSettings = new ActionSettings();
 
@@ -117,6 +120,14 @@ public class FcConfig extends NabConfiguration {
 
             @Entry(key = "metadata")
             public final ConfigEntry<List<String>> metadata = ConfigEntries.stringListEntry();
+
+        }
+
+
+        public static class InclusionSettings extends ConfigSection {
+
+            @Entry(key = "type")
+            public final ConfigEntry<List<String>> type = ConfigEntries.stringListEntry();
 
         }
 

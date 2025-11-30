@@ -16,7 +16,9 @@ public class ExclusionManager {
     }
 
     public Predicate<SnapshotEntity> getExclusionPredicate(World world) {
-        FcConfig.WorldSettings.ExclusionSettings exclusionSettings = farmControl.getFcConfig().worldSettings.of(world).exclusionSettings;
+        var cfg = farmControl.getFcConfig().worldSettings.of(world);
+        FcConfig.WorldSettings.ExclusionSettings exclusionSettings = cfg.exclusionSettings;
+        FcConfig.WorldSettings.InclusionSettings inclusionSettings = cfg.inclusionSettings;
         boolean excludeLeashed = exclusionSettings.leashed.get();
         boolean excludeLoveMode = exclusionSettings.loveMode.get();
         List<String> excludeMeta = exclusionSettings.metadata.get();
@@ -27,7 +29,14 @@ public class ExclusionManager {
         long excludeTicksLived = exclusionSettings.youngerThan.get();
         boolean excludePickupable = exclusionSettings.pickupable.get();
         boolean excludeMounted = exclusionSettings.mounted.get();
+        List<String> alwaysIncludeType = inclusionSettings.type.get();
         return snapshotEntity -> {
+            for (String type : alwaysIncludeType) {
+                if (snapshotEntity.getEntityType().toString().equalsIgnoreCase(type)) {
+                    return false;
+                }
+            }
+
             if (excludeLeashed && snapshotEntity.isLeashed()) {
                 return true;
             }
