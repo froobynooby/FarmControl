@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import static org.joor.Reflect.*;
+import static org.joor.Reflect.on;
 
 public class BukkitTickHook implements TickHook {
     private final long[] tickTimes;

@@ -7,7 +7,13 @@ import com.google.common.collect.Sets;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Mob;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class RemoveRandomMovementAction extends Action {
     private final static Map<Mob, Map<Object, Set<Object>>> entityRemovedGoalsMap = new MapMaker().weakKeys().makeMap();

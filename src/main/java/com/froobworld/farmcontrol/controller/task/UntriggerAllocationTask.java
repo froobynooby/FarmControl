@@ -9,7 +9,11 @@ import com.froobworld.farmcontrol.controller.trigger.Trigger;
 import com.froobworld.farmcontrol.controller.trigger.UntriggerStrategy;
 import com.froobworld.farmcontrol.data.FcData;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class UntriggerAllocationTask implements Runnable {
     private final FarmControl farmControl;

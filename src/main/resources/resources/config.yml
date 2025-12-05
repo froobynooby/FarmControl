@@ -84,6 +84,9 @@ world-settings:
       # Should we not perform actions on mobs that are mounted (e.g. a boat with a villager in it)?
       mounted: true
 
+      # Should we not perform actions on mobs that were naturally spawned and contribute to the mob cap?
+      naturally-spawned-mob-cap-contributor: true
+
       # Should we not perform actions on mobs that are younger than this value (in ticks)?
       younger-than: 0
 

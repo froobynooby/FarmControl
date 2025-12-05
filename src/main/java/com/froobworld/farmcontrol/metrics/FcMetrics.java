@@ -1,7 +1,14 @@
 package com.froobworld.farmcontrol.metrics;
 
 import com.froobworld.farmcontrol.FarmControl;
-import com.froobworld.farmcontrol.metrics.charts.*;
+import com.froobworld.farmcontrol.metrics.charts.LegacyModesInUseChart;
+import com.froobworld.farmcontrol.metrics.charts.LegacyProactiveActionsChart;
+import com.froobworld.farmcontrol.metrics.charts.LegacyReactiveActionsChart;
+import com.froobworld.farmcontrol.metrics.charts.LegacyReactiveModeIndicatorChart;
+import com.froobworld.farmcontrol.metrics.charts.ModesInUseChart;
+import com.froobworld.farmcontrol.metrics.charts.NumberOfWorldsChart;
+import com.froobworld.farmcontrol.metrics.charts.ProactiveActionsChart;
+import com.froobworld.farmcontrol.metrics.charts.ReactiveActionsChart;
 
 public class FcMetrics {
     private final FarmControl farmControl;

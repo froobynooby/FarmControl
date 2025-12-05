@@ -2,7 +2,12 @@ package com.froobworld.farmcontrol.config;
 
 import com.froobworld.farmcontrol.FarmControl;
 import com.froobworld.farmcontrol.controller.action.Action;
-import com.froobworld.nabconfiguration.*;
+import com.froobworld.nabconfiguration.ConfigEntries;
+import com.froobworld.nabconfiguration.ConfigEntry;
+import com.froobworld.nabconfiguration.ConfigEntryMap;
+import com.froobworld.nabconfiguration.ConfigSection;
+import com.froobworld.nabconfiguration.ConfigSectionMap;
+import com.froobworld.nabconfiguration.NabConfiguration;
 import com.froobworld.nabconfiguration.annotations.Entry;
 import com.froobworld.nabconfiguration.annotations.EntryMap;
 import com.froobworld.nabconfiguration.annotations.Section;
@@ -108,6 +113,9 @@ public class FcConfig extends NabConfiguration {
 
             @Entry(key = "mounted")
             public final ConfigEntry<Boolean> mounted = new ConfigEntry<>();
+
+            @Entry(key = "naturally-spawned-mob-cap-contributor")
+            public final ConfigEntry<Boolean> naturallySpawnedMobCapContributor = new ConfigEntry<>();
 
             @Entry(key = "younger-than")
             public final ConfigEntry<Long> youngerThan = ConfigEntries.longEntry();

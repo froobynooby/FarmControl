@@ -2,7 +2,18 @@ package com.froobworld.farmcontrol.utils;
 
 import com.froobworld.farmcontrol.controller.action.Action;
 import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Ambient;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.Boat;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Fish;
+import org.bukkit.entity.Golem;
+import org.bukkit.entity.Minecart;
+import org.bukkit.entity.Mob;
+import org.bukkit.entity.Monster;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Raider;
+import org.bukkit.entity.Tameable;
 
 import java.util.ArrayList;
 import java.util.HashMap;

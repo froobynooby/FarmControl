@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static org.joor.Reflect.*;
+import static org.joor.Reflect.on;
 
 public abstract class BaseMobGoalNmsHook implements MobGoalNmsHook {
     private final String wrappedGoalsFieldName; // Set<WrappedGoal> in GoalSelector

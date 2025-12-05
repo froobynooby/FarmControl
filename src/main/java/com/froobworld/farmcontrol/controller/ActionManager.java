@@ -1,7 +1,14 @@
 package com.froobworld.farmcontrol.controller;
 
 import com.froobworld.farmcontrol.FarmControl;
-import com.froobworld.farmcontrol.controller.action.*;
+import com.froobworld.farmcontrol.controller.action.Action;
+import com.froobworld.farmcontrol.controller.action.DisableBreedingAction;
+import com.froobworld.farmcontrol.controller.action.DisableCollisionsAction;
+import com.froobworld.farmcontrol.controller.action.KillAction;
+import com.froobworld.farmcontrol.controller.action.RemoveAction;
+import com.froobworld.farmcontrol.controller.action.RemoveAiAction;
+import com.froobworld.farmcontrol.controller.action.RemoveAwarenessAction;
+import com.froobworld.farmcontrol.controller.action.RemoveRandomMovementAction;
 import com.froobworld.farmcontrol.controller.breeding.BreedingBlocker;
 
 import java.util.HashMap;

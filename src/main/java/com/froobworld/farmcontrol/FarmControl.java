@@ -2,7 +2,11 @@ package com.froobworld.farmcontrol;
 
 import com.froobworld.farmcontrol.command.FarmControlCommand;
 import com.froobworld.farmcontrol.config.FcConfig;
-import com.froobworld.farmcontrol.controller.*;
+import com.froobworld.farmcontrol.controller.ActionManager;
+import com.froobworld.farmcontrol.controller.ExclusionManager;
+import com.froobworld.farmcontrol.controller.FarmController;
+import com.froobworld.farmcontrol.controller.ProfileManager;
+import com.froobworld.farmcontrol.controller.TriggerManager;
 import com.froobworld.farmcontrol.controller.action.RemoveRandomMovementAction;
 import com.froobworld.farmcontrol.message.MessageManager;
 import com.froobworld.farmcontrol.metrics.FcMetrics;

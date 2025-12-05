@@ -1,9 +1,9 @@
 package com.froobworld.farmcontrol.controller.task;
 
 import com.froobworld.farmcontrol.controller.TriggerActionPair;
+import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
 import com.froobworld.farmcontrol.controller.tracker.CycleTracker;
 import com.froobworld.farmcontrol.data.FcData;
-import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
 import com.froobworld.farmcontrol.hook.scheduler.ScheduledTask;
 import com.froobworld.farmcontrol.hook.scheduler.SchedulerHook;
 import org.bukkit.World;

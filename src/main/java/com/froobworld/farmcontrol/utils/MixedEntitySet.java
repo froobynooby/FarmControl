@@ -3,7 +3,12 @@ package com.froobworld.farmcontrol.utils;
 import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
 import com.google.common.collect.Maps;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class MixedEntitySet implements Iterable<SnapshotEntity> {
     private final Comparator<SnapshotEntity> comparator;

@@ -7,8 +7,8 @@ import com.froobworld.farmcontrol.hook.nms.NmsHooks;
 import com.froobworld.farmcontrol.hook.scheduler.BukkitSchedulerHook;
 import com.froobworld.farmcontrol.hook.scheduler.RegionisedSchedulerHook;
 import com.froobworld.farmcontrol.hook.scheduler.SchedulerHook;
-import com.froobworld.farmcontrol.hook.tick.PaperTickHook;
 import com.froobworld.farmcontrol.hook.tick.BukkitTickHook;
+import com.froobworld.farmcontrol.hook.tick.PaperTickHook;
 import com.froobworld.farmcontrol.hook.tick.TickHook;
 import com.froobworld.farmcontrol.utils.MsptTracker;
 

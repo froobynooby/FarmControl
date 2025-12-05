@@ -1,7 +1,6 @@
 package com.froobworld.farmcontrol.hook.entitygetter;
 
 import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 

@@ -3,19 +3,26 @@ package com.froobworld.farmcontrol.controller.task;
 import com.froobworld.farmcontrol.controller.ActionProfile;
 import com.froobworld.farmcontrol.controller.FarmController;
 import com.froobworld.farmcontrol.controller.TriggerActionPair;
+import com.froobworld.farmcontrol.controller.action.Action;
+import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
 import com.froobworld.farmcontrol.controller.tracker.CycleTracker;
 import com.froobworld.farmcontrol.controller.trigger.Trigger;
 import com.froobworld.farmcontrol.data.FcData;
 import com.froobworld.farmcontrol.group.EntityGrouper;
 import com.froobworld.farmcontrol.group.EntityGrouperResult;
 import com.froobworld.farmcontrol.group.Group;
-import com.froobworld.farmcontrol.controller.action.Action;
-import com.froobworld.farmcontrol.controller.entity.SnapshotEntity;
 import com.froobworld.farmcontrol.hook.scheduler.SchedulerHook;
 import com.froobworld.farmcontrol.utils.MixedEntitySet;
 import org.bukkit.World;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class ActionAllocationTask implements Runnable {
